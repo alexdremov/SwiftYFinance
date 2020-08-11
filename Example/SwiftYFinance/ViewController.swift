@@ -12,7 +12,8 @@ import SwiftYFinance
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
-        try! SwiftYFinance.fetchSearchDataBy(searchTerm: "AAPL"){data in
+        try! SwiftYFinance.summaryDataBy(identifier: "AAPL", selection: [.cashFlowStatementHistory, .financialData]){data in
+            debugPrint(data)
             
         }
         super.viewDidLoad()
