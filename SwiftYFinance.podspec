@@ -32,6 +32,9 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'SwiftYFinance/Classes/**/*'
   
+  s.dependency 'Alamofire', '~> 5.2'
+  s.dependency 'SwiftyJSON', '~> 4.0'
+  
   # s.resource_bundles = {
   #   'SwiftYFinance' => ['SwiftYFinance/Assets/*.png']
   # }

@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import SwiftYFinance
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
+        try! SwiftYFinance.fetchSearchDataBy(searchTerm: "AAPL"){data in
+            
+        }
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
