@@ -12,10 +12,10 @@ import SwiftYFinance
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
-        SwiftYFinance.chartDataBy(identifier: "AAPL", callback:{
+        SwiftYFinance.getBigSummaryOfEquityBy(identifier: "MA", callback:{
             data, error in
             debugPrint(data, error)
-        }, interval: .oneday)
+        })
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }

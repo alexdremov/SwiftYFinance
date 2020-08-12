@@ -27,6 +27,7 @@ public class SwiftYFinance{
         let requestURL = urlComponents.url?.absoluteString
         if requestURL == nil{
             callback(nil, URLGenerationError())
+            return
         }
         
         AF.request(requestURL!).response(){ response  in
@@ -66,6 +67,7 @@ public class SwiftYFinance{
         let requestURL = urlComponents.url?.absoluteString
         if requestURL == nil{
             callback(nil, URLGenerationError())
+            return
         }
         
         AF.request(requestURL!).response(){ response  in
@@ -108,6 +110,7 @@ public class SwiftYFinance{
         let requestURL = urlComponents.url?.absoluteString
         if requestURL == nil{
             callback(nil, URLGenerationError())
+            return
         }
         
         AF.request(requestURL!).responseData(){ response in
@@ -133,6 +136,7 @@ public class SwiftYFinance{
         let requestURL = urlComponents.url?.absoluteString
         if requestURL == nil{
             callback(nil, URLGenerationError())
+            return
         }
         
         AF.request(requestURL!).responseData(){ response in
@@ -187,6 +191,7 @@ public class SwiftYFinance{
         let requestURL = urlComponents.url?.absoluteString
         if requestURL == nil{
             callback(nil, URLGenerationError())
+            return
         }
         AF.request(requestURL!).responseData(){ response in
             if (response.error != nil){
@@ -210,7 +215,7 @@ public class SwiftYFinance{
             let timestamps = fullData["timestamp"]?.array
             
             var result:[StockChartData] = [];
-    
+            
             
             for reading in 0..<timestamps!.count{
                 result.append(StockChartData(
@@ -224,6 +229,57 @@ public class SwiftYFinance{
                 )
             }
             callback(result, nil)
+        }
+    }
+    
+    public class func getBigSummaryOfEquityBy(identifier:String, callback: @escaping (IdentifierEquitySummary?, Error?)->Void){
+        var urlComponents = URLComponents()
+        urlComponents.scheme = "https"
+        urlComponents.host = "finance.yahoo.com"
+        urlComponents.path = "/quote/\(identifier)"
+        urlComponents.queryItems = []
+        
+        let requestURL = urlComponents.url?.absoluteString
+        if requestURL == nil{
+            callback(nil, URLGenerationError())
+            return
+        }
+        
+        AF.request(requestURL!).responseString(){ response in
+            if (response.error != nil){
+                callback(nil, response.error)
+                return
+            }
+            var html = ""
+            if let responseString = response.value{
+                html = responseString
+                if !(html.contains("QuoteSummaryStore")) {
+                    callback(nil, YFinanceResponseError(message: "Scrape for identifier \(identifier) is not available"))
+                    return
+                }
+            }else{
+                callback(nil, YFinanceResponseError(message: "Scrape for identifier \(identifier) is not available"))
+                return
+            }
+            
+            let jsonStr = html.components(separatedBy: "root.App.main =")[1]
+                .components(separatedBy: "(this)")[0]
+                .components(separatedBy: ";\n}")[0].trimmingCharacters(in: .whitespacesAndNewlines)
+            let jsonObject = JSON(parseJSON: jsonStr)
+            
+            let jsonSummary = jsonObject["context"]["dispatcher"]["stores"]["QuoteSummaryStore"]
+            
+            if let type = jsonSummary["quoteType"]["quoteType"].string{
+                if type.lowercased() != "equity"{
+                    callback(nil, YFinanceResponseError(message: "Scrape for identifier \(identifier) is not of EQUITY type. If you scrape currency, consider another method"))
+                    return
+                }
+            }else{
+                callback(nil, YFinanceResponseError(message: "Scrape for identifier \(identifier) has undefined quoteType"))
+                return
+            }
+            debugPrint(requestURL!)
+            callback(IdentifierEquitySummary(information: jsonSummary), nil)
         }
     }
 }

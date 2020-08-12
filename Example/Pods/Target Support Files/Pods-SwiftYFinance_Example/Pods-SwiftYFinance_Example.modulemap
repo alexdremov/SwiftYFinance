@@ -1,0 +1,6 @@
+framework module Pods_SwiftYFinance_Example {
+  umbrella header "Pods-SwiftYFinance_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}
