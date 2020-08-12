@@ -1,6 +1,6 @@
 # SwiftYFinance
 
-[![CI Status](https://img.shields.io/travis/AlexRoar/SwiftYFinance.svg?style=flat)](https://travis-ci.org/AlexRoar/SwiftYFinance)
+[![Language](https://img.shields.io/github/languages/top/AlexRoar/SwiftYFinance)](https://cocoapods.org/pods/SwiftYFinance)
 [![Version](https://img.shields.io/cocoapods/v/SwiftYFinance.svg?style=flat)](https://cocoapods.org/pods/SwiftYFinance)
 [![License](https://img.shields.io/cocoapods/l/SwiftYFinance.svg?style=flat)](https://cocoapods.org/pods/SwiftYFinance)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftYFinance.svg?style=flat)](https://cocoapods.org/pods/SwiftYFinance)
