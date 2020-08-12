@@ -12,10 +12,10 @@ import SwiftYFinance
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
-        try! SwiftYFinance.summaryDataBy(identifier: "AAPL", selection: [.cashFlowStatementHistory, .financialData]){data in
-            debugPrint(data)
-            
-        }
+        SwiftYFinance.chartDataBy(identifier: "AAPL", callback:{
+            data, error in
+            debugPrint(data, error)
+        }, interval: .oneday)
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
