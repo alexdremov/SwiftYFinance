@@ -134,6 +134,55 @@ SwiftYFinance.chartDataBy(
 }
 ```
 
+### Identifier Summary
+
+This part of API is MASSIVE. Yahoo Finance has a lot of summary modules and I implemented several of them.Still, you can fetch data from raw JSON parameter.
+
+I will add new modules with every version. Currntly, only essential modules are implemented.
+
+| Module                            | Support |
+|-----------------------------------|---------|
+| assetProfile                      | :x: |
+| incomeStatementHistory            | :x: |
+| incomeStatementHistoryQuarterly   | :x: |
+| balanceSheetHistory               | :x: |
+| balanceSheetHistoryQuarterly      | :x: |
+| cashFlowStatementHistory          | :x: |
+| cashFlowStatementHistoryQuarterly | :x: |
+| defaultKeyStatistics              | :x: |
+| financialData                     | :x: |
+| calendarEvents                    | :white_check_mark: |
+| secFilings                        | :x: |
+| recommendationTrend               | :white_check_mark: |
+| upgradeDowngradeHistory           | :x: |
+| institutionOwnership              | :x: |
+| fundOwnership                     | :x: |
+| majorDirectHolders                | :x: |
+| majorHoldersBreakdown             | :x: |
+| insiderTransactions               | :x: |
+| insiderHolders                    | :x: |
+| netSharePurchaseActivity          | :x: |
+| sectorTrend                       | :x: |
+| earnings                          | :x: |
+| companyOfficers                   | :x: |
+| summaryProfile                    | :white_check_mark: |
+| quoteType                         | :white_check_mark: |
+| earningsHistory                   | :x: |
+| earningsTrend                     | :x: |
+| indexTrend                        | :x: |
+| industryTrend                     | :white_check_mark: |
+| price                             | :white_check_mark: |
+| symbol                            | :x: |
+| summaryDetail                     | :white_check_mark: |
+| fundProfile                       | :x: |
+| topHoldings                       | :x: |
+| fundPerformance                   | :x: |
+
+You can fetch modules by calling `summaryDataBy(...)`
+
+```swift
+```
+
 ## Author
 
 Aleksandr Dremov, dremov.me@gmail.com
