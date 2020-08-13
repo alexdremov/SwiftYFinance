@@ -21,10 +21,15 @@ I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
 ## Installation
 
 SwiftYFinance is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+it, simply add the following line to your Podfile and run `pod install`:
 
 ```ruby
 pod 'SwiftYFinance'
+```
+
+You can try Example project on your device by running:
+```bash
+pod try SwiftYFinance
 ```
 
 ## Basic Usage
