@@ -55,28 +55,28 @@ struct SheetView: View {
                             Spacer()
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.profile?.country ?? "-", desc: "country")
-                            NumberDescView(number:  self.identifierSummary?.profile?.city ?? "-", desc: "city")
+                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.country ?? "-", desc: "country")
+                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.city ?? "-", desc: "city")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.profile?.industry ?? "-", desc: "industry")
-                            NumberDescView(number:  self.identifierSummary?.profile?.address1 ?? "-", desc: "address1")
+                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.industry ?? "-", desc: "industry")
+                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.address1 ?? "-", desc: "address1")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.profile?.zip ?? "-", desc: "zip")
-                            NumberDescView(number:  String(self.identifierSummary?.profile?.fullTimeEmployees ?? 0), desc: "fullTimeEmployees")
+                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.zip ?? "-", desc: "zip")
+                            NumberDescView(number:  String(self.identifierSummary?.summaryProfile?.fullTimeEmployees ?? 0), desc: "fullTimeEmployees")
                         }
                         
-                        NumberDescView(number:  self.identifierSummary?.profile?.website ?? "-", desc: "website")
+                        NumberDescView(number:  self.identifierSummary?.summaryProfile?.website ?? "-", desc: "website")
                         
-                        NumberDescView(number:  self.identifierSummary?.profile?.phone ?? "-", desc: "phone")
+                        NumberDescView(number:  self.identifierSummary?.summaryProfile?.phone ?? "-", desc: "phone")
                     }
                     Group{
-                        NumberDescView(number:  self.identifierSummary?.profile?.sector ?? "-", desc: "sector")
+                        NumberDescView(number:  self.identifierSummary?.summaryProfile?.sector ?? "-", desc: "sector")
                         
                         VStack(alignment: .leading){
                             Text("Summary:")
-                            Text(self.identifierSummary?.profile?.longBusinessSummary ?? "")
+                            Text(self.identifierSummary?.summaryProfile?.longBusinessSummary ?? "")
                         }.padding()
                         HStack{
                             Text("IdentifierSummary\n.quoteType").font(.title)

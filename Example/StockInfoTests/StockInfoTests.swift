@@ -80,7 +80,7 @@ class StockInfoTests: XCTestCase {
         var promises:[XCTestExpectation] = []
         promises.append(expectation(description: "Request finished"))
         
-        SwiftYFinance.summaryDataBy(identifier: "AAPL", selection: .calendarEvents){
+        SwiftYFinance.summaryDataBy(identifier: "AAPL", selection: .all){
             data, error in
             XCTAssertNil(error)
             XCTAssertNotNil(data)
@@ -88,7 +88,7 @@ class StockInfoTests: XCTestCase {
         }
         promises.append(expectation(description: "Request finished"))
         
-        SwiftYFinance.summaryDataBy(identifier: "", selection: .calendarEvents){
+        SwiftYFinance.summaryDataBy(identifier: "", selection: .all){
             data, error in
             XCTAssertNil(data)
             XCTAssertNotNil( try? XCTUnwrap(error))
@@ -123,7 +123,7 @@ class StockInfoTests: XCTestCase {
         XCTAssertNotNil(data)
         XCTAssertNil(error)
         
-        let (data2, error2) = SwiftYFinance.syncSummaryDataBy(identifier: "AAPL", selection: .financialData)
+        let (data2, error2) = SwiftYFinance.syncSummaryDataBy(identifier: "AAPL", selection: .all)
         
         XCTAssertNotNil(data2)
         XCTAssertNil(error2)

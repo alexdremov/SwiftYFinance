@@ -18,7 +18,7 @@
 		218C14EAE5AA31C30314AE0289B732A0 /* Protected.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB69947B5CEC6833E339CC5BFF18B2E /* Protected.swift */; };
 		24FC4D4A69973EB94245D17444D62D23 /* Pods-StockInfo-StockInfoTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 74823AE8135014A1575212D21A3574FD /* Pods-StockInfo-StockInfoTests-dummy.m */; };
 		27E59A11A2743B0595CDE3A08675EAE1 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B30077C214F517895F366A3FE6A3E3 /* DispatchQueue+Alamofire.swift */; };
-		28A39FD1DACDAC8EB038F9A8D98C1CEC /* StockPriceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5381E3618CF06D2ACAC6DF645013604 /* StockPriceInfo.swift */; };
+		28A39FD1DACDAC8EB038F9A8D98C1CEC /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5381E3618CF06D2ACAC6DF645013604 /* Price.swift */; };
 		2DE7059F4563232564BBEB831607C007 /* YFinanceResponseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4523081475D49C2FDB14C7DE0D35CB4 /* YFinanceResponseError.swift */; };
 		3230B7239D2D41925F8C57B9801378CF /* QuoteSummarySelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804BDD0305A61A7D395E3D4C37A5AE03 /* QuoteSummarySelection.swift */; };
 		381FF05F8B4F611EE9C2FDBE4457BB89 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BD27A73B62F9F98A101EDD19C51CA0 /* SessionDelegate.swift */; };
@@ -230,7 +230,7 @@
 		EDB69947B5CEC6833E339CC5BFF18B2E /* Protected.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Protected.swift; path = Source/Protected.swift; sourceTree = "<group>"; };
 		EF99EE842D449EB0D6D3AC0FE59DE4A8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1CC13198E141CFFD0916E597DFFB627 /* ServerTrustEvaluation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ServerTrustEvaluation.swift; path = Source/ServerTrustEvaluation.swift; sourceTree = "<group>"; };
-		F5381E3618CF06D2ACAC6DF645013604 /* StockPriceInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockPriceInfo.swift; sourceTree = "<group>"; };
+		F5381E3618CF06D2ACAC6DF645013604 /* Price.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
 		F5F15EFFA7CE423FE20A0EB8EB169CF3 /* URLSessionConfiguration+Alamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "URLSessionConfiguration+Alamofire.swift"; path = "Source/URLSessionConfiguration+Alamofire.swift"; sourceTree = "<group>"; };
 		F78B57AF50C48EC123C249F3527BCA94 /* SwiftYFinance-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "SwiftYFinance-Info.plist"; sourceTree = "<group>"; };
 		F87C4E90E239E853F31D93D60850CACA /* Result+Alamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Result+Alamofire.swift"; path = "Source/Result+Alamofire.swift"; sourceTree = "<group>"; };
@@ -295,7 +295,7 @@
 				FC07F042BBB358F9AA3F5D094659CCC6 /* QuoteType.swift */,
 				584AE1F1753F175FE3E9308092200516 /* RecentStockData.swift */,
 				AB42E76CA8D2AB7D45A9BA4C619F9088 /* StockChartData.swift */,
-				F5381E3618CF06D2ACAC6DF645013604 /* StockPriceInfo.swift */,
+				F5381E3618CF06D2ACAC6DF645013604 /* Price.swift */,
 				7CBC9E514499F7E6E80932E16A60775F /* YFNewsSearchResult.swift */,
 				B7DADBD40E823AED0D3A8C08E28A971A /* YFQuoteSearchResult.swift */,
 			);
@@ -830,7 +830,7 @@
 				683685D7FFAB82424D3601D1639C4CB8 /* RecentStockData.swift in Sources */,
 				F77B4BB7C9D9C19BFB86D060E14FDC1D /* RequestError.swift in Sources */,
 				4465F98C995E67669E1EF7D6E4E5337E /* StockChartData.swift in Sources */,
-				28A39FD1DACDAC8EB038F9A8D98C1CEC /* StockPriceInfo.swift in Sources */,
+				28A39FD1DACDAC8EB038F9A8D98C1CEC /* Price.swift in Sources */,
 				684E759B45716CE335EAD47328C4D8C3 /* SwiftYFinance-dummy.m in Sources */,
 				736993296DA41407440EBEB116B6DB9D /* SwiftYFinance.swift in Sources */,
 				E2F47714791702AED857A533AE7182FB /* URLGenerationError.swift in Sources */,
