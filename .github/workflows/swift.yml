@@ -11,9 +11,14 @@ jobs:
 
     runs-on: macos-latest
 
+    strategy:
+      matrix:
+        destination: ['platform=iOS Simulator,OS=13.1,name=iPhone 8']
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: swift build -v
-    - name: Run tests
-      run: swift test -v
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Testing
+        run: |
+          cd Example
+          xcodebuild clean test -project StockInfo.xcodeproj -scheme StockInfo -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          bash <(curl -s https://codecov.io/bash) -t "${CODECOV_TOKEN}"
