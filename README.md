@@ -136,9 +136,9 @@ SwiftYFinance.chartDataBy(
 
 ### Identifier Summary
 
-This part of API is MASSIVE. Yahoo Finance has a lot of summary modules and I implemented several of them.Still, you can fetch data from raw JSON parameter.
+This part of API is MASSIVE. Yahoo Finance has a lot of summary modules and I implemented several of them. Still, you can fetch data from raw JSON parameter.
 
-I will add new modules with every version. Currntly, only essential modules are implemented.
+I will add new modules with every version. Currently, only essential modules are implemented.
 
 | Module                            | Support | Module                            | Support |
 |-----------------------------------|---------|-----------------------------------|---------|
