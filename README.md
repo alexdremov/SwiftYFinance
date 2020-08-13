@@ -12,6 +12,19 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 <img src="https://i.ibb.co/j8VVg3D/smartmockups-kdsmv8zx.png" alt="" height="350px"><img src="https://i.ibb.co/frQphbY/smartmockups-kdsmw7gq.png" alt="" height="350px">
 
+## Requirements
+
+I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
+
+## Installation
+
+SwiftYFinance is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod 'SwiftYFinance'
+```
+
 ## Basic Usage
 
 ### Search
@@ -117,19 +130,6 @@ SwiftYFinance.chartDataBy(
     }
     print(data![0]?.open ?? "Open price is unavailable")
 }
-```
-
-## Requirements
-
-I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
-
-## Installation
-
-SwiftYFinance is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod 'SwiftYFinance'
 ```
 
 ## Author
