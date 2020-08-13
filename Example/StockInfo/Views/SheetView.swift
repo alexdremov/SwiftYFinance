@@ -39,9 +39,9 @@ struct SheetView: View {
                                 .fontWeight(.heavy)
                                 .padding([.top, .leading, .trailing])
                             Spacer()
-                        }.padding(.bottom)
+                        }
                             VStack{
-                                LineView(data: self.chartPoints, title: "Close price last 20 points").frame(maxHeight: 300).padding(.bottom, 30)
+                                LineView(data: self.chartPoints, title: "Close price last 20 points" ).frame(maxHeight: 300).padding([.leading, .bottom, .trailing], 30)
                                 HStack{
                                     Button(action: {
                                         self.interval=ChartTimeInterval.oneminute

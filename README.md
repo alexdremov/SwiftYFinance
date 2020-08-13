@@ -164,7 +164,32 @@ I will add new modules with every version. Currntly, only essential modules are 
 You can fetch modules by calling `summaryDataBy(...)`
 
 ```swift
+SwiftYFinance.summaryDataBy(identifier: "AAPL", selection = .all){
+data, error in
+    if error != nil{
+        return
+    }
+    print(data)
+    /*
+    data ~>
+    struct IdentifierSummary {
+        var recommendationTrend:RecommendationTrend?
+        var summaryProfile:SummaryProfile?
+        var quoteType:QuoteType?
+        var price:Price?
+        var indexTrend:IndexTrend?
+        var calendarEvents:CalendarEvents?
+        var summaryDetail:SummaryDetail?
+        var dataStorage:JSON?
+    }
+    */
+
+    // Raw JSON:
+    print(data.dataStorage)
+}
 ```
+
+Several types of selection are available. `.all` will fetch every method, even not supported yet so that you can get data from raw JSON. You can select `.supported`, then only supported data will be fetched. Also, you can specify specific module (ex: `.price`) or list of modules (ex: `[.price, .summaryDetail]`)
 
 ## Author
 

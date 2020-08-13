@@ -196,14 +196,14 @@ public class SwiftYFinance{
      - identifier: Name of identifier
      - selection: Which area of summary to get
      */
-    public class func summaryDataBy(identifier:String,   selection:QuoteSummarySelection = .all, callback: @escaping (IdentifierSummary?, Error?)->Void) {
+    public class func summaryDataBy(identifier:String,   selection:QuoteSummarySelection = .supported, callback: @escaping (IdentifierSummary?, Error?)->Void) {
         summaryDataBy(identifier:identifier, selection:[selection], callback: callback)
     }
     
     /**
      The same as `SwiftYFinance.summaryDataBy(...)` except that it executes synchronously and returns data rather than giving it to the callback.
      */
-    public class func syncSummaryDataBy(identifier:String, selection:QuoteSummarySelection = .all) ->  (IdentifierSummary?, Error?){
+    public class func syncSummaryDataBy(identifier:String, selection:QuoteSummarySelection = .supported) ->  (IdentifierSummary?, Error?){
         return self.syncSummaryDataBy(identifier:identifier, selection:[selection])
     }
     
@@ -423,7 +423,10 @@ public class SwiftYFinance{
             
             var result:[StockChartData] = [];
             
-            
+            if timestamps == nil{
+                callback([], YFinanceResponseError(message: "Empty chart data"))
+                return 
+            }
             for reading in 0..<timestamps!.count{
                 result.append(StockChartData(
                     date: Date.init(timeIntervalSince1970: Double(timestamps![reading].float!)),
