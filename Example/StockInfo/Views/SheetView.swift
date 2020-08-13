@@ -33,6 +33,11 @@ struct SheetView: View {
                                 .padding([.top, .leading, .trailing])
                             Spacer()
                         }.padding(.bottom)
+                        /*
+                         *
+                         Recomendation Trend
+                         *
+                         */
                         HStack{
                             Text("IdentifierSummary\n.recommendationTrend").font(.title)
                                 .fontWeight(.semibold)
@@ -40,44 +45,54 @@ struct SheetView: View {
                             Spacer()
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.buy ?? 0), desc: "buy")
-                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.hold ?? 0), desc: "hold")
-                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.sell ?? 0), desc: "sell")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.recommendationTrend?.buy), desc: "buy")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.recommendationTrend?.hold), desc: "hold")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.recommendationTrend?.sell), desc: "sell")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.strongBuy ?? 0), desc: "strongBuy")
-                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.strongSell ?? 0), desc: "strongSell")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.recommendationTrend?.strongBuy), desc: "strongBuy")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.recommendationTrend?.strongSell), desc: "strongSell")
                         }
+                        /*
+                         *
+                         Summary Profile
+                         *
+                         */
                         HStack{
-                            Text("IdentifierSummary\n.profile").font(.title)
+                            Text("IdentifierSummary\n.summaryProfile").font(.title)
                                 .fontWeight(.semibold)
                                 .padding([.top, .leading, .trailing])
                             Spacer()
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.country ?? "-", desc: "country")
-                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.city ?? "-", desc: "city")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.country), desc: "country")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.city), desc: "city")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.industry ?? "-", desc: "industry")
-                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.address1 ?? "-", desc: "address1")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.industry), desc: "industry")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.address1), desc: "address1")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.summaryProfile?.zip ?? "-", desc: "zip")
-                            NumberDescView(number:  String(self.identifierSummary?.summaryProfile?.fullTimeEmployees ?? 0), desc: "fullTimeEmployees")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.zip), desc: "zip")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.fullTimeEmployees), desc: "fullTimeEmployees")
                         }
                         
-                        NumberDescView(number:  self.identifierSummary?.summaryProfile?.website ?? "-", desc: "website")
+                        NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.website), desc: "website")
                         
-                        NumberDescView(number:  self.identifierSummary?.summaryProfile?.phone ?? "-", desc: "phone")
+                        NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.phone), desc: "phone")
                     }
                     Group{
-                        NumberDescView(number:  self.identifierSummary?.summaryProfile?.sector ?? "-", desc: "sector")
+                        NumberDescView(number:  getStringValue(self.identifierSummary?.summaryProfile?.sector), desc: "sector")
                         
                         VStack(alignment: .leading){
                             Text("Summary:")
-                            Text(self.identifierSummary?.summaryProfile?.longBusinessSummary ?? "")
+                            Text(getStringValue(self.identifierSummary?.summaryProfile?.longBusinessSummary))
                         }.padding()
+                        /*
+                         *
+                         Quote Type
+                         *
+                         */
                         HStack{
                             Text("IdentifierSummary\n.quoteType").font(.title)
                                 .fontWeight(.semibold)
@@ -85,21 +100,30 @@ struct SheetView: View {
                             Spacer()
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.exchange ?? "", desc: "exchange")
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.market ?? "", desc: "market")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.exchange), desc: "exchange")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.quoteType), desc: "quoteType")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.shortName ?? "", desc: "shortName")
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.quoteType ?? "", desc: "quoteType")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.symbol), desc: "symbol")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.underlyingSymbol), desc: "underlyingSymbol")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.exchangeTimezoneShortName ?? "", desc: "exchangeTimezoneShortName")
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.exchangeTimezoneName ?? "", desc: "exchangeTimezoneName")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.shortName), desc: "shortName")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.longName), desc: "longName")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.symbol ?? "", desc: "symbol")
-                            NumberDescView(number:  self.identifierSummary?.quoteType?.longName ?? "", desc: "longName")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.firstTradeDateEpochUtc), desc: "firstTradeDateEpochUtc")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.timeZoneFullName), desc: "timeZoneFullName")
                         }
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.timeZoneShortName ), desc: "timeZoneShortName")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.quoteType?.uuid), desc: "uuid")
+                        }
+                        /*
+                         *
+                         Price
+                         *
+                         */
                         HStack{
                             Text("IdentifierSummary\n.price").font(.title)
                                 .fontWeight(.semibold)
@@ -107,57 +131,207 @@ struct SheetView: View {
                             Spacer()
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  String(self.identifierSummary?.price?.preMarketTime ?? 0), desc: "preMarketTime")
-                            NumberDescView(number:  self.identifierSummary?.price?.exchangeName ?? "", desc: "exchangeName")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.preMarketTime), desc: "preMarketTime")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.exchangeName), desc: "exchangeName")
+                        }
+                        
+                    }
+                    Group{
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.preMarketChangePercent), desc: "preMarketChangePercent")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.currencySymbol), desc: "currencySymbol")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  String(self.identifierSummary?.price?.preMarketChangePercent ?? 0), desc: "preMarketChangePercent")
-                            NumberDescView(number:  self.identifierSummary?.price?.currencySymbol ?? "", desc: "currencySymbol")
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.regularMarketSource), desc: "regularMarketSource")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.toCurrency), desc: "toCurrency")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.regularMarketChange), desc: "regularMarketChange")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.exchangeDataDelayedBy), desc: "exchangeDataDelayedBy")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.marketCap), desc: "marketCap")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.regularMarketPrice), desc: "regularMarketPrice")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.maxAge), desc: "maxAge")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.regularMarketChangePercent), desc: "regularMarketChangePercent")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.currency ), desc: "currency")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.averageDailyVolume10Day), desc: "averageDailyVolume10Day")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.marketState ), desc: "marketState")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.regularMarketDayHigh), desc: "regularMarketDayHigh")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.longName), desc: "longName")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.regularMarketDayLow), desc: "regularMarketDayLow")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.quoteType), desc: "quoteType")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.preMarketPrice), desc: "preMarketPrice")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.preMarketSource ), desc: "preMarketSource")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.preMarketChange), desc: "preMarketChange")
+                        }
+                        
+                    }
+                    Group{
+                        HStack(alignment: .center){
+                            NumberDescView(number: getStringValue(self.identifierSummary?.price?.quoteSourceName), desc: "quoteSourceName")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.price?.regularMarketTime), desc: "regularMarketTime")
+                        }
+                        /*
+                         *
+                         Calendar Events
+                         *
+                         */
+                        HStack{
+                            Text("IdentifierSummary\n.calendarEvents").font(.title)
+                                .fontWeight(.semibold)
+                                .padding([.top, .leading, .trailing])
+                            Spacer()
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.calendarEvents?.exDividendDate), desc: "exDividendDate")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.calendarEvents?.dividendDate), desc: "dividendDate")
+                        }
+                        /*
+                         *
+                         Index Trend
+                         *
+                         */
+                        HStack{
+                            Text("IdentifierSummary\n.indexTrend").font(.title)
+                                .fontWeight(.semibold)
+                                .padding([.top, .leading, .trailing])
+                            Spacer()
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.indexTrend?.maxAge), desc: "maxAge")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.indexTrend?.symbol), desc: "symbol")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.indexTrend?.peRatio), desc: "peRatio")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.indexTrend?.pegRatio), desc: "pegRatio")
+                        }
+                        /*
+                         *
+                         Summary Detail
+                         *
+                         */
+                        HStack{
+                            Text("IdentifierSummary\n.summaryDetail").font(.title)
+                                .fontWeight(.semibold)
+                                .padding([.top, .leading, .trailing])
+                            Spacer()
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.maxAge), desc: "maxAge")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.priceHint), desc: "priceHint")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.previousClose), desc: "previousClose")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.open), desc: "open")
+                        }
+                        HStack(alignment: .center){
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.dayLow), desc: "dayLow")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.dayHigh), desc: "dayHigh")
                         }
                     }
                     Group{
                         HStack(alignment: .center){
-                            NumberDescView(number: self.identifierSummary?.price?.regularMarketSource ?? "", desc: "regularMarketSource")
-                            NumberDescView(number:  self.identifierSummary?.price?.toCurrency ?? "", desc: "toCurrency")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.regularMarketPreviousClose), desc: "regularMarketPreviousClose")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.regularMarketOpen), desc: "regularMarketOpen")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: String(self.identifierSummary?.price?.regularMarketChange ?? 0), desc: "regularMarketChange")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.exchangeDataDelayedBy ?? 0), desc: "exchangeDataDelayedBy")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.regularMarketDayLow), desc: "regularMarketDayLow")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.regularMarketDayHigh), desc: "regularMarketDayHigh")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: String(self.identifierSummary?.price?.marketCap ?? 0), desc: "marketCap")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.regularMarketPrice ?? 0), desc: "regularMarketPrice")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.dividendRate), desc: "dividendRate")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.dividendYield), desc: "dividendYield")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: String(self.identifierSummary?.price?.maxAge ?? 0), desc: "maxAge")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.regularMarketChangePercent ?? 0), desc: "regularMarketChangePercent")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.exDividendDate), desc: "exDividendDate")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.payoutRatio), desc: "payoutRatio")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: self.identifierSummary?.price?.currency ?? "", desc: "currency")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.averageDailyVolume10Day ?? 0), desc: "averageDailyVolume10Day")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.fiveYearAvgDividendYield), desc: "fiveYearAvgDividendYield")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.beta), desc: "beta")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: self.identifierSummary?.price?.marketState ?? "", desc: "marketState")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.regularMarketDayHigh ?? 0), desc: "regularMarketDayHigh")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.trailingPE), desc: "trailingPE")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.forwardPE), desc: "forwardPE")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: self.identifierSummary?.price?.longName ?? "", desc: "longName")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.regularMarketDayLow ?? 0), desc: "regularMarketDayLow")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.volume), desc: "volume")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.regularMarketVolume), desc: "regularMarketVolume")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: self.identifierSummary?.price?.quoteType ?? "", desc: "quoteType")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.preMarketPrice ?? 0), desc: "preMarketPrice")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.averageVolume), desc: "averageVolume")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.averageVolume10days), desc: "averageVolume10days")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number: self.identifierSummary?.price?.preMarketSource ?? "", desc: "preMarketSource")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.preMarketChange ?? 0), desc: "preMarketChange")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.averageDailyVolume10Day), desc: "averageDailyVolume10Day")
+                            NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.bid), desc: "bid")
                         }
-                        HStack(alignment: .center){
-                            NumberDescView(number: self.identifierSummary?.price?.quoteSourceName ?? "", desc: "quoteSourceName")
-                            NumberDescView(number:  String(self.identifierSummary?.price?.regularMarketTime ?? 0), desc: "regularMarketTime")
+                        Group{
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.askSize), desc: "askSize")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.bidSize), desc: "bidSize")
+                            }
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.marketCap), desc: "marketCap")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.yield), desc: "yield")
+                            }
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.ytdReturn), desc: "ytdReturn")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.totalAssets), desc: "totalAssets")
+                            }
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.expireDate), desc: "expireDate")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.strikePrice), desc: "strikePrice")
+                            }
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.openInterest), desc: "openInterest")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.fiftyTwoWeekLow), desc: "fiftyTwoWeekLow")
+                            }
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.fiftyTwoWeekHigh), desc: "fiftyTwoWeekHigh")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.priceToSalesTrailing12Months), desc: "priceToSalesTrailing12Months")
+                            }
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.fiftyDayAverage), desc: "fiftyDayAverage")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.twoHundredDayAverage), desc: "twoHundredDayAverage")
+                            }
+                            HStack(alignment: .center){
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.trailingAnnualDividendRate), desc: "trailingAnnualDividendRate")
+                                NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.trailingAnnualDividendYield), desc: "trailingAnnualDividendYield")
+                            }
+                            Group{
+                                HStack(alignment: .center){
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.volume24Hr), desc: "volume24Hr")
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.volumeAllCurrencies), desc: "volumeAllCurrencies")
+                                }
+                                HStack(alignment: .center){
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.circulatingSupply), desc: "circulatingSupply")
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.navPrice), desc: "navPrice")
+                                }
+                                HStack(alignment: .center){
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.currency), desc: "currency")
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.fromCurrency), desc: "fromCurrency")
+                                }
+                                HStack(alignment: .center){
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.toCurrency), desc: "toCurrency")
+                                    NumberDescView(number:  getStringValue(self.identifierSummary?.summaryDetail?.tradable), desc: "tradable")
+                                }
+                            }
                         }
                     }
-                
                 }
             }
         }.onAppear(perform: {
@@ -169,6 +343,21 @@ struct SheetView: View {
                 self.identifierSummary = data!
             }
         })
+    }
+    
+    func getStringValue(_ value:Any?)->String{
+        if value == nil{
+            return "-"
+        }else{
+            if let x = value as? Int{
+                return String(x)
+            }else if let x = value as? Float{
+                return String(x)
+            }else if let x = value as? String{
+                return x
+            }
+            return "-"
+        }
     }
 }
 

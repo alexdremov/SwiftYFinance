@@ -15,8 +15,8 @@ public struct IdentifierSummary {
     public var quoteType:QuoteType?
     public var price:Price?
     public var indexTrend:IndexTrend?
-    public var summaryDetail:SummaryDetail?
     public var calendarEvents:CalendarEvents?
+    public var summaryDetail:SummaryDetail?
     
     public var dataStorage:JSON?
     
@@ -53,14 +53,17 @@ public struct IdentifierSummary {
         if information["quoteType"].dictionary != nil{
             self.quoteType = QuoteType(
                 exchange: information["quoteType"]["exchange"].string,
-                market: information["quoteType"]["market"].string,
-                shortName: information["quoteType"]["shortName"].string,
                 quoteType: information["quoteType"]["quoteType"].string,
-                exchangeTimezoneShortName: information["quoteType"]["exchangeTimezoneShortName"].string,
-                exchangeTimezoneName: information["quoteType"]["exchangeTimezoneName"].string,
+                symbol: information["quoteType"]["symbol"].string,
+                underlyingSymbol: information["quoteType"]["underlyingSymbol"].string,
+                shortName: information["quoteType"]["shortName"].string,
                 longName: information["quoteType"]["longName"].string,
-                symbol: information["quoteType"]["symbol"].string
-            )
+                firstTradeDateEpochUtc: information["quoteType"]["firstTradeDateEpochUtc"].int,
+                timeZoneFullName: information["quoteType"]["timeZoneFullName"].string,
+                timeZoneShortName: information["quoteType"]["timeZoneShortName"].string,
+                uuid: information["quoteType"]["uuid"].string
+                )
+            
         }
         
         if information["price"].dictionary != nil{
@@ -168,96 +171,4 @@ public struct IdentifierSummary {
             self.calendarEvents = CalendarEvents(exDividendDate: information["calendarEvents"]["exDividendDate"]["raw"].int, dividendDate: information["calendarEvents"]["dividendDate"]["raw"].int)
         }
     }
-}
-
-public struct RecommendationTrend{
-    public var buy: Int?
-    public var sell: Int?
-    public var hold: Int?
-    public var strongSell:Int?
-    public var strongBuy: Int?
-}
-
-public struct SummaryProfile{
-    public var country : String?
-    public var city : String?
-    public var industry: String?
-    public var address1 : String?
-    public var maxAge : Int?
-    public var zip : String?
-    public var fullTimeEmployees : Int?
-    public var website : String?
-    public var phone : String?
-    public var longBusinessSummary: String?
-    public var sector: String?
-}
-
-public struct IndexTrend{
-    public var maxAge : Int?
-    public var symbol : String?
-    public var peRatio:Float?
-    public var pegRatio:Float?
-    public var estimates:[IndexTrendEstimates]?
-}
-
-public struct IndexTrendEstimates{
-    public var period : String?
-    public var growth : Float?
-}
-
-public struct SummaryDetail{
-    public var maxAge : Int?
-    public var priceHint : Int?
-    public var previousClose : Float?
-    public var open : Float?
-    public var dayLow : Float?
-    public var dayHigh : Float?
-    public var regularMarketPreviousClose : Float?
-    public var regularMarketOpen : Float?
-    public var regularMarketDayLow : Float?
-    public var regularMarketDayHigh : Float?
-    public var dividendRate : Float?
-    public var dividendYield : Float?
-    public var exDividendDate : Float?
-    public var payoutRatio : Float?
-    public var fiveYearAvgDividendYield : Float?
-    public var beta : Float?
-    public var trailingPE : Float?
-    public var forwardPE : Float?
-    public var volume : Float?
-    public var regularMarketVolume : Float?
-    public var averageVolume : Float?
-    public var averageVolume10days : Float?
-    public var averageDailyVolume10Day : Float?
-    public var bid : Float?
-    public var ask : Float?
-    public var bidSize : Float?
-    public var askSize : Float?
-    public var marketCap : Float?
-    public var yield : Float?
-    public var ytdReturn : Float?
-    public var totalAssets : Float?
-    public var expireDate : Float?
-    public var strikePrice : Float?
-    public var openInterest : Float?
-    public var fiftyTwoWeekLow : Float?
-    public var fiftyTwoWeekHigh : Float?
-    public var priceToSalesTrailing12Months : Float?
-    public var fiftyDayAverage : Float?
-    public var twoHundredDayAverage : Float?
-    public var trailingAnnualDividendRate : Float?
-    public var trailingAnnualDividendYield : Float?
-    public var volume24Hr : Float?
-    public var volumeAllCurrencies : Float?
-    public var circulatingSupply: Float?
-    public var navPrice : Float?
-    public var currency : String?
-    public var fromCurrency : String?
-    public var toCurrency : String?
-    public var tradable : Bool?
-}
-
-public struct CalendarEvents{
-    public var exDividendDate : Int?
-    public var dividendDate : Int?
 }

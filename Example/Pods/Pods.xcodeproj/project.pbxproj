@@ -48,6 +48,11 @@
 		93D244B788B25086442468A1CBB51404 /* Pods-StockInfo-StockInfoTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 99A24452F7E7560DBCD273780C56A205 /* Pods-StockInfo-StockInfoTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9B1D8A7798D8A6F518FC9AF9725431D0 /* URLConvertible+URLRequestConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE602B5C5D742683760E0F0E4FDC3EBF /* URLConvertible+URLRequestConvertible.swift */; };
 		9FED70D1E1FBFB80E974E999EF732258 /* RetryPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC4987111FD369191216FA07A2EFE7F /* RetryPolicy.swift */; };
+		A01CB7D324E598750017B0EF /* RecommendationTrend.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CB7D224E598750017B0EF /* RecommendationTrend.swift */; };
+		A01CB7D524E598A50017B0EF /* SummaryProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CB7D424E598A50017B0EF /* SummaryProfile.swift */; };
+		A01CB7D724E598B80017B0EF /* IndexTrend.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CB7D624E598B80017B0EF /* IndexTrend.swift */; };
+		A01CB7D924E598D80017B0EF /* SummaryDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CB7D824E598D80017B0EF /* SummaryDetail.swift */; };
+		A01CB7DB24E598EA0017B0EF /* CalendarEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CB7DA24E598EA0017B0EF /* CalendarEvents.swift */; };
 		A738C2A39C0150BBA7EA5EC19B95F03E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 741659E98A167393E50CD0AAF13CD591 /* CFNetwork.framework */; };
 		ABA85887A41495358C83CE3F3030EDEA /* CachedResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC66D611517240FF53F929274E4E03F /* CachedResponseHandler.swift */; };
 		AF7031511995179B841DE668C014A0D7 /* QuoteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC07F042BBB358F9AA3F5D094659CCC6 /* QuoteType.swift */; };
@@ -200,6 +205,11 @@
 		99A24452F7E7560DBCD273780C56A205 /* Pods-StockInfo-StockInfoTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-StockInfo-StockInfoTests-umbrella.h"; sourceTree = "<group>"; };
 		9BB229C2DEF2BE62627BB576291B7FAF /* Pods-StockInfo-StockInfoTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-StockInfo-StockInfoTests.modulemap"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A01CB7D224E598750017B0EF /* RecommendationTrend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationTrend.swift; sourceTree = "<group>"; };
+		A01CB7D424E598A50017B0EF /* SummaryProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryProfile.swift; sourceTree = "<group>"; };
+		A01CB7D624E598B80017B0EF /* IndexTrend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexTrend.swift; sourceTree = "<group>"; };
+		A01CB7D824E598D80017B0EF /* SummaryDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryDetail.swift; sourceTree = "<group>"; };
+		A01CB7DA24E598EA0017B0EF /* CalendarEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEvents.swift; sourceTree = "<group>"; };
 		A2B57A210E81A07C19878314D1DF5498 /* Pods-StockInfo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-StockInfo-acknowledgements.plist"; sourceTree = "<group>"; };
 		A5BD27A73B62F9F98A101EDD19C51CA0 /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Source/SessionDelegate.swift; sourceTree = "<group>"; };
 		A72F13EADAEAEFB4498F78F0455C8739 /* SwiftYFinance-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SwiftYFinance-dummy.m"; sourceTree = "<group>"; };
@@ -298,6 +308,11 @@
 				F5381E3618CF06D2ACAC6DF645013604 /* Price.swift */,
 				7CBC9E514499F7E6E80932E16A60775F /* YFNewsSearchResult.swift */,
 				B7DADBD40E823AED0D3A8C08E28A971A /* YFQuoteSearchResult.swift */,
+				A01CB7D224E598750017B0EF /* RecommendationTrend.swift */,
+				A01CB7D424E598A50017B0EF /* SummaryProfile.swift */,
+				A01CB7D624E598B80017B0EF /* IndexTrend.swift */,
+				A01CB7D824E598D80017B0EF /* SummaryDetail.swift */,
+				A01CB7DA24E598EA0017B0EF /* CalendarEvents.swift */,
 			);
 			name = DataTypes;
 			path = SwiftYFinance/Classes/DataTypes;
@@ -823,19 +838,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A01CB7D524E598A50017B0EF /* SummaryProfile.swift in Sources */,
 				3B2C358AC7ECD272FD6839C51315F4E4 /* ChartTimeInterval.swift in Sources */,
 				3E0B2C203AEFE2BD9943BF59ED1B4129 /* IdentifierSummary.swift in Sources */,
 				3230B7239D2D41925F8C57B9801378CF /* QuoteSummarySelection.swift in Sources */,
 				AF7031511995179B841DE668C014A0D7 /* QuoteType.swift in Sources */,
 				683685D7FFAB82424D3601D1639C4CB8 /* RecentStockData.swift in Sources */,
 				F77B4BB7C9D9C19BFB86D060E14FDC1D /* RequestError.swift in Sources */,
+				A01CB7D924E598D80017B0EF /* SummaryDetail.swift in Sources */,
 				4465F98C995E67669E1EF7D6E4E5337E /* StockChartData.swift in Sources */,
 				28A39FD1DACDAC8EB038F9A8D98C1CEC /* Price.swift in Sources */,
 				684E759B45716CE335EAD47328C4D8C3 /* SwiftYFinance-dummy.m in Sources */,
 				736993296DA41407440EBEB116B6DB9D /* SwiftYFinance.swift in Sources */,
+				A01CB7D724E598B80017B0EF /* IndexTrend.swift in Sources */,
+				A01CB7D324E598750017B0EF /* RecommendationTrend.swift in Sources */,
 				E2F47714791702AED857A533AE7182FB /* URLGenerationError.swift in Sources */,
 				2DE7059F4563232564BBEB831607C007 /* YFinanceResponseError.swift in Sources */,
 				F90267BB2EA0EB8F71E64214D0BD2464 /* YFNewsSearchResult.swift in Sources */,
+				A01CB7DB24E598EA0017B0EF /* CalendarEvents.swift in Sources */,
 				46E25CDC156846D14924DDE0859DDB88 /* YFQuoteSearchResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

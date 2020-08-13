@@ -238,7 +238,6 @@ public class SwiftYFinance{
             return
         }
         
-        print(requestURL!)
         AF.request(requestURL!).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
             if (response.error != nil){
                 callback(nil, response.error)
