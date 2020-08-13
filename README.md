@@ -17,8 +17,11 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ### Search
 ```swift
 /*
-* Main class of SwiftYFinance. Asynchronous methods' callback always will have  format: (Some Data?, Error?). If error is non-nil, then data is going to be nil. Review Error description to find out what's wrong.
-* Synchronous API is also provided. The only difference is that it blocks the thread and returns data rather than passing it to the callback.
+* Main class of SwiftYFinance. Asynchronous method's callback always will
+* have format: (Some Data?, Error?). If error is non-nil, then data is going to be nil.
+* Review Error description to find out what's wrong.
+* Synchronous API is also provided. The only difference is that it blocks the thread and
+* returns data rather than passing it to the callback.
 */
 import SwiftYFinance
 
@@ -114,12 +117,6 @@ SwiftYFinance.chartDataBy(
     }
     print(data![0]?.open ?? "Open price is unavailable")
 }
-```
-
-### Big summary
-
-```
-
 ```
 
 ## Requirements
