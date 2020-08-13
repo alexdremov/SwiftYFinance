@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		337BF6AE88F2960EB834A19D /* Pods_StockInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6306B024674570A78DA4B7A3 /* Pods_StockInfo.framework */; };
+		A01CB7E424E5C7760017B0EF /* Pods_StockInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6306B024674570A78DA4B7A3 /* Pods_StockInfo.framework */; };
+		A01CB7E524E5C7760017B0EF /* Pods_StockInfo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6306B024674570A78DA4B7A3 /* Pods_StockInfo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A01CB7E824E5C8150017B0EF /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = A01CB7E724E5C8150017B0EF /* SwiftUICharts */; };
 		A0C28C6124E455EA002297C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C28C6024E455EA002297C1 /* AppDelegate.swift */; };
 		A0C28C6324E455EA002297C1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C28C6224E455EA002297C1 /* SceneDelegate.swift */; };
 		A0C28C6524E455EA002297C1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C28C6424E455EA002297C1 /* ContentView.swift */; };
@@ -32,11 +34,26 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A01CB7E324E5C7450017B0EF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A01CB7E524E5C7760017B0EF /* Pods_StockInfo.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		52B8349EB6EF9251A1B474E4 /* Pods-StockInfo-StockInfoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockInfo-StockInfoTests.debug.xcconfig"; path = "Target Support Files/Pods-StockInfo-StockInfoTests/Pods-StockInfo-StockInfoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		618E500DF824DFBE83EA50B7 /* Pods-StockInfo-StockInfoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockInfo-StockInfoTests.release.xcconfig"; path = "Target Support Files/Pods-StockInfo-StockInfoTests/Pods-StockInfo-StockInfoTests.release.xcconfig"; sourceTree = "<group>"; };
 		6306B024674570A78DA4B7A3 /* Pods_StockInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A834640C657BF9628A5DE3D /* Pods-StockInfo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockInfo.release.xcconfig"; path = "Target Support Files/Pods-StockInfo/Pods-StockInfo.release.xcconfig"; sourceTree = "<group>"; };
+		A01CB7E024E5C7450017B0EF /* SwiftYFinance.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftYFinance.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C28C5D24E455EA002297C1 /* StockInfo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockInfo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0C28C6024E455EA002297C1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0C28C6224E455EA002297C1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +78,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				337BF6AE88F2960EB834A19D /* Pods_StockInfo.framework in Frameworks */,
+				A01CB7E424E5C7760017B0EF /* Pods_StockInfo.framework in Frameworks */,
+				A01CB7E824E5C8150017B0EF /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +171,7 @@
 		D2CE4C311B77408B06A2A072 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A01CB7E024E5C7450017B0EF /* SwiftYFinance.framework */,
 				6306B024674570A78DA4B7A3 /* Pods_StockInfo.framework */,
 				A748E9C0A69B723247382B61 /* Pods_StockInfo_StockInfoTests.framework */,
 			);
@@ -171,12 +190,16 @@
 				A0C28C5A24E455EA002297C1 /* Frameworks */,
 				A0C28C5B24E455EA002297C1 /* Resources */,
 				FE29EB6B7B84D3735D4679C7 /* [CP] Embed Pods Frameworks */,
+				A01CB7E324E5C7450017B0EF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = StockInfo;
+			packageProductDependencies = (
+				A01CB7E724E5C8150017B0EF /* SwiftUICharts */,
+			);
 			productName = StockInfo;
 			productReference = A0C28C5D24E455EA002297C1 /* StockInfo.app */;
 			productType = "com.apple.product-type.application";
@@ -229,6 +252,9 @@
 				Base,
 			);
 			mainGroup = A0C28C5424E455E9002297C1;
+			packageReferences = (
+				A01CB7E624E5C8150017B0EF /* XCRemoteSwiftPackageReference "ChartView" */,
+			);
 			productRefGroup = A0C28C5E24E455EA002297C1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -614,6 +640,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A01CB7E624E5C8150017B0EF /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A01CB7E724E5C8150017B0EF /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A01CB7E624E5C8150017B0EF /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A0C28C5524E455E9002297C1 /* Project object */;
 }

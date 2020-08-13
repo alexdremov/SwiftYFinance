@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (5.2.2)
-  - SwiftYFinance (0.1.2):
+  - SwiftYFinance (0.1.3):
     - Alamofire (~> 5.2)
     - SwiftyJSON (~> 4.0)
   - SwiftyJSON (4.3.0)
@@ -19,7 +19,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
-  SwiftYFinance: 8c5ed311e69fa07806b6d2ff0570fe440530fe74
+  SwiftYFinance: 63fca12929e5b9ed4ae6bd443f761c2e02e7cec4
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
 PODFILE CHECKSUM: 7cab7849a93ebf7136cc8ca17eadfa0c09a7303f

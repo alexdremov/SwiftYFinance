@@ -8,12 +8,16 @@
 
 import SwiftUI
 import SwiftYFinance
+import SwiftUICharts
 
 struct SheetView: View {
+    @State var chartPoints:[Double] = []
+    @State var interval:ChartTimeInterval = .oneday
     var selection: SelectedSymbolWrapper?
     @State var identifierSummary:IdentifierSummary?
     var body: some View {
         VStack{
+        
             HStack(alignment: .center){
                 Spacer()
                 VStack(spacing: 0){
@@ -23,9 +27,12 @@ struct SheetView: View {
                 }
                 Spacer()
             }.padding(.bottom, 5)
+                
+        
             ScrollView(.vertical) {
                 VStack{
                     Group{
+                        Group{
                         HStack{
                             Text(selection?.symbol ?? "No Symbol")
                                 .font(.largeTitle)
@@ -33,6 +40,54 @@ struct SheetView: View {
                                 .padding([.top, .leading, .trailing])
                             Spacer()
                         }.padding(.bottom)
+                            VStack{
+                                LineView(data: self.chartPoints, title: "Close price last 20 points").frame(maxHeight: 300).padding(.bottom, 30)
+                                HStack{
+                                    Button(action: {
+                                        self.interval=ChartTimeInterval.oneminute
+                                        self.fetchChart()
+                                    }){
+                                        Text("1m").frame(maxWidth:.infinity)
+                                    }
+                                    Button(action: {
+                                        self.interval=ChartTimeInterval.fiveminutes
+                                        self.fetchChart()
+                                    }){
+                                        Text("5m").frame(maxWidth:.infinity)
+                                    }
+                                    Button(action: {
+                                        self.interval=ChartTimeInterval.thirtyminutes
+                                        self.fetchChart()
+                                    }){
+                                        Text("30m").frame(maxWidth:.infinity)
+                                    }
+                                    Button(action: {
+                                        self.interval=ChartTimeInterval.onehour
+                                        self.fetchChart()
+                                    }){
+                                        Text("1h").frame(maxWidth:.infinity)
+                                    }
+                                    Button(action: {
+                                        self.interval=ChartTimeInterval.oneday
+                                        self.fetchChart()
+                                    }){
+                                        Text("1d").frame(maxWidth:.infinity)
+                                    }
+                                    Button(action: {
+                                        self.interval=ChartTimeInterval.fivedays
+                                        self.fetchChart()
+                                    }){
+                                        Text("5d").frame(maxWidth:.infinity)
+                                    }
+                                    Button(action: {
+                                        self.interval=ChartTimeInterval.onemonths
+                                        self.fetchChart()
+                                    }){
+                                        Text("1mo").frame(maxWidth:.infinity)
+                                    }
+                                }
+                            }
+                        }
                         /*
                          *
                          Recomendation Trend
@@ -335,6 +390,7 @@ struct SheetView: View {
                 }
             }
         }.onAppear(perform: {
+            self.fetchChart()
             SwiftYFinance.summaryDataBy(identifier: self.selection?.symbol ?? ""){
                 data, error in
                 if error != nil{
@@ -343,6 +399,36 @@ struct SheetView: View {
                 self.identifierSummary = data!
             }
         })
+    }
+    
+    func fetchChart(){
+        var date =  Date(timeIntervalSinceNow: -22*24*60*60)
+        if self.interval == .oneminute{
+            date =  Date(timeIntervalSinceNow: -22*60)
+        }else if self.interval == .fiveminutes{
+             date =  Date(timeIntervalSinceNow: -22*5*60)
+        }else if self.interval == .thirtyminutes{
+             date =  Date(timeIntervalSinceNow: -22*30*60)
+        }else if self.interval == .onehour{
+             date =  Date(timeIntervalSinceNow: -22*60*60)
+        }else if self.interval == .fivedays{
+             date =  Date(timeIntervalSinceNow: -22*5*24*60*60)
+        }else if self.interval == .onemonths{
+             date =  Date(timeIntervalSinceNow: -22*30*24*60*60)
+        }
+        SwiftYFinance.chartDataBy(identifier: self.selection?.symbol ?? "", start: date, interval: self.interval){
+            data, error in
+            if error != nil{
+                print(error)
+                return
+            }
+            self.chartPoints = (data!.map{
+                if $0.close == nil{
+                    return 0
+                }
+                return Double($0.close!)
+            }).suffix(20).filter(){$0 != 0}
+        }
     }
     
     func getStringValue(_ value:Any?)->String{
