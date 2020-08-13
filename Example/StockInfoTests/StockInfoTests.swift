@@ -42,6 +42,11 @@ class StockInfoTests: XCTestCase {
             promise2.fulfill()
         }
         
+        let (data, error) = SwiftYFinance.syncFetchSearchDataBy(searchTerm: "AAPL")
+        
+        XCTAssertTrue(data?.count != 0)
+        XCTAssertNil(error)
+        
         wait(for: [promise, promise2], timeout: 5)
     }
     
@@ -62,6 +67,11 @@ class StockInfoTests: XCTestCase {
             XCTAssertNil(error)
             promise2.fulfill()
         }
+        
+        let (data, error) = SwiftYFinance.syncFetchSearchDataBy(searchNews: "AAPL")
+        
+        XCTAssertTrue(data?.count != 0)
+        XCTAssertNil(error)
         
         wait(for: [promise, promise2], timeout: 5)
     }
@@ -103,7 +113,20 @@ class StockInfoTests: XCTestCase {
             promises[3].fulfill()
         }
         
+        
         wait(for: promises, timeout: 5)
+    }
+    
+    func test_syncSummaryDataBy() throws {
+        let (data, error) = SwiftYFinance.syncSummaryDataBy(identifier: "AAPL", selection: [.assetProfile, .cashflowStatementHistoryQuarterly, .financialData])
+        
+        XCTAssertNotNil(data)
+        XCTAssertNil(error)
+        
+        let (data2, error2) = SwiftYFinance.syncSummaryDataBy(identifier: "AAPL", selection: .financialData)
+        
+        XCTAssertNotNil(data2)
+        XCTAssertNil(error2)
     }
     
     func test_recentDataBy() throws {
@@ -131,6 +154,11 @@ class StockInfoTests: XCTestCase {
             XCTAssertNil(data)
             promises[2].fulfill()
         }
+        
+        let (data, error) = SwiftYFinance.syncRecentDataBy(identifier: "AAPL")
+        
+        XCTAssertNotNil(data)
+        XCTAssertNil(error)
         
         wait(for: promises, timeout: 5)
     }
@@ -169,7 +197,12 @@ class StockInfoTests: XCTestCase {
             XCTAssertNil(data)
             promises[3].fulfill()
         }
-    
+        
+        let (data, error) = SwiftYFinance.syncChartDataBy(identifier: "AAPL", start: Date(timeIntervalSince1970: 1), interval: .oneminute)
+        
+        XCTAssertNotNil(error)
+        XCTAssertNil(data)
+        
         wait(for: promises, timeout: 5)
     }
     
@@ -208,6 +241,11 @@ class StockInfoTests: XCTestCase {
             promises[3].fulfill()
         }
         
+        let (data, error) = SwiftYFinance.syncGetBigSummaryOfEquityBy(identifier: "RUBUSD=X")
+        
+        XCTAssertNotNil(error)
+        XCTAssertNil(data)
+        
         wait(for: promises, timeout: 5)
     }
     
@@ -237,6 +275,11 @@ class StockInfoTests: XCTestCase {
             XCTAssertNil(data)
             promises[2].fulfill()
         }
+        
+        let (data, error) = SwiftYFinance.syncRecentChartDataAtMoment(identifier: "AAPL")
+        
+        XCTAssertNotNil(data)
+        XCTAssertNil(error)
         
         wait(for: promises, timeout: 5)
     }
