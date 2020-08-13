@@ -10,7 +10,7 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first. Example project includes basic features demonstration.
 
-<img src="https://i.ibb.co/j8VVg3D/smartmockups-kdsmv8zx.png" alt="" height="350px"><img src="https://i.ibb.co/frQphbY/smartmockups-kdsmw7gq.png" alt="" height="350px">
+<img src="https://i.ibb.co/rd2VvwG/ezgif-com-optimize.gif" alt="" height="450px">
 
 ## Requirements
 
