@@ -10,8 +10,8 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first. Example project includes basic features demonstration.
 
-<img src="https://i.ibb.co/j8VVg3D/smartmockups-kdsmv8zx.png" alt="" height="100px">
-<img src="https://i.ibb.co/frQphbY/smartmockups-kdsmw7gq.png" alt="" height="100px">
+<img src="https://i.ibb.co/j8VVg3D/smartmockups-kdsmv8zx.png" alt="" height="200px"><img src="https://i.ibb.co/frQphbY/smartmockups-kdsmw7gq.png" alt="" height="200px">
+
 ## Requirements
 
 I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
