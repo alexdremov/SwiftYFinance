@@ -161,7 +161,7 @@ struct SheetView: View {
                 }
             }
         }.onAppear(perform: {
-            SwiftYFinance.getBigSummaryOfEquityBy(identifier: self.selection?.symbol ?? ""){
+            SwiftYFinance.summaryDataBy(identifier: self.selection?.symbol ?? ""){
                 data, error in
                 if error != nil{
                     return

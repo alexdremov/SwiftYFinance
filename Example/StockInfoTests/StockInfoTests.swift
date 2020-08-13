@@ -206,48 +206,6 @@ class StockInfoTests: XCTestCase {
         wait(for: promises, timeout: 5)
     }
     
-    func test_getBigSummaryOfEquityBy() throws {
-        var promises:[XCTestExpectation] = []
-        
-        promises.append(expectation(description: "Request finished"))
-        SwiftYFinance.getBigSummaryOfEquityBy(identifier: "AAPL"){
-            data, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(data)
-            promises[0].fulfill()
-        }
-        
-        promises.append(expectation(description: "Request finished"))
-        SwiftYFinance.getBigSummaryOfEquityBy(identifier: "AAkwfjkajPL"){
-            data, error in
-            XCTAssertNotNil(error)
-            XCTAssertNil(data)
-            promises[1].fulfill()
-        }
-        
-        promises.append(expectation(description: "Request finished"))
-        SwiftYFinance.getBigSummaryOfEquityBy(identifier: ""){
-            data, error in
-            XCTAssertNotNil(error)
-            XCTAssertNil(data)
-            promises[2].fulfill()
-        }
-        
-        promises.append(expectation(description: "Request finished"))
-        SwiftYFinance.getBigSummaryOfEquityBy(identifier: "RUBUSD=X"){
-            data, error in
-            XCTAssertNotNil(error)
-            XCTAssertNil(data)
-            promises[3].fulfill()
-        }
-        
-        let (data, error) = SwiftYFinance.syncGetBigSummaryOfEquityBy(identifier: "RUBUSD=X")
-        
-        XCTAssertNotNil(error)
-        XCTAssertNil(data)
-        
-        wait(for: promises, timeout: 5)
-    }
     
     func test_recentChartDataAtMoment() throws {
         var promises:[XCTestExpectation] = []
