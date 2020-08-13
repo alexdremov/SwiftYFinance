@@ -7,9 +7,11 @@
 
 ## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To run the example project, clone the repo, and run `pod install` from the Example directory first. Example project includes basic features demonstration.
 
 ## Requirements
+
+I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
 
 ## Installation
 
@@ -22,7 +24,7 @@ pod 'SwiftYFinance'
 
 ## Author
 
-AlexRoar, dremov.me@gmail.com
+Aleksandr Dremov, dremov.me@gmail.com
 
 ## License
 
