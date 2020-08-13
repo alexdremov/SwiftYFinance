@@ -9,9 +9,9 @@
 import Foundation
 import SwiftyJSON
 
-public struct IdentifierEquitySummary {
-    public var recomendations:StockRecomendations?
-    public var profile:IdentifierEquitySummaryProfile?
+public struct IdentifierSummary {
+    public var recommendationTrend:StockRecomendations?
+    public var profile:IdentifierSummaryProfile?
     public var quoteType:QuoteType?
     public var price:StockPriceInfo?
     
@@ -20,15 +20,18 @@ public struct IdentifierEquitySummary {
     init(information:JSON) {
         self.dataStorage = information
         let recomendationData = information["recommendationTrend"]["trend"][0]
-        self.recomendations = StockRecomendations(
-            buy: recomendationData["buy"].int,
-            sell: recomendationData["sell"].int,
-            hold: recomendationData["hold"].int,
-            strongSell: recomendationData["strongSell"].int,
-            strongBuy: recomendationData["strongBuy"].int
-        )
+        if recomendationData.dictionary != nil{
+            self.recommendationTrend = StockRecomendations(
+                buy: recomendationData["buy"].int,
+                sell: recomendationData["sell"].int,
+                hold: recomendationData["hold"].int,
+                strongSell: recomendationData["strongSell"].int,
+                strongBuy: recomendationData["strongBuy"].int
+            )
+        }
         
-        self.profile = IdentifierEquitySummaryProfile(
+         if information["summaryProfile"].dictionary != nil{
+        self.profile = IdentifierSummaryProfile(
             country: information["summaryProfile"]["country"].string,
             city: information["summaryProfile"]["city"].string,
             industry: information["summaryProfile"]["industry"].string,
@@ -41,7 +44,9 @@ public struct IdentifierEquitySummary {
             longBusinessSummary: information["summaryProfile"]["longBusinessSummary"].string,
             sector: information["summaryProfile"]["sector"].string
         )
+        }
         
+         if information["quoteType"].dictionary != nil{
         self.quoteType = QuoteType(
             exchange: information["quoteType"]["exchange"].string,
             market: information["quoteType"]["market"].string,
@@ -52,7 +57,9 @@ public struct IdentifierEquitySummary {
             longName: information["quoteType"]["longName"].string,
             symbol: information["quoteType"]["symbol"].string
         )
+        }
         
+        if information["price"].dictionary != nil{
         self.price = StockPriceInfo(
             preMarketTime: information["price"]["preMarketTime"].int,
             exchangeName: information["price"]["exchangeName"].string,
@@ -81,6 +88,7 @@ public struct IdentifierEquitySummary {
             quoteSourceName: information["price"]["quoteSourceName"].string,
             regularMarketTime: information["price"]["regularMarketTime"].int
         )
+        }
     }
 }
 
@@ -92,7 +100,7 @@ public struct StockRecomendations{
     public var strongBuy: Int?
 }
 
-public struct IdentifierEquitySummaryProfile{
+public struct IdentifierSummaryProfile{
     public var country : String?
     public var city : String?
     public var industry: String?

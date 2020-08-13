@@ -97,7 +97,7 @@ class StockInfoTests: XCTestCase {
         
         promises.append(expectation(description: "Request finished"))
         
-        SwiftYFinance.summaryDataBy(identifier: "akdjglkadjskdljfklas", selection: [.assetProfile, .cashflowStatementHistoryQuarterly]){
+        SwiftYFinance.summaryDataBy(identifier: "akdjglkadjskdljfklas", selection: [.assetProfile, .cashFlowStatementHistoryQuarterly]){
             data, error in
             XCTAssertNil(data)
             XCTAssertNotNil( try? XCTUnwrap(error))
@@ -106,7 +106,7 @@ class StockInfoTests: XCTestCase {
         
         promises.append(expectation(description: "Request finished"))
         
-        SwiftYFinance.summaryDataBy(identifier: "AAPL", selection: [.assetProfile, .cashflowStatementHistoryQuarterly, .financialData]){
+        SwiftYFinance.summaryDataBy(identifier: "AAPL", selection: [.assetProfile, .cashFlowStatementHistoryQuarterly, .financialData]){
             data, error in
             XCTAssertNotNil(data)
             XCTAssertNil(error)
@@ -118,7 +118,7 @@ class StockInfoTests: XCTestCase {
     }
     
     func test_syncSummaryDataBy() throws {
-        let (data, error) = SwiftYFinance.syncSummaryDataBy(identifier: "AAPL", selection: [.assetProfile, .cashflowStatementHistoryQuarterly, .financialData])
+        let (data, error) = SwiftYFinance.syncSummaryDataBy(identifier: "AAPL", selection: [.assetProfile, .cashFlowStatementHistoryQuarterly, .financialData])
         
         XCTAssertNotNil(data)
         XCTAssertNil(error)

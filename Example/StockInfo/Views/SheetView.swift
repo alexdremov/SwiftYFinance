@@ -11,7 +11,7 @@ import SwiftYFinance
 
 struct SheetView: View {
     var selection: SelectedSymbolWrapper?
-    @State var identifierSummary:IdentifierEquitySummary?
+    @State var identifierSummary:IdentifierSummary?
     var body: some View {
         VStack{
             HStack(alignment: .center){
@@ -34,22 +34,22 @@ struct SheetView: View {
                             Spacer()
                         }.padding(.bottom)
                         HStack{
-                            Text("IdentifierEquitySummary\n.recomendations").font(.title)
+                            Text("IdentifierSummary\n.recommendationTrend").font(.title)
                                 .fontWeight(.semibold)
                                 .padding([.top, .leading, .trailing])
                             Spacer()
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  String(self.identifierSummary?.recomendations?.buy ?? 0), desc: "buy")
-                            NumberDescView(number:  String(self.identifierSummary?.recomendations?.hold ?? 0), desc: "hold")
-                            NumberDescView(number:  String(self.identifierSummary?.recomendations?.sell ?? 0), desc: "sell")
+                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.buy ?? 0), desc: "buy")
+                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.hold ?? 0), desc: "hold")
+                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.sell ?? 0), desc: "sell")
                         }
                         HStack(alignment: .center){
-                            NumberDescView(number:  String(self.identifierSummary?.recomendations?.strongBuy ?? 0), desc: "strongBuy")
-                            NumberDescView(number:  String(self.identifierSummary?.recomendations?.strongSell ?? 0), desc: "strongSell")
+                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.strongBuy ?? 0), desc: "strongBuy")
+                            NumberDescView(number:  String(self.identifierSummary?.recommendationTrend?.strongSell ?? 0), desc: "strongSell")
                         }
                         HStack{
-                            Text("IdentifierEquitySummary\n.profile").font(.title)
+                            Text("IdentifierSummary\n.profile").font(.title)
                                 .fontWeight(.semibold)
                                 .padding([.top, .leading, .trailing])
                             Spacer()
@@ -79,7 +79,7 @@ struct SheetView: View {
                             Text(self.identifierSummary?.profile?.longBusinessSummary ?? "")
                         }.padding()
                         HStack{
-                            Text("IdentifierEquitySummary\n.quoteType").font(.title)
+                            Text("IdentifierSummary\n.quoteType").font(.title)
                                 .fontWeight(.semibold)
                                 .padding([.top, .leading, .trailing])
                             Spacer()
@@ -101,7 +101,7 @@ struct SheetView: View {
                             NumberDescView(number:  self.identifierSummary?.quoteType?.longName ?? "", desc: "longName")
                         }
                         HStack{
-                            Text("IdentifierEquitySummary\n.price").font(.title)
+                            Text("IdentifierSummary\n.price").font(.title)
                                 .fontWeight(.semibold)
                                 .padding([.top, .leading, .trailing])
                             Spacer()

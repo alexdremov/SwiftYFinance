@@ -17,7 +17,7 @@ struct ContentView: View {
     @State var sheetVisible = false
     @ObservedObject var selection = SelectedSymbolWrapper()
     var body: some View {
-        VStack{
+        return VStack{
             HStack{
                 Text("Stock Info")
                     .font(.largeTitle)
