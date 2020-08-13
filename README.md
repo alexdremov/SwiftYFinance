@@ -10,7 +10,9 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first. Example project includes basic features demonstration.
 
-<img src="https://i.ibb.co/rd2VvwG/ezgif-com-optimize.gif" alt="" height="450px">
+<section style="text-align:center">
+    <img src="https://i.ibb.co/6P07sx9/ezgif-com-optimize-2.gif" height="500px" style="margin: auto">
+</section>
 
 ## Requirements
 
