@@ -8,5 +8,5 @@
 import Foundation
 
 public struct YFinanceResponseError: Error{
-    var message: String?;
+    public var message: String?;
 }

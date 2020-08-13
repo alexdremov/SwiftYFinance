@@ -8,12 +8,12 @@
 import Foundation
 
 public struct QuoteType{
-    var exchange: String?
-    var market:String?
-    var shortName:String?
-    var quoteType:String?
-    var exchangeTimezoneShortName: String?
-    var exchangeTimezoneName: String?
-    var longName: String?
-    var symbol: String?
+    public var exchange: String?
+    public var market:String?
+    public var shortName:String?
+    public var quoteType:String?
+    public var exchangeTimezoneShortName: String?
+    public var exchangeTimezoneName: String?
+    public var longName: String?
+    public var symbol: String?
 }

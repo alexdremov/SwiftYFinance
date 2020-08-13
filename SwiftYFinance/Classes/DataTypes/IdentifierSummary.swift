@@ -10,12 +10,12 @@ import Foundation
 import SwiftyJSON
 
 public struct IdentifierEquitySummary {
-    var recomendations:StockRecomendations?
-    var profile:IdentifierEquitySummaryProfile?
-    var quoteType:QuoteType?
-    var price:StockPriceInfo?
+    public var recomendations:StockRecomendations?
+    public var profile:IdentifierEquitySummaryProfile?
+    public var quoteType:QuoteType?
+    public var price:StockPriceInfo?
     
-    var dataStorage:JSON?
+    public var dataStorage:JSON?
     
     init(information:JSON) {
         self.dataStorage = information
@@ -85,23 +85,23 @@ public struct IdentifierEquitySummary {
 }
 
 public struct StockRecomendations{
-    var buy: Int?
-    var sell: Int?
-    var hold: Int?
-    var strongSell:Int?
-    var strongBuy: Int?
+    public var buy: Int?
+    public var sell: Int?
+    public var hold: Int?
+    public var strongSell:Int?
+    public var strongBuy: Int?
 }
 
 public struct IdentifierEquitySummaryProfile{
-    var country : String?
-    var city : String?
-    var industry: String?
-    var address1 : String?
-    var maxAge : Int?
-    var zip : String?
-    var fullTimeEmployees : Int?
-    var website : String?
-    var phone : String?
-    var longBusinessSummary: String?
-    var sector: String?
+    public var country : String?
+    public var city : String?
+    public var industry: String?
+    public var address1 : String?
+    public var maxAge : Int?
+    public var zip : String?
+    public var fullTimeEmployees : Int?
+    public var website : String?
+    public var phone : String?
+    public var longBusinessSummary: String?
+    public var sector: String?
 }

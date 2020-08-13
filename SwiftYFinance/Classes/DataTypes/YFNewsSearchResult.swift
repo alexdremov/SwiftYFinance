@@ -8,10 +8,10 @@
 import Foundation
 
 public struct YFNewsSearchResult{
-    var type: String?
-    var uuid: String?
-    var link: String?
-    var title: String?
-    var publisher: String?
-    var providerPublishTime: String?
+    public var type: String?
+    public var uuid: String?
+    public var link: String?
+    public var title: String?
+    public var publisher: String?
+    public var providerPublishTime: String?
 }

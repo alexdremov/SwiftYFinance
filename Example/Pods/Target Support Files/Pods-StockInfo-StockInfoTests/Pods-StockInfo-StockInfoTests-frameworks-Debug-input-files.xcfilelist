@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-StockInfo-StockInfoTests/Pods-StockInfo-StockInfoTests-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/SwiftYFinance/SwiftYFinance.framework
+${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework

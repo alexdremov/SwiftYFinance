@@ -8,18 +8,18 @@
 import Foundation
 
 public struct RecentStockData{
-    var currency: String?
-    var symbol: String?
-    var exchangeName: String?
-    var instrumentType: String?
-    var firstTradeDate: Int?
-    var regularMarketTime: Int?
-    var gmtoffset: Int?
-    var timezone: String?
-    var exchangeTimezoneName: String?
-    var regularMarketPrice: Float?
-    var chartPreviousClose: Float?
-    var previousClose: Float?
-    var scale: Int?
-    var priceHint: Int?
+    public var currency: String?
+    public var symbol: String?
+    public var exchangeName: String?
+    public var instrumentType: String?
+    public var firstTradeDate: Int?
+    public var regularMarketTime: Int?
+    public var gmtoffset: Int?
+    public var timezone: String?
+    public var exchangeTimezoneName: String?
+    public var regularMarketPrice: Float?
+    public var chartPreviousClose: Float?
+    public var previousClose: Float?
+    public var scale: Int?
+    public var priceHint: Int?
 }

@@ -8,11 +8,11 @@
 import Foundation
 
 public struct StockChartData{
-    var date: Date?
-    var volume: Int?
-    var open: Float?
-    var close: Float?
-    var adjclose: Float?
-    var low: Float?
-    var high: Float?
+    public var date: Date?
+    public var volume: Int?
+    public var open: Float?
+    public var close: Float?
+    public var adjclose: Float?
+    public var low: Float?
+    public var high: Float?
 }

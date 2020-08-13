@@ -1,8 +1,9 @@
 {
   "name": "SwiftYFinance",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "summary": "Yahoo Finance library with the power of Swift",
-  "description": "TODO: Add long description of the pod here.",
+  "swift_versions": "5.0",
+  "description": "Provides methods for major Yahoo Finance APIs. Perfect if you need fast asynchronous stock data fetch library",
   "homepage": "https://github.com/AlexRoar/SwiftYFinance",
   "license": {
     "type": "MIT",
@@ -13,7 +14,7 @@
   },
   "source": {
     "git": "https://github.com/AlexRoar/SwiftYFinance.git",
-    "tag": "0.1.0"
+    "tag": "0.1.2"
   },
   "platforms": {
     "ios": "13.0"
@@ -26,5 +27,6 @@
     "SwiftyJSON": [
       "~> 4.0"
     ]
-  }
+  },
+  "swift_version": "5.0"
 }

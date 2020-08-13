@@ -1,0 +1,6 @@
+framework module Pods_StockInfo {
+  umbrella header "Pods-StockInfo-umbrella.h"
+
+  export *
+  module * { export * }
+}

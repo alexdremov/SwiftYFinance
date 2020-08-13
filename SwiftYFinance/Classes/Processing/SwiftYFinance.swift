@@ -14,6 +14,10 @@ public class SwiftYFinance{
         /*
          https://query1.finance.yahoo.com/v1/finance/search
          */
+        if searchTerm.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            callback([], nil)
+            return
+        }
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
@@ -30,13 +34,35 @@ public class SwiftYFinance{
             return
         }
         
-        AF.request(requestURL!).response(){ response  in
+        
+        AF.request(requestURL!).responseData(){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
             }
+           
             var result:[YFQuoteSearchResult] = []
-            let json = try! JSON(data: response.value!!)
+            let json = try! JSON(data: response.value!)
+            
+            if let _ = json["chart"]["error"]["description"].string{
+                callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
+                return
+            }
+            if let _ = json["finance"]["error"]["description"].string{
+                callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
+                return
+            }
+            
+            if json["search"]["error"]["description"].string != nil{
+                callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
+                return
+            }
+            
+            if (json["quotes"].array == nil){
+                callback(nil, YFinanceResponseError(message: "Empty response"))
+                return
+            }
+        
             for found in json["quotes"].array!{
                 result.append(YFQuoteSearchResult(
                     symbol: found["symbol"].string,
@@ -54,6 +80,12 @@ public class SwiftYFinance{
         /*
          https://query1.finance.yahoo.com/v1/finance/search
          */
+        
+        if searchNews.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            callback([], nil)
+            return
+        }
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
@@ -75,9 +107,23 @@ public class SwiftYFinance{
                 callback(nil, response.error)
                 return
             }
-            
+    
             var result:[YFNewsSearchResult] = []
             let json = try! JSON(data: response.value!!)
+            
+            if json["chart"]["error"]["description"].string != nil{
+                callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
+                return
+            }
+            if json["finance"]["error"]["description"].string != nil{
+                callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
+                return
+            }
+            if json["search"]["error"]["description"].string != nil{
+                callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
+                return
+            }
+            
             for found in json["quotes"].array!{
                 result.append(YFNewsSearchResult(
                     type: found["type"].string,
@@ -97,6 +143,12 @@ public class SwiftYFinance{
     }
     
     public class func summaryDataBy(identifier:String, selection:[QuoteSummarySelection],  callback: @escaping ([JSON]?, Error?)->Void){
+        
+        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            callback(nil, YFinanceResponseError(message: "Empty identifier"))
+            return
+        }
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
@@ -118,12 +170,33 @@ public class SwiftYFinance{
                 callback(nil, response.error)
                 return
             }
-            let json = try! JSON(data: response.value!)["quoteSummary"]["result"].array
-            callback(json, nil)
+            let jsonRaw = try! JSON(data: response.value!)
+            
+            if jsonRaw["chart"]["error"]["description"].string != nil{
+                callback(nil, YFinanceResponseError(message: jsonRaw["chart"]["error"]["description"].string))
+                return
+            }
+            if jsonRaw["finance"]["error"]["description"].string != nil{
+                callback(nil, YFinanceResponseError(message: jsonRaw["finance"]["error"]["description"].string))
+                return
+            }
+            
+            if jsonRaw["quoteSummary"]["error"]["description"].string != nil{
+                callback(nil, YFinanceResponseError(message: jsonRaw["quoteSummary"]["error"]["description"].string))
+                return
+            }
+            
+            callback(jsonRaw["quoteSummary"]["result"].array, nil)
         }
     }
     
     public class func recentDataBy(identifier:String, callback: @escaping (RecentStockData?, Error?)->Void){
+        
+        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            callback(nil, YFinanceResponseError(message: "Empty identifier"))
+            return
+        }
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
@@ -176,7 +249,13 @@ public class SwiftYFinance{
         }
     }
     
-    public class func chartDataBy(identifier:String, callback: @escaping ([StockChartData]?, Error?)->Void, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday){
+    public class func chartDataBy(identifier:String, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday, callback: @escaping ([StockChartData]?, Error?)->Void){
+        
+        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            callback(nil, YFinanceResponseError(message: "Empty identifier"))
+            return
+        }
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
@@ -209,10 +288,10 @@ public class SwiftYFinance{
                 return
             }
             
-            let fullData = json["chart"]["result"][0].dictionary!
-            let quote = fullData["indicators"]?["quote"][0].dictionary!
-            let adjClose = fullData["indicators"]?["adjclose"][0]["adjclose"].array!
-            let timestamps = fullData["timestamp"]?.array
+            let fullData = json["chart"]["result"][0].dictionary
+            let quote = fullData?["indicators"]?["quote"][0].dictionary
+            let adjClose = fullData?["indicators"]?["adjclose"][0]["adjclose"].array
+            let timestamps = fullData?["timestamp"]?.array
             
             var result:[StockChartData] = [];
             
@@ -233,6 +312,12 @@ public class SwiftYFinance{
     }
     
     public class func getBigSummaryOfEquityBy(identifier:String, callback: @escaping (IdentifierEquitySummary?, Error?)->Void){
+        
+        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            callback(nil, YFinanceResponseError(message: "Empty identifier"))
+            return
+        }
+        
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "finance.yahoo.com"
@@ -278,8 +363,23 @@ public class SwiftYFinance{
                 callback(nil, YFinanceResponseError(message: "Scrape for identifier \(identifier) has undefined quoteType"))
                 return
             }
-            debugPrint(requestURL!)
+        
             callback(IdentifierEquitySummary(information: jsonSummary), nil)
+        }
+    }
+    
+    public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), callback: @escaping (StockChartData?, Error?)->Void){
+        self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60), end: moment, interval: .oneminute){
+            data, error in
+            if data == nil{
+                callback(nil, error)
+            }else{
+                if (data!.count == 0){
+                    callback(nil, YFinanceResponseError(message: "No data found at this(\(moment)) moment"))
+                    return
+                }
+                callback(data![data!.count - 1], error)
+            }
         }
     }
 }

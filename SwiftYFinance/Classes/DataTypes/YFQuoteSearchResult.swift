@@ -8,9 +8,9 @@
 import Foundation
 
 public struct YFQuoteSearchResult{
-    var symbol: String?
-    var shortname: String?
-    var longname: String?
-    var exchange: String?
-    var assetType: String?
+    public var symbol: String?
+    public var shortname: String?
+    public var longname: String?
+    public var exchange: String?
+    public var assetType: String?
 }
