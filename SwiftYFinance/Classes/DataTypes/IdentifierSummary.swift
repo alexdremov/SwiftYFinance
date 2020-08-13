@@ -15,6 +15,8 @@ public struct IdentifierSummary {
     public var quoteType:QuoteType?
     public var price:Price?
     public var indexTrend:IndexTrend?
+    public var summaryDetail:SummaryDetail?
+    public var calendarEvents:CalendarEvents?
     
     public var dataStorage:JSON?
     
@@ -91,6 +93,7 @@ public struct IdentifierSummary {
                 regularMarketTime: information["price"]["regularMarketTime"].int
             )
         }
+        
         if information["indexTrend"].dictionary != nil{
             var estimates:[IndexTrendEstimates] = []
             
@@ -105,6 +108,64 @@ public struct IdentifierSummary {
                 pegRatio: information["indexTrend"]["pegRatio"]["raw"].float,
                 estimates: estimates
             )
+        }
+        
+        if information["summaryDetail"].dictionary != nil{
+            let summaryDetail = information["summaryDetail"].dictionary
+            self.summaryDetail = SummaryDetail(
+                maxAge: summaryDetail?["maxAge"]?.int,
+                priceHint: summaryDetail?["priceHint"]?["raw"].int,
+                previousClose: summaryDetail?["previousClose"]?["raw"].float,
+                open: summaryDetail?["open"]?["raw"].float,
+                dayLow: summaryDetail?["dayLow"]?["raw"].float,
+                dayHigh: summaryDetail?["dayHigh"]?["raw"].float,
+                regularMarketPreviousClose: summaryDetail?["regularMarketPreviousClose"]?["raw"].float,
+                regularMarketOpen: summaryDetail?["regularMarketOpen"]?["raw"].float,
+                regularMarketDayLow: summaryDetail?["regularMarketDayLow"]?["raw"].float,
+                regularMarketDayHigh: summaryDetail?["regularMarketDayHigh"]?["raw"].float,
+                dividendRate: summaryDetail?["dividendRate"]?["raw"].float,
+                dividendYield: summaryDetail?["dividendYield"]?["raw"].float,
+                exDividendDate: summaryDetail?["exDividendDate"]?["raw"].float,
+                payoutRatio: summaryDetail?["payoutRatio"]?["raw"].float,
+                fiveYearAvgDividendYield: summaryDetail?["fiveYearAvgDividendYield"]?["raw"].float,
+                beta: summaryDetail?["beta"]?["raw"].float,
+                trailingPE: summaryDetail?["trailingPE"]?["raw"].float,
+                forwardPE: summaryDetail?["forwardPE"]?["raw"].float,
+                volume: summaryDetail?["volume"]?["raw"].float,
+                regularMarketVolume: summaryDetail?["regularMarketVolume"]?["raw"].float,
+                averageVolume: summaryDetail?["averageVolume"]?["raw"].float,
+                averageVolume10days: summaryDetail?["averageVolume10days"]?["raw"].float,
+                averageDailyVolume10Day: summaryDetail?["averageDailyVolume10Day"]?["raw"].float,
+                bid: summaryDetail?["bid"]?["raw"].float,
+                ask: summaryDetail?["ask"]?["raw"].float,
+                bidSize: summaryDetail?["bidSize"]?["raw"].float,
+                askSize: summaryDetail?["askSize"]?["raw"].float,
+                marketCap: summaryDetail?["marketCap"]?["raw"].float,
+                yield: summaryDetail?["yield"]?["raw"].float,
+                ytdReturn: summaryDetail?["ytdReturn"]?["raw"].float,
+                totalAssets: summaryDetail?["totalAssets"]?["raw"].float,
+                expireDate: summaryDetail?["expireDate"]?["raw"].float,
+                strikePrice: summaryDetail?["strikePrice"]?["raw"].float,
+                openInterest: summaryDetail?["openInterest"]?["raw"].float,
+                fiftyTwoWeekLow: summaryDetail?["fiftyTwoWeekLow"]?["raw"].float,
+                fiftyTwoWeekHigh: summaryDetail?["fiftyTwoWeekHigh"]?["raw"].float,
+                priceToSalesTrailing12Months: summaryDetail?["priceToSalesTrailing12Months"]?["raw"].float,
+                fiftyDayAverage: summaryDetail?["fiftyDayAverage"]?["raw"].float,
+                twoHundredDayAverage: summaryDetail?["twoHundredDayAverage"]?["raw"].float,
+                trailingAnnualDividendRate: summaryDetail?["trailingAnnualDividendRate"]?["raw"].float,
+                trailingAnnualDividendYield: summaryDetail?["trailingAnnualDividendYield"]?["raw"].float,
+                volume24Hr: summaryDetail?["volume24Hr"]?["raw"].float,
+                volumeAllCurrencies: summaryDetail?["volumeAllCurrencies"]?["raw"].float,
+                circulatingSupply: summaryDetail?["circulatingSupply"]?["raw"].float,
+                navPrice: summaryDetail?["navPrice"]?["raw"].float,
+                currency: summaryDetail?["currency"]?.string,
+                fromCurrency: summaryDetail?["fromCurrency"]?.string,
+                toCurrency: summaryDetail?["toCurrency"]?.string,
+                tradable:summaryDetail?["tradable"]?.bool
+            )
+        }
+        if information["calendarEvents"].dictionary != nil{
+            self.calendarEvents = CalendarEvents(exDividendDate: information["calendarEvents"]["exDividendDate"]["raw"].int, dividendDate: information["calendarEvents"]["dividendDate"]["raw"].int)
         }
     }
 }
