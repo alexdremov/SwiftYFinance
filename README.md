@@ -140,43 +140,26 @@ This part of API is MASSIVE. Yahoo Finance has a lot of summary modules and I im
 
 I will add new modules with every version. Currntly, only essential modules are implemented.
 
-| Module                            | Support |
-|-----------------------------------|---------|
-| assetProfile                      | :x: |
-| incomeStatementHistory            | :x: |
-| incomeStatementHistoryQuarterly   | :x: |
-| balanceSheetHistory               | :x: |
-| balanceSheetHistoryQuarterly      | :x: |
-| cashFlowStatementHistory          | :x: |
-| cashFlowStatementHistoryQuarterly | :x: |
-| defaultKeyStatistics              | :x: |
-| financialData                     | :x: |
-| calendarEvents                    | :white_check_mark: |
-| secFilings                        | :x: |
-| recommendationTrend               | :white_check_mark: |
-| upgradeDowngradeHistory           | :x: |
-| institutionOwnership              | :x: |
-| fundOwnership                     | :x: |
-| majorDirectHolders                | :x: |
-| majorHoldersBreakdown             | :x: |
-| insiderTransactions               | :x: |
-| insiderHolders                    | :x: |
-| netSharePurchaseActivity          | :x: |
-| sectorTrend                       | :x: |
-| earnings                          | :x: |
-| companyOfficers                   | :x: |
-| summaryProfile                    | :white_check_mark: |
-| quoteType                         | :white_check_mark: |
-| earningsHistory                   | :x: |
-| earningsTrend                     | :x: |
-| indexTrend                        | :x: |
-| industryTrend                     | :white_check_mark: |
-| price                             | :white_check_mark: |
-| symbol                            | :x: |
-| summaryDetail                     | :white_check_mark: |
-| fundProfile                       | :x: |
-| topHoldings                       | :x: |
-| fundPerformance                   | :x: |
+| Module                            | Support | Module                            | Support |
+|-----------------------------------|---------|-----------------------------------|---------|
+| calendarEvents                    | :white_check_mark: | recommendationTrend               | :white_check_mark: |
+| summaryProfile                    | :white_check_mark: | quoteType                         | :white_check_mark: |
+| industryTrend                     | :white_check_mark: | price                             | :white_check_mark: |
+| summaryDetail                     | :white_check_mark: | incomeStatementHistoryQuarterly   | :x: |
+| assetProfile                      | :x: | balanceSheetHistoryQuarterly      | :x: |
+| incomeStatementHistory            | :x: | cashFlowStatementHistory          | :x: |
+| balanceSheetHistory               | :x: | cashFlowStatementHistoryQuarterly | :x: |
+| financialData                     | :x: | secFilings                        | :x: |
+| upgradeDowngradeHistory           | :x: | institutionOwnership              | :x: |
+| fundOwnership                     | :x: | majorDirectHolders                | :x: |
+| majorHoldersBreakdown             | :x: | insiderTransactions               | :x: |
+| insiderHolders                    | :x: | netSharePurchaseActivity          | :x: |
+| sectorTrend                       | :x: | earnings                          | :x: |
+| companyOfficers                   | :x: | earningsHistory                   | :x: |
+| earningsTrend                     | :x: | indexTrend                        | :x: |
+| symbol                            | :x: | fundProfile                       | :x: |
+| topHoldings                       | :x: | fundPerformance                   | :x: |
+| defaultKeyStatistics              | :x: |                                   |     |
 
 You can fetch modules by calling `summaryDataBy(...)`
 
