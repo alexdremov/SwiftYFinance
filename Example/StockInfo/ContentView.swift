@@ -11,7 +11,7 @@ import SwiftYFinance
 
 struct ContentView: View {
     
-    @State var searchString:String = ""
+    @State var searchString:String = "AAPL"
     @State var foundContainer:[YFQuoteSearchResult] = []
     
     @State var sheetVisible = false
@@ -38,14 +38,13 @@ struct ContentView: View {
                         }){
                             ListUnoView(result:result).listRowInsets(EdgeInsets())
                         }
-                        
                     }.listRowInsets(EdgeInsets())
                 }.padding(0.0)
             }
             Spacer()
         }.sheet(isPresented: self.$sheetVisible, content: {
             SheetView(selection: self.selection)
-        })
+        }).onAppear(perform: self.searchObjects)
     }
     
     func searchObjects(){
