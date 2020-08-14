@@ -11,7 +11,7 @@
 To run the example project, clone the repo, and run `pod install` from the Example directory first. Example project includes basic features demonstration.
 
 <section style="text-align:center">
-    <img src="https://i.ibb.co/6P07sx9/ezgif-com-optimize-2.gif" height="500px" style="margin: auto">
+    <img src="https://i.ibb.co/6P07sx9/ezgif-com-optimize-2.gif" width="500px" style="margin: auto">
 </section>
 
 ## Requirements
