@@ -31,7 +31,7 @@ public class SwiftYFinance{
         "Accept-Encoding": "gzip, deflate, br"
     ]
     
-    public class func fetchSearchDataBy(searchTerm:String, quotesCount:Int = 20, callback: @escaping ([YFQuoteSearchResult]?, Error?)->Void) {
+    public class func fetchSearchDataBy(searchTerm:String, quotesCount:Int = 20, queue:DispatchQueue = .main, callback: @escaping ([YFQuoteSearchResult]?, Error?)->Void) {
         /*
          https://query1.finance.yahoo.com/v1/finance/search
          */
@@ -51,7 +51,7 @@ public class SwiftYFinance{
         
         
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response  in
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -98,7 +98,7 @@ public class SwiftYFinance{
     public class func syncFetchSearchDataBy(searchTerm:String, quotesCount:Int = 20) -> ([YFQuoteSearchResult]?, Error?) {
         var retData:[YFQuoteSearchResult]?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
-        self.fetchSearchDataBy(searchTerm: searchTerm, quotesCount:quotesCount){
+        self.fetchSearchDataBy(searchTerm: searchTerm, quotesCount:quotesCount, queue: DispatchQueue.global(qos: .utility)){
             data, error in
             defer {
                 semaphore.signal()
@@ -114,7 +114,7 @@ public class SwiftYFinance{
     /**
      The same as `SwiftYFinance.fetchSearchDataBy` except that it searches for news
      */
-    public class func fetchSearchDataBy(searchNews:String, newsCount:Int = 20, callback: @escaping ([YFNewsSearchResult]?,  Error?)->Void) {
+    public class func fetchSearchDataBy(searchNews:String, newsCount:Int = 20, queue:DispatchQueue = .main, callback: @escaping ([YFNewsSearchResult]?,  Error?)->Void) {
         /*
          https://query1.finance.yahoo.com/v1/finance/search
          */
@@ -137,7 +137,7 @@ public class SwiftYFinance{
         
         
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response  in
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -179,7 +179,7 @@ public class SwiftYFinance{
     public class func syncFetchSearchDataBy(searchNews:String, newsCount:Int = 20) -> ([YFNewsSearchResult]?, Error?) {
         var retData:[YFNewsSearchResult]?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
-        self.fetchSearchDataBy(searchNews: searchNews, newsCount:newsCount){
+        self.fetchSearchDataBy(searchNews: searchNews, newsCount:newsCount, queue: DispatchQueue.global(qos: .utility)){
             data, error in
             defer {
                 semaphore.signal()
@@ -200,8 +200,8 @@ public class SwiftYFinance{
      - identifier: Name of identifier
      - selection: Which area of summary to get
      */
-    public class func summaryDataBy(identifier:String,   selection:QuoteSummarySelection = .supported, callback: @escaping (IdentifierSummary?, Error?)->Void) {
-        summaryDataBy(identifier:identifier, selection:[selection], callback: callback)
+    public class func summaryDataBy(identifier:String,   selection:QuoteSummarySelection = .supported, queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void) {
+        summaryDataBy(identifier:identifier, selection:[selection], queue: queue, callback: callback)
     }
     
     /**
@@ -219,7 +219,7 @@ public class SwiftYFinance{
      - selection: Which areas of summary to get
      - TODO: return not JSON but custom type
      */
-    public class func summaryDataBy(identifier:String, selection:[QuoteSummarySelection],  callback: @escaping (IdentifierSummary?, Error?)->Void){
+    public class func summaryDataBy(identifier:String, selection:[QuoteSummarySelection], queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void){
         
         if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
             callback(nil, YFinanceResponseError(message: "Empty identifier"))
@@ -238,7 +238,7 @@ public class SwiftYFinance{
             URLQueryItem(name: "symbols",value: identifier)
         ]
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -269,7 +269,7 @@ public class SwiftYFinance{
     public class func syncSummaryDataBy(identifier:String, selection:[QuoteSummarySelection]) ->  (IdentifierSummary?, Error?){
         var retData: IdentifierSummary?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
-        self.summaryDataBy(identifier: identifier, selection:selection){
+        self.summaryDataBy(identifier: identifier, selection:selection, queue: DispatchQueue.global(qos: .utility)){
             data, error in
             defer {
                 semaphore.signal()
@@ -288,7 +288,7 @@ public class SwiftYFinance{
      - Parameters:
      - identifier: Name of identifier
      */
-    public class func recentDataBy(identifier:String, callback: @escaping (RecentStockData?, Error?)->Void){
+    public class func recentDataBy(identifier:String, queue:DispatchQueue = .main, callback: @escaping (RecentStockData?, Error?)->Void){
         
         if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
             callback(nil, YFinanceResponseError(message: "Empty identifier"))
@@ -310,7 +310,7 @@ public class SwiftYFinance{
             URLQueryItem(name: "period2", value: String(Int(Date().timeIntervalSince1970)+10))
         ]
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -353,7 +353,7 @@ public class SwiftYFinance{
     public class func syncRecentDataBy(identifier:String)->(RecentStockData?, Error?){
         var retData:RecentStockData?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
-        self.recentDataBy(identifier: identifier){
+        self.recentDataBy(identifier: identifier, queue: DispatchQueue.global(qos: .utility)){
             data, error in
             defer {
                 semaphore.signal()
@@ -377,7 +377,7 @@ public class SwiftYFinance{
      - end: `Date` type end of points retrieve
      - interval: interval between points
      */
-    public class func chartDataBy(identifier:String, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday, callback: @escaping ([StockChartData]?, Error?)->Void){
+    public class func chartDataBy(identifier:String, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday, queue:DispatchQueue = .main, callback: @escaping ([StockChartData]?, Error?)->Void){
         
         if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
             callback(nil, YFinanceResponseError(message: "Empty identifier"))
@@ -398,7 +398,7 @@ public class SwiftYFinance{
         ]
         
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -446,7 +446,7 @@ public class SwiftYFinance{
     public class func syncChartDataBy(identifier:String, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday) -> ([StockChartData]?, Error?){
         var retData:[StockChartData]?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
-        self.chartDataBy(identifier:identifier, start:start, end:end, interval:interval){
+        self.chartDataBy(identifier:identifier, start:start, end:end, interval:interval, queue: DispatchQueue.global(qos: .utility)){
             data, error in
             defer {
                 semaphore.signal()
@@ -467,8 +467,8 @@ public class SwiftYFinance{
      - identifier: Name of identifier
      - moment: `Date` type moment
      */
-    public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), callback: @escaping (StockChartData?, Error?)->Void){
-        self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60), end: moment, interval: .oneminute){
+    public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), queue:DispatchQueue = .main, callback: @escaping (StockChartData?, Error?)->Void){
+        self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60), end: moment, interval: .oneminute, queue: queue){
             data, error in
             if data == nil{
                 callback(nil, error)
@@ -488,7 +488,7 @@ public class SwiftYFinance{
     public class func syncRecentChartDataAtMoment(identifier:String, moment:Date=Date()) -> (StockChartData?, Error?){
         var retData:StockChartData?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
-        self.recentChartDataAtMoment(identifier:identifier, moment:moment){
+        self.recentChartDataAtMoment(identifier:identifier, moment:moment, queue: DispatchQueue.global(qos: .utility)){
             data, error in
             defer {
                 semaphore.signal()
