@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftYFinance'
-  s.version          = '0.1.5'
+  s.version          = '1.0.0'
   s.summary          = 'Yahoo Finance library with the power of Swift'
 
   s.swift_version   = '5.0'
