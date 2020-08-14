@@ -8,6 +8,7 @@
 import Foundation
 import SwiftyJSON
 import Alamofire
+
 /** Main class of SwiftYFinance. Asynchronous methods' callback always will have  format: `Some Data?, Error?`. If error is non-nil, then data is going to be nil. Review Error description to find out what's wrong.
  * Synchronous API is also provided. The only difference is that it blocks the thread and returns data rather than passing it to the callback.
  */
@@ -19,6 +20,17 @@ public class SwiftYFinance{
      - quotesCount: Maximum found elements to load
      - callback: Callback, two parameters will be passed
      */
+    
+    static var headers: HTTPHeaders = [
+        "Accept": "*/*",
+        "Pragma": "no-cache",
+        "Origin": "https://finance.yahoo.com",
+        "Cache-Control": "no-cache",
+        "Host": "query1.finance.yahoo.com",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Safari/605.1.15",
+        "Accept-Encoding": "gzip, deflate, br"
+    ]
+    
     public class func fetchSearchDataBy(searchTerm:String, quotesCount:Int = 20, callback: @escaping ([YFQuoteSearchResult]?, Error?)->Void) {
         /*
          https://query1.finance.yahoo.com/v1/finance/search
@@ -37,14 +49,9 @@ public class SwiftYFinance{
             URLQueryItem(name: "quotesCount", value: String(quotesCount))
         ]
         
-        let requestURL = urlComponents.url?.absoluteString
-        if requestURL == nil{
-            callback(nil, URLGenerationError())
-            return
-        }
         
-        
-        AF.request(requestURL!).responseData(queue:DispatchQueue.global(qos: .utility)){ response  in
+        URLCache.shared.removeAllCachedResponses()
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -127,13 +134,10 @@ public class SwiftYFinance{
             URLQueryItem(name: "newsCount", value: String(newsCount))
         ]
         
-        let requestURL = urlComponents.url?.absoluteString
-        if requestURL == nil{
-            callback(nil, URLGenerationError())
-            return
-        }
         
-        AF.request(requestURL!).responseData(queue:DispatchQueue.global(qos: .utility)){ response  in
+        
+        URLCache.shared.removeAllCachedResponses()
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -230,15 +234,11 @@ public class SwiftYFinance{
             URLQueryItem(name: "modules", value: selection.map({
                 data in
                 return String(data.rawValue)
-            }).joined(separator: ","))
+            }).joined(separator: ",")),
+            URLQueryItem(name: "symbols",value: identifier)
         ]
-        let requestURL = urlComponents.url?.absoluteString
-        if requestURL == nil{
-            callback(nil, URLGenerationError())
-            return
-        }
-        
-        AF.request(requestURL!).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
+        URLCache.shared.removeAllCachedResponses()
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -300,17 +300,17 @@ public class SwiftYFinance{
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v8/finance/chart/\(identifier)"
         urlComponents.queryItems = [
-            URLQueryItem(name: "symbol", value: identifier),
+            URLQueryItem(name: "symbols", value: identifier),
+            URLQueryItem(name: "region", value: "US"),
+            URLQueryItem(name: "lang", value: "en-US"),
+            URLQueryItem(name: "includePrePost", value: "false"),
+            URLQueryItem(name: "corsDomain", value: "finance.yahoo.com"),
+            URLQueryItem(name: ".tsrc", value: "finance"),
             URLQueryItem(name: "period1", value: String(Int(Date().timeIntervalSince1970))),
             URLQueryItem(name: "period2", value: String(Int(Date().timeIntervalSince1970)+10))
         ]
-        let requestURL = urlComponents.url?.absoluteString
-        if requestURL == nil{
-            callback(nil, URLGenerationError())
-            return
-        }
-        
-        AF.request(requestURL!).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
+        URLCache.shared.removeAllCachedResponses()
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -389,18 +389,16 @@ public class SwiftYFinance{
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v8/finance/chart/\(identifier)"
         urlComponents.queryItems = [
+            URLQueryItem(name: "symbols", value: identifier),
             URLQueryItem(name: "symbol", value: identifier),
             URLQueryItem(name: "period1", value: String(Int(start.timeIntervalSince1970))),
             URLQueryItem(name: "period2", value: String(Int(end.timeIntervalSince1970))),
             URLQueryItem(name: "interval", value: interval.rawValue),
             URLQueryItem(name: "includePrePost", value: "true")
         ]
-        let requestURL = urlComponents.url?.absoluteString
-        if requestURL == nil{
-            callback(nil, URLGenerationError())
-            return
-        }
-        AF.request(requestURL!).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
+        
+        URLCache.shared.removeAllCachedResponses()
+        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:DispatchQueue.global(qos: .utility)){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
