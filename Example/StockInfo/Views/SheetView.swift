@@ -8,7 +8,6 @@
 
 import SwiftUI
 import SwiftYFinance
-import SwiftUICharts
 
 struct SheetView: View {
     @State var chartPoints:[Double] = []
@@ -41,7 +40,7 @@ struct SheetView: View {
                             Spacer()
                         }
                             VStack{
-                                LineView(data: self.chartPoints, title: "Close price last 20 points" ).frame(maxHeight: 300).padding([.leading, .bottom, .trailing], 30)
+                                
                                 HStack{
                                     Button(action: {
                                         self.interval=ChartTimeInterval.oneminute

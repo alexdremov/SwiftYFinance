@@ -173,13 +173,13 @@ class StockInfoTests: XCTestCase {
 //            XCTAssertNotNil(data)
 //            promises[0].fulfill()
 //        }
-//        
+//
         promises.append(expectation(description: "Request finished"))
         SwiftYFinance.chartDataBy(identifier: "AAPL", start: Date(timeIntervalSince1970: 1)){
             data, error in
             XCTAssertNil(error)
             XCTAssertNotNil(data)
-            promises[1].fulfill()
+            promises[0].fulfill()
         }
         
         promises.append(expectation(description: "Request finished"))
@@ -187,7 +187,7 @@ class StockInfoTests: XCTestCase {
             data, error in
             XCTAssertNotNil(error)
             XCTAssertNil(data)
-            promises[2].fulfill()
+            promises[1].fulfill()
         }
         
         promises.append(expectation(description: "Request finished"))
@@ -195,7 +195,7 @@ class StockInfoTests: XCTestCase {
             data, error in
             XCTAssertNotNil(error)
             XCTAssertNil(data)
-            promises[3].fulfill()
+            promises[2].fulfill()
         }
         
         let (data, error) = SwiftYFinance.syncChartDataBy(identifier: "AAPL", start: Date(timeIntervalSince1970: 1), interval: .oneminute)

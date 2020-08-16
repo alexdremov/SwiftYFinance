@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		A01CB7E424E5C7760017B0EF /* Pods_StockInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6306B024674570A78DA4B7A3 /* Pods_StockInfo.framework */; };
 		A01CB7E524E5C7760017B0EF /* Pods_StockInfo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6306B024674570A78DA4B7A3 /* Pods_StockInfo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A01CB7E824E5C8150017B0EF /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = A01CB7E724E5C8150017B0EF /* SwiftUICharts */; };
 		A0C28C6124E455EA002297C1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C28C6024E455EA002297C1 /* AppDelegate.swift */; };
 		A0C28C6324E455EA002297C1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C28C6224E455EA002297C1 /* SceneDelegate.swift */; };
 		A0C28C6524E455EA002297C1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C28C6424E455EA002297C1 /* ContentView.swift */; };
@@ -79,7 +78,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A01CB7E424E5C7760017B0EF /* Pods_StockInfo.framework in Frameworks */,
-				A01CB7E824E5C8150017B0EF /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,7 +196,6 @@
 			);
 			name = StockInfo;
 			packageProductDependencies = (
-				A01CB7E724E5C8150017B0EF /* SwiftUICharts */,
 			);
 			productName = StockInfo;
 			productReference = A0C28C5D24E455EA002297C1 /* StockInfo.app */;
@@ -651,14 +648,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A01CB7E724E5C8150017B0EF /* SwiftUICharts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A01CB7E624E5C8150017B0EF /* XCRemoteSwiftPackageReference "ChartView" */;
-			productName = SwiftUICharts;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A0C28C5524E455E9002297C1 /* Project object */;
 }
