@@ -166,14 +166,14 @@ class StockInfoTests: XCTestCase {
     func test_chartDataBy() throws {
         var promises:[XCTestExpectation] = []
         
-        promises.append(expectation(description: "Request finished"))
-        SwiftYFinance.chartDataBy(identifier: "AAPL"){
-            data, error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(data)
-            promises[0].fulfill()
-        }
-        
+//        promises.append(expectation(description: "Request finished"))
+//        SwiftYFinance.chartDataBy(identifier: "AAPL"){
+//            data, error in
+//            XCTAssertNil(error)
+//            XCTAssertNotNil(data)
+//            promises[0].fulfill()
+//        }
+//        
         promises.append(expectation(description: "Request finished"))
         SwiftYFinance.chartDataBy(identifier: "AAPL", start: Date(timeIntervalSince1970: 1)){
             data, error in
