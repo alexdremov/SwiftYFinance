@@ -54,6 +54,7 @@
 		93D244B788B25086442468A1CBB51404 /* Pods-StockInfo-StockInfoTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 99A24452F7E7560DBCD273780C56A205 /* Pods-StockInfo-StockInfoTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9B1D8A7798D8A6F518FC9AF9725431D0 /* URLConvertible+URLRequestConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE602B5C5D742683760E0F0E4FDC3EBF /* URLConvertible+URLRequestConvertible.swift */; };
 		9FED70D1E1FBFB80E974E999EF732258 /* RetryPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC4987111FD369191216FA07A2EFE7F /* RetryPolicy.swift */; };
+		A0464A0924E9643200EA0CB0 /* StringSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0464A0824E9643200EA0CB0 /* StringSearch.swift */; };
 		A07622D7792537498B6187E5487A6C34 /* ChartTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1161426370F98D84DC259C70D2E66C31 /* ChartTimeInterval.swift */; };
 		A738C2A39C0150BBA7EA5EC19B95F03E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 741659E98A167393E50CD0AAF13CD591 /* CFNetwork.framework */; };
 		A778CD02A9A7A0F1B0C8DDB9DAFA6F00 /* RecentStockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFCC12295BA7DBCCB8931504AAEBD1F /* RecentStockData.swift */; };
@@ -215,6 +216,7 @@
 		9B02793D0009CD8DCB06B1B00BB6B1B7 /* Price.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
 		9BB229C2DEF2BE62627BB576291B7FAF /* Pods-StockInfo-StockInfoTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-StockInfo-StockInfoTests.modulemap"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0464A0824E9643200EA0CB0 /* StringSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringSearch.swift; sourceTree = "<group>"; };
 		A2B57A210E81A07C19878314D1DF5498 /* Pods-StockInfo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-StockInfo-acknowledgements.plist"; sourceTree = "<group>"; };
 		A5BD27A73B62F9F98A101EDD19C51CA0 /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Source/SessionDelegate.swift; sourceTree = "<group>"; };
 		A7A5BC6B25244EE9C7BE2D199387C61D /* Pods-StockInfo.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-StockInfo.modulemap"; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 		59ACCAACF7D4AAD8397AC40A2FBC4AE0 /* Processing */ = {
 			isa = PBXGroup;
 			children = (
+				A0464A0824E9643200EA0CB0 /* StringSearch.swift */,
 				09C1F81942773AB351DA03C3C87A6D6E /* SwiftYFinance.swift */,
 			);
 			name = Processing;
@@ -857,6 +860,7 @@
 				A778CD02A9A7A0F1B0C8DDB9DAFA6F00 /* RecentStockData.swift in Sources */,
 				37160CAC76D7A1B1846106303C625426 /* RecommendationTrend.swift in Sources */,
 				469B106CC998D415C47465A2005ACF3B /* RequestError.swift in Sources */,
+				A0464A0924E9643200EA0CB0 /* StringSearch.swift in Sources */,
 				D1AFF834DCB38F6CAC8D2D257AC0EE47 /* StockChartData.swift in Sources */,
 				B519A721F16E3BD5D1F0BE1E65EC711F /* SummaryDetail.swift in Sources */,
 				2C45BC8465FE4C96B2CD431B376BFA19 /* SummaryProfile.swift in Sources */,

@@ -21,6 +21,10 @@ public class SwiftYFinance{
      - callback: Callback, two parameters will be passed
      */
     
+    static var crumb:String = ""
+    
+    static var cookies:String = ""
+    
     static var headers: HTTPHeaders = [
         "Accept": "*/*",
         "Pragma": "no-cache",
@@ -31,6 +35,43 @@ public class SwiftYFinance{
         "Accept-Encoding": "gzip, deflate, br"
     ]
     
+    private class func fetchCredentials(){
+        let semaphore = DispatchSemaphore(value: 0)
+        AF.request("https://finance.yahoo.com/quote/AAPL/history").response(queue:DispatchQueue.global(qos: .utility)){ response in
+            SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
+            if response.data == nil{
+                return
+            }
+           
+            let data = String(data: response.data!, encoding: .utf8)
+            if data == nil{
+                return
+            }
+            
+            let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
+            let regex = try! NSRegularExpression(pattern: pattern, options: [])
+            
+            let range = NSRange(location: 0, length: data!.utf16.count)
+
+            let match = regex.firstMatch(in: data!, options: [], range: range)
+            let crumbStr = String(data![Range(match!.range, in: data!)!])
+            
+            let wI = NSMutableString( string: crumbStr )
+            CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
+            let decodedStr = wI as String
+            SwiftYFinance.crumb = String(decodedStr.suffix(13).prefix(11))
+            
+            semaphore.signal()
+        }
+        semaphore.wait()
+    }
+    
+    private class func prepareCredentials(){
+        if SwiftYFinance.crumb == ""{
+            SwiftYFinance.fetchCredentials()
+        }
+    }
+    
     public class func fetchSearchDataBy(searchTerm:String, quotesCount:Int = 20, queue:DispatchQueue = .main, callback: @escaping ([YFQuoteSearchResult]?, Error?)->Void) {
         /*
          https://query1.finance.yahoo.com/v1/finance/search
@@ -39,6 +80,7 @@ public class SwiftYFinance{
             callback([], nil)
             return
         }
+        SwiftYFinance.prepareCredentials()
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
@@ -46,12 +88,18 @@ public class SwiftYFinance{
         urlComponents.queryItems = [
             URLQueryItem(name: "q", value: searchTerm),
             URLQueryItem(name: "lang", value: "en-US"),
+            URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
             URLQueryItem(name: "quotesCount", value: String(quotesCount))
         ]
-        
+
+        let config = URLSessionConfiguration.default
+        config.requestCachePolicy = .reloadIgnoringLocalCacheData
+        config.urlCache = nil
+
         
         URLCache.shared.removeAllCachedResponses()
         AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
+            
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -124,12 +172,14 @@ public class SwiftYFinance{
             return
         }
         
+        SwiftYFinance.prepareCredentials()
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v1/finance/search"
         urlComponents.queryItems = [
             URLQueryItem(name: "q", value: searchNews),
+            URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
             URLQueryItem(name: "lang", value: "en-US"),
             URLQueryItem(name: "newsCount", value: String(newsCount))
         ]
@@ -226,15 +276,22 @@ public class SwiftYFinance{
             return
         }
         
+        SwiftYFinance.prepareCredentials()
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
-        urlComponents.host = "query1.finance.yahoo.com"
+        urlComponents.host = "query2.finance.yahoo.com"
         urlComponents.path = "/v10/finance/quoteSummary/\(identifier)"
         urlComponents.queryItems = [
             URLQueryItem(name: "modules", value: selection.map({
                 data in
                 return String(data.rawValue)
             }).joined(separator: ",")),
+            URLQueryItem(name: "lang", value: "en-US"),
+            URLQueryItem(name: "region", value: "US"),
+            URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
+            URLQueryItem(name: "includePrePost", value: "true"),
+            URLQueryItem(name: "corsDomain", value: "finance.yahoo.com"),
+            URLQueryItem(name: ".tsrc", value: "finance"),
             URLQueryItem(name: "symbols",value: identifier)
         ]
         URLCache.shared.removeAllCachedResponses()
@@ -295,16 +352,21 @@ public class SwiftYFinance{
             return
         }
         
+        SwiftYFinance.prepareCredentials()
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v8/finance/chart/\(identifier)"
         urlComponents.queryItems = [
             URLQueryItem(name: "symbols", value: identifier),
+            URLQueryItem(name: "symbol", value: identifier),
             URLQueryItem(name: "region", value: "US"),
             URLQueryItem(name: "lang", value: "en-US"),
             URLQueryItem(name: "includePrePost", value: "false"),
             URLQueryItem(name: "corsDomain", value: "finance.yahoo.com"),
+            URLQueryItem(name: "interval", value: "2m"),
+            URLQueryItem(name: "range", value: "1d"),
+            URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
             URLQueryItem(name: ".tsrc", value: "finance"),
             URLQueryItem(name: "period1", value: String(Int(Date().timeIntervalSince1970))),
             URLQueryItem(name: "period2", value: String(Int(Date().timeIntervalSince1970)+10))
@@ -384,6 +446,7 @@ public class SwiftYFinance{
             return
         }
         
+        SwiftYFinance.prepareCredentials()
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
@@ -391,6 +454,7 @@ public class SwiftYFinance{
         urlComponents.queryItems = [
             URLQueryItem(name: "symbols", value: identifier),
             URLQueryItem(name: "symbol", value: identifier),
+            URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
             URLQueryItem(name: "period1", value: String(Int(start.timeIntervalSince1970))),
             URLQueryItem(name: "period2", value: String(Int(end.timeIntervalSince1970))),
             URLQueryItem(name: "interval", value: interval.rawValue),
@@ -467,8 +531,8 @@ public class SwiftYFinance{
      - identifier: Name of identifier
      - moment: `Date` type moment
      */
-    public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), queue:DispatchQueue = .main, callback: @escaping (StockChartData?, Error?)->Void){
-        self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60), end: moment, interval: .oneminute, queue: queue){
+    public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), futureMargin:TimeInterval = 0, queue:DispatchQueue = .main, callback: @escaping (StockChartData?, Error?)->Void){
+        self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: moment, interval: .oneminute, queue: queue){
             data, error in
             if data == nil{
                 callback(nil, error)
@@ -477,7 +541,13 @@ public class SwiftYFinance{
                     callback(nil, YFinanceResponseError(message: "No data found at this(\(moment)) moment"))
                     return
                 }
-                callback(data![data!.count - 1], error)
+                var i = data!.count - 1
+                var selectedForReturn:StockChartData = data![data!.count - 1]
+                while selectedForReturn.close == nil && selectedForReturn.open == nil && i>0{
+                    i -= 1
+                    selectedForReturn = data![i]
+                }
+                callback(selectedForReturn, error)
             }
         }
     }
@@ -485,10 +555,10 @@ public class SwiftYFinance{
     /**
      The same as `SwiftYFinance.recentChartDataAtMoment(...)` except that it executes synchronously and returns data rather than giving it to the callback.
      */
-    public class func syncRecentChartDataAtMoment(identifier:String, moment:Date=Date()) -> (StockChartData?, Error?){
+    public class func syncRecentChartDataAtMoment(identifier:String, moment:Date=Date(), futureMargin:TimeInterval = 0) -> (StockChartData?, Error?){
         var retData:StockChartData?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
-        self.recentChartDataAtMoment(identifier:identifier, moment:moment, queue: DispatchQueue.global(qos: .utility)){
+        self.recentChartDataAtMoment(identifier:identifier, moment:moment, futureMargin:futureMargin, queue: DispatchQueue.global(qos: .utility)){
             data, error in
             defer {
                 semaphore.signal()
