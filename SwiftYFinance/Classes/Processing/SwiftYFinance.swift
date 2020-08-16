@@ -118,7 +118,7 @@ public class SwiftYFinance{
         config.urlCache = nil
 
         
-        URLCache.shared.removeAllCachedResponses()
+         
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
             
             if (response.error != nil){
@@ -209,7 +209,7 @@ public class SwiftYFinance{
         
         
         
-        URLCache.shared.removeAllCachedResponses()
+         
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
@@ -319,7 +319,7 @@ public class SwiftYFinance{
             URLQueryItem(name: "symbols",value: identifier),
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
-        URLCache.shared.removeAllCachedResponses()
+         
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
@@ -398,7 +398,7 @@ public class SwiftYFinance{
             URLQueryItem(name: "period2", value: String(Int(Date().timeIntervalSince1970)+10)),
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
-        URLCache.shared.removeAllCachedResponses()
+         
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
@@ -490,7 +490,7 @@ public class SwiftYFinance{
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
         
-        URLCache.shared.removeAllCachedResponses()
+         
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
