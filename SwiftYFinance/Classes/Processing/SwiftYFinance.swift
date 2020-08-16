@@ -4,6 +4,7 @@
 //
 //  Created by Александр Дремов on 11.08.2020.
 //
+// 64EV2U9O94O2A758
 
 import Foundation
 import SwiftyJSON
@@ -25,6 +26,8 @@ public class SwiftYFinance{
     
     static var cookies:String = ""
     
+    static var cacheCounter:Int = 0
+    
     static var headers: HTTPHeaders = [
         "Accept": "*/*",
         "Pragma": "no-cache",
@@ -35,10 +38,26 @@ public class SwiftYFinance{
         "Accept-Encoding": "gzip, deflate, br"
     ]
     
+    
+    static var session:Session = {
+        let configuration = Session.default.sessionConfiguration
+//        configuration.waitsForConnectivity = false
+        configuration.httpShouldSetCookies = false
+        configuration.requestCachePolicy = .reloadIgnoringCacheData
+
+        return Session(configuration: configuration)
+    }()
+    
+    
     private class func fetchCredentials(){
         let semaphore = DispatchSemaphore(value: 0)
-        AF.request("https://finance.yahoo.com/quote/AAPL/history").response(queue:DispatchQueue.global(qos: .utility)){ response in
+        session.request("https://finance.yahoo.com/quote/AAPL/history").response(queue:DispatchQueue.global(qos: .utility)){ response in
             SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
+            let splitted = SwiftYFinance.cookies.split(separator: ";")
+            if splitted.count == 0{
+                return
+            }
+            SwiftYFinance.cookies = String(splitted[0])
             if response.data == nil{
                 return
             }
@@ -85,11 +104,13 @@ public class SwiftYFinance{
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v1/finance/search"
+        SwiftYFinance.cacheCounter += 1
         urlComponents.queryItems = [
             URLQueryItem(name: "q", value: searchTerm),
             URLQueryItem(name: "lang", value: "en-US"),
             URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
-            URLQueryItem(name: "quotesCount", value: String(quotesCount))
+            URLQueryItem(name: "quotesCount", value: String(quotesCount)),
+            URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
 
         let config = URLSessionConfiguration.default
@@ -98,7 +119,7 @@ public class SwiftYFinance{
 
         
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
+        session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
             
             if (response.error != nil){
                 callback(nil, response.error)
@@ -177,17 +198,19 @@ public class SwiftYFinance{
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v1/finance/search"
+        SwiftYFinance.cacheCounter += 1
         urlComponents.queryItems = [
             URLQueryItem(name: "q", value: searchNews),
             URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
             URLQueryItem(name: "lang", value: "en-US"),
-            URLQueryItem(name: "newsCount", value: String(newsCount))
+            URLQueryItem(name: "newsCount", value: String(newsCount)),
+            URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
         
         
         
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
+        session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -281,6 +304,7 @@ public class SwiftYFinance{
         urlComponents.scheme = "https"
         urlComponents.host = "query2.finance.yahoo.com"
         urlComponents.path = "/v10/finance/quoteSummary/\(identifier)"
+        SwiftYFinance.cacheCounter += 1
         urlComponents.queryItems = [
             URLQueryItem(name: "modules", value: selection.map({
                 data in
@@ -292,10 +316,11 @@ public class SwiftYFinance{
             URLQueryItem(name: "includePrePost", value: "true"),
             URLQueryItem(name: "corsDomain", value: "finance.yahoo.com"),
             URLQueryItem(name: ".tsrc", value: "finance"),
-            URLQueryItem(name: "symbols",value: identifier)
+            URLQueryItem(name: "symbols",value: identifier),
+            URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
+        session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -357,6 +382,7 @@ public class SwiftYFinance{
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v8/finance/chart/\(identifier)"
+        SwiftYFinance.cacheCounter += 1
         urlComponents.queryItems = [
             URLQueryItem(name: "symbols", value: identifier),
             URLQueryItem(name: "symbol", value: identifier),
@@ -369,10 +395,11 @@ public class SwiftYFinance{
             URLQueryItem(name: "crumb", value: SwiftYFinance.crumb),
             URLQueryItem(name: ".tsrc", value: "finance"),
             URLQueryItem(name: "period1", value: String(Int(Date().timeIntervalSince1970))),
-            URLQueryItem(name: "period2", value: String(Int(Date().timeIntervalSince1970)+10))
+            URLQueryItem(name: "period2", value: String(Int(Date().timeIntervalSince1970)+10)),
+            URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
+        session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
@@ -451,6 +478,7 @@ public class SwiftYFinance{
         urlComponents.scheme = "https"
         urlComponents.host = "query1.finance.yahoo.com"
         urlComponents.path = "/v8/finance/chart/\(identifier)"
+        SwiftYFinance.cacheCounter += 1
         urlComponents.queryItems = [
             URLQueryItem(name: "symbols", value: identifier),
             URLQueryItem(name: "symbol", value: identifier),
@@ -458,11 +486,12 @@ public class SwiftYFinance{
             URLQueryItem(name: "period1", value: String(Int(start.timeIntervalSince1970))),
             URLQueryItem(name: "period2", value: String(Int(end.timeIntervalSince1970))),
             URLQueryItem(name: "interval", value: interval.rawValue),
-            URLQueryItem(name: "includePrePost", value: "true")
+            URLQueryItem(name: "includePrePost", value: "true"),
+            URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
         
         URLCache.shared.removeAllCachedResponses()
-        AF.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
+        session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
                 return
