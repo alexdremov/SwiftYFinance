@@ -2,6 +2,7 @@
 
 [![Language](https://img.shields.io/github/languages/top/AlexRoar/SwiftYFinance)](https://cocoapods.org/pods/SwiftYFinance)
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AlexRoar/SwiftYFinance/Swift)](https://cocoapods.org/pods/SwiftYFinance)
+[![codecov](https://codecov.io/gh/AlexRoar/SwiftYFinance/branch/master/graph/badge.svg)](https://codecov.io/gh/AlexRoar/SwiftYFinance)
 [![Version](https://img.shields.io/cocoapods/v/SwiftYFinance.svg?style=flat)](https://cocoapods.org/pods/SwiftYFinance)
 [![License](https://img.shields.io/cocoapods/l/SwiftYFinance.svg?style=flat)](https://cocoapods.org/pods/SwiftYFinance)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftYFinance.svg?style=flat)](https://cocoapods.org/pods/SwiftYFinance)
