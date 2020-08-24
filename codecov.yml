@@ -1,16 +1,3 @@
-coverage:
-  status:
-    project:
-      default:
-        target: auto
-      Example:
-        target: auto
-        flags:
-          - Example
-      SwiftYFinance:
-        target: auto
-        flags:
-          - SwiftYFinance
 comment:
   layout: "reach, diff, flags, files"
   behavior: default
@@ -18,12 +5,5 @@ comment:
   require_base: yes
   require_head: yes       
   branches: null
-flags:
-  SwiftYFinance:
-    paths:
-      - SwiftYFinance
-    carryforward: false
-  moduleB:
-    paths:
-      - Example
-    carryforward: false
+ignore:
+  - "Example/**/*"  # ignore folders and all its contents
