@@ -512,7 +512,7 @@ public class SwiftYFinance{
             let adjClose = fullData?["indicators"]?["adjclose"][0]["adjclose"].array
             let timestamps = fullData?["timestamp"]?.array
             
-            var result:[StockChartData] = [];
+            var result:[StockChartData] = []
             
             if timestamps == nil{
                 callback([], YFinanceResponseError(message: "Empty chart data"))
