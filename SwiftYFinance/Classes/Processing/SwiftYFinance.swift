@@ -77,7 +77,7 @@ public class SwiftYFinance {
                     
                     let range = NSRange(location: 0, length: data!.utf16.count)
 
-                    let match = regex.firstMatch(in: data!, options: [], range: range)
+                    let match = regex!.firstMatch(in: data!, options: [], range: range)
                     let crumbStr = String(data![Range(match!.range, in: data!)!])
                     
                     let wI = NSMutableString( string: crumbStr )
