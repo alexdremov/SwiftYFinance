@@ -10,7 +10,7 @@ language: swift
 # - gem install cocoapods # Since Travis is not always on latest version
 # - pod install --project-directory=Example
 xcode_workspace: Example/StockInfo.xcworkspace # path to your xcodeproj folder
-xcode_scheme: StockInfo 
+xcode_scheme: StockInfo
 podfile: Example/Podfile
 xcode_destination: platform=iOS Simulator,name=iPhone 11 Pro Max,OS=13.6
 after_success:

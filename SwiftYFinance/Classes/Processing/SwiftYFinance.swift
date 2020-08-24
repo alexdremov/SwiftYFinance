@@ -54,7 +54,7 @@ public class SwiftYFinance{
         session.request("https://finance.yahoo.com/quote/AAPL/history").response(queue:DispatchQueue.global(qos: .utility)){ response in
             SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
             let splitted = SwiftYFinance.cookies.split(separator: ";")
-            if splitted.count == 0{
+            if splitted.isEmpty{
                 return
             }
             SwiftYFinance.cookies = String(splitted[0])
@@ -566,7 +566,7 @@ public class SwiftYFinance{
             if data == nil{
                 callback(nil, error)
             }else{
-                if (data!.count == 0){
+                if (data!.isEmpty){
                     callback(nil, YFinanceResponseError(message: "No data found at this(\(moment)) moment"))
                     return
                 }
