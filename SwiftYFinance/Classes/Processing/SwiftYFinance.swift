@@ -70,10 +70,6 @@ public class SwiftYFinance {
                     
                     let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
                     let regex = try? NSRegularExpression(pattern: pattern, options: [])
-
-                    if regex == nil {
-                        return
-                    }
                     
                     let range = NSRange(location: 0, length: data!.utf16.count)
 
