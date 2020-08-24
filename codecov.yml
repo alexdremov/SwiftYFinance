@@ -6,4 +6,4 @@ comment:
   require_head: yes       
   branches: null
 ignore:
-  - "Example/**/*"  # ignore folders and all its contents
+  - "Example/**/*"
