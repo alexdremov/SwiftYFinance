@@ -2,7 +2,7 @@
 # * https://www.objc.io/issues/6-build-tools/travis-ci/
 # * https://github.com/supermarin/xcpretty#usage
 
-osx_image: xcode11.4
+osx_image: xcode11.6
 language: swift
 # cache: cocoapods
 # podfile: Example/Podfile
@@ -12,4 +12,4 @@ language: swift
 xcode_workspace: Example/StockInfo.xcworkspace # path to your xcodeproj folder
 xcode_scheme: StockInfo 
 podfile: Example/Podfile
-xcode_destination: platform=iOS Simulator,OS=13.6,name=iPhone 11 Pro Max
+xcode_destination: platform=iOS Simulator,name=iPhone 11 Pro Max,OS=13.6
