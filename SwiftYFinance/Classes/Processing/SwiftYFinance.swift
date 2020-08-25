@@ -562,7 +562,15 @@ public class SwiftYFinance{
      */
     public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), futureMargin:TimeInterval = 0, queue:DispatchQueue = .main, callback: @escaping (StockChartData?, Error?)->Void){
         self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: moment, interval: .oneminute, queue: queue){
-            data, error in
+            dataLet, errorLet in
+            
+            var data = dataLet
+            var error = errorLet 
+            
+            if data == nil{
+                (data, error) = self.syncChartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: moment, interval: .oneday)
+            }
+            
             if data == nil{
                 callback(nil, error)
             }else{
