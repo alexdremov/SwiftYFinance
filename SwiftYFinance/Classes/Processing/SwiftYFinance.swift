@@ -10,10 +10,10 @@ import Foundation
 import SwiftyJSON
 import Alamofire
 
-/** Main class of SwiftYFinance. Asynchronous methods' callback always will have  format: `Some Data?, Error?`. If error is non-nil, then data is going to be nil. Review Error description to find out what's wrong.
+/** Main class of SwiftYFinance. Asynchronous methods' callback always will have format: `Some Data?, Error?`. If error is non-nil, then data is going to be nil. Review Error description to find out what's wrong.
  * Synchronous API is also provided. The only difference is that it blocks the thread and returns data rather than passing it to the callback.
  */
-public class SwiftYFinance{
+public class SwiftYFinance {
     /**
      Searches quote in Yahoo finances and returns found results
      - Parameters:
@@ -38,7 +38,6 @@ public class SwiftYFinance{
         "Accept-Encoding": "gzip, deflate, br"
     ]
     
-    
     static var session:Session = {
         let configuration = Session.default.sessionConfiguration
 //        configuration.waitsForConnectivity = false
@@ -51,36 +50,38 @@ public class SwiftYFinance{
     
     private class func fetchCredentials(){
         let semaphore = DispatchSemaphore(value: 0)
-        session.request("https://finance.yahoo.com/quote/AAPL/history").response(queue:DispatchQueue.global(qos: .utility)){ response in
-            SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
-            let splitted = SwiftYFinance.cookies.split(separator: ";")
-            if splitted.count == 0{
-                return
-            }
-            SwiftYFinance.cookies = String(splitted[0])
-            if response.data == nil{
-                return
-            }
-           
-            let data = String(data: response.data!, encoding: .utf8)
-            if data == nil{
-                return
-            }
-            
-            let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
-            let regex = try! NSRegularExpression(pattern: pattern, options: [])
-            
-            let range = NSRange(location: 0, length: data!.utf16.count)
+        session.request("https://finance.yahoo.com/quote/AAPL/history")
+                .response(queue:DispatchQueue.global(qos: .utility)) {
+                    response in
+                    SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
+                    let splitted = SwiftYFinance.cookies.split(separator: ";")
+                    if splitted.isEmpty{
+                        return
+                    }
+                    SwiftYFinance.cookies = String(splitted[0])
+                    if response.data == nil{
+                        return
+                    }
+                
+                    let data = String(data: response.data!, encoding: .utf8)
+                    if data == nil{
+                        return
+                    }
+                    
+                    let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
+                    let regex = try? NSRegularExpression(pattern: pattern, options: [])
+                    
+                    let range = NSRange(location: 0, length: data!.utf16.count)
 
-            let match = regex.firstMatch(in: data!, options: [], range: range)
-            let crumbStr = String(data![Range(match!.range, in: data!)!])
-            
-            let wI = NSMutableString( string: crumbStr )
-            CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
-            let decodedStr = wI as String
-            SwiftYFinance.crumb = String(decodedStr.suffix(13).prefix(11))
-            
-            semaphore.signal()
+                    let match = regex!.firstMatch(in: data!, options: [], range: range)
+                    let crumbStr = String(data![Range(match!.range, in: data!)!])
+                    
+                    let wI = NSMutableString( string: crumbStr )
+                    CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
+                    let decodedStr = wI as String
+                    SwiftYFinance.crumb = String(decodedStr.suffix(13).prefix(11))
+                    
+                    semaphore.signal()
         }
         semaphore.wait()
     }
@@ -116,48 +117,48 @@ public class SwiftYFinance{
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         config.urlCache = nil
-
-        
          
-        session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
-            
-            if (response.error != nil){
-                callback(nil, response.error)
-                return
-            }
-            
-            var result:[YFQuoteSearchResult] = []
-            let json = try! JSON(data: response.value!)
-            
-            if let _ = json["chart"]["error"]["description"].string{
-                callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
-                return
-            }
-            if let _ = json["finance"]["error"]["description"].string{
-                callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
-                return
-            }
-            
-            if json["search"]["error"]["description"].string != nil{
-                callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
-                return
-            }
-            
-            if (json["quotes"].array == nil){
-                callback(nil, YFinanceResponseError(message: "Empty response"))
-                return
-            }
-            
-            for found in json["quotes"].array!{
-                result.append(YFQuoteSearchResult(
-                    symbol: found["symbol"].string,
-                    shortname: found["shortname"].string,
-                    longname: found["longname"].string,
-                    exchange: found["exchange"].string,
-                    assetType: found["typeDisp"].string
-                ))
-            }
-            callback(result, nil)
+        session.request(urlComponents, headers: SwiftYFinance.headers)
+                .responseData(queue:queue) {
+                    response  in
+                    
+                    if response.error != nil {
+                        callback(nil, response.error)
+                        return
+                    }
+                    
+                    var result: [YFQuoteSearchResult] = []
+                    let json = try! JSON(data: response.value!)
+                    
+                    if nil != json["chart"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
+                        return
+                    }
+                    if nil != json["finance"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
+                        return
+                    }
+                    
+                    if json["search"]["error"]["description"].string != nil{
+                        callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
+                        return
+                    }
+                    
+                    if json["quotes"].array == nil{
+                        callback(nil, YFinanceResponseError(message: "Empty response"))
+                        return
+                    }
+                    
+                    for found in json["quotes"].array!{
+                        result.append(YFQuoteSearchResult(
+                            symbol: found["symbol"].string,
+                            shortname: found["shortname"].string,
+                            longname: found["longname"].string,
+                            exchange: found["exchange"].string,
+                            assetType: found["typeDisp"].string
+                        ))
+                    }
+                    callback(result, nil)
         }
     }
     
@@ -165,7 +166,7 @@ public class SwiftYFinance{
      The same as `SwiftYFinance.fetchSearchDataBy` except that it executes synchronously and returns data rather than giving it to the callback.
      */
     public class func syncFetchSearchDataBy(searchTerm:String, quotesCount:Int = 20) -> ([YFQuoteSearchResult]?, Error?) {
-        var retData:[YFQuoteSearchResult]?, retError:Error?
+        var retData: [YFQuoteSearchResult]?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
         self.fetchSearchDataBy(searchTerm: searchTerm, quotesCount:quotesCount, queue: DispatchQueue.global(qos: .utility)){
             data, error in
@@ -216,7 +217,7 @@ public class SwiftYFinance{
                 return
             }
             
-            var result:[YFNewsSearchResult] = []
+            var result: [YFNewsSearchResult] = []
             let json = try! JSON(data: response.value!)
             
             if json["chart"]["error"]["description"].string != nil{
@@ -250,7 +251,7 @@ public class SwiftYFinance{
      The same as `SwiftYFinance.fetchSearchDataBy(...)` except that it executes synchronously and returns data rather than giving it to the callback.
      */
     public class func syncFetchSearchDataBy(searchNews:String, newsCount:Int = 20) -> ([YFNewsSearchResult]?, Error?) {
-        var retData:[YFNewsSearchResult]?, retError:Error?
+        var retData: [YFNewsSearchResult]?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
         self.fetchSearchDataBy(searchNews: searchNews, newsCount:newsCount, queue: DispatchQueue.global(qos: .utility)){
             data, error in
@@ -274,14 +275,14 @@ public class SwiftYFinance{
      - selection: Which area of summary to get
      */
     public class func summaryDataBy(identifier:String,   selection:QuoteSummarySelection = .supported, queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void) {
-        summaryDataBy(identifier:identifier, selection:[selection], queue: queue, callback: callback)
+        summaryDataBy(identifier:identifier, selection: [selection], queue: queue, callback: callback)
     }
     
     /**
      The same as `SwiftYFinance.summaryDataBy(...)` except that it executes synchronously and returns data rather than giving it to the callback.
      */
     public class func syncSummaryDataBy(identifier:String, selection:QuoteSummarySelection = .supported) ->  (IdentifierSummary?, Error?){
-        return self.syncSummaryDataBy(identifier:identifier, selection:[selection])
+        return self.syncSummaryDataBy(identifier:identifier, selection: [selection])
     }
     
     /**
@@ -292,7 +293,7 @@ public class SwiftYFinance{
      - selection: Which areas of summary to get
      - TODO: return not JSON but custom type
      */
-    public class func summaryDataBy(identifier:String, selection:[QuoteSummarySelection], queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void){
+    public class func summaryDataBy(identifier:String, selection: [QuoteSummarySelection], queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void){
         
         if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
             callback(nil, YFinanceResponseError(message: "Empty identifier"))
@@ -348,7 +349,7 @@ public class SwiftYFinance{
     /**
      The same as `SwiftYFinance.summaryDataBy(...)` except that it executes synchronously and returns data rather than giving it to the callback.
      */
-    public class func syncSummaryDataBy(identifier:String, selection:[QuoteSummarySelection]) ->  (IdentifierSummary?, Error?){
+    public class func syncSummaryDataBy(identifier:String, selection: [QuoteSummarySelection]) ->  (IdentifierSummary?, Error?){
         var retData: IdentifierSummary?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
         self.summaryDataBy(identifier: identifier, selection:selection, queue: DispatchQueue.global(qos: .utility)){
@@ -512,7 +513,7 @@ public class SwiftYFinance{
             let adjClose = fullData?["indicators"]?["adjclose"][0]["adjclose"].array
             let timestamps = fullData?["timestamp"]?.array
             
-            var result:[StockChartData] = [];
+            var result: [StockChartData] = []
             
             if timestamps == nil{
                 callback([], YFinanceResponseError(message: "Empty chart data"))
@@ -537,7 +538,7 @@ public class SwiftYFinance{
      The same as `SwiftYFinance.chartDataBy(...)` except that it executes synchronously and returns data rather than giving it to the callback.
      */
     public class func syncChartDataBy(identifier:String, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday) -> ([StockChartData]?, Error?){
-        var retData:[StockChartData]?, retError:Error?
+        var retData: [StockChartData]?, retError:Error?
         let semaphore = DispatchSemaphore(value: 0)
         self.chartDataBy(identifier:identifier, start:start, end:end, interval:interval, queue: DispatchQueue.global(qos: .utility)){
             data, error in
@@ -574,7 +575,7 @@ public class SwiftYFinance{
             if data == nil{
                 callback(nil, error)
             }else{
-                if (data!.count == 0){
+                if (data!.isEmpty){
                     callback(nil, YFinanceResponseError(message: "No data found at this(\(moment)) moment"))
                     return
                 }

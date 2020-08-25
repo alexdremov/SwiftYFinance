@@ -20,3 +20,5 @@ jobs:
           cd Example
           pod install
           xcodebuild clean test -workspace StockInfo.xcworkspace -scheme StockInfo -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max,OS=13.6'
+      - name: Code coverage
+        run: bash <(curl -s https://codecov.io/bash)
