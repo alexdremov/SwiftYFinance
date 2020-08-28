@@ -37,7 +37,6 @@ struct SheetView: View {
 
             ScrollView(.vertical) {
                 VStack{
-                    ChartSmoothView(points: points, style: style).padding()
                     Group{
                         Group{
                         HStack{
@@ -48,7 +47,7 @@ struct SheetView: View {
                             Spacer()
                         }
                             VStack{
-                                
+                                ChartSmoothView(points: points, style: style).padding()
                                 HStack{
                                     Button(action: {
                                         self.interval=ChartTimeInterval.oneminute
