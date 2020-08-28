@@ -42,8 +42,7 @@ public class SwiftYFinance {
     
     /**
      Session to use in all requests.
-     @note it is crucial as without httpShouldSetCookies parameter, sometemes, Yahoo sends invalid cookies that are saved.
-     Then, all consequent requests corrupt.
+     - Note: it is crucial as without httpShouldSetCookies parameter, sometemes, Yahoo sends invalid cookies that are saved. Then, all consequent requests corrupt.
      */
     static var session:Session = {
         let configuration = Session.default.sessionConfiguration
@@ -56,7 +55,7 @@ public class SwiftYFinance {
     
     /**
      Fetches crumb and cookies
-     @note blocks the thread.
+     - Note: blocks the thread.
      */
     private class func fetchCredentials() {
         let semaphore = DispatchSemaphore(value: 0)
@@ -111,9 +110,10 @@ public class SwiftYFinance {
     /**
      Searches quote in Yahoo finances and returns found results
      - Parameters:
-     - searchTerm: String to search
-     - quotesCount: Maximum found elements to load
-     - callback: Callback, two parameters will be passed
+        - searchTerm: String to search
+        - quotesCount: Maximum found elements to load
+        - queue: queue to use for request asyncgtonous processing
+        - callback: callback, two parameters will be passed
      */
     public class func fetchSearchDataBy(searchTerm:String, quotesCount:Int = 20, queue:DispatchQueue = .main, callback: @escaping ([YFQuoteSearchResult]?, Error?)->Void) {
         /*
@@ -290,8 +290,10 @@ public class SwiftYFinance {
      Fetches summary information about identifier.
      - Warning: Identifier must exist or data will be nil and error will be setten
      - Parameters:
-     - identifier: Name of identifier
-     - selection: Which area of summary to get
+        - identifier: Name of identifier
+        - selection: Which area of summary to get
+        - queue: queue to use for request asyncgtonous processing
+        - callback: callback, two parameters will be passed
      */
     public class func summaryDataBy(identifier:String,   selection:QuoteSummarySelection = .supported, queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void) {
         summaryDataBy(identifier:identifier, selection: [selection], queue: queue, callback: callback)
@@ -308,8 +310,10 @@ public class SwiftYFinance {
      Fetches summary information about identifier.
      - Warning: Identifier must exist or data will be nil and error will be setten
      - Parameters:
-     - identifier: Name of identifier
-     - selection: Which areas of summary to get
+        - identifier: Name of identifier
+        - selection: Which areas of summary to get
+        - queue: queue to use for request asyncgtonous processing
+        - callback: callback, two parameters will be passed
      - TODO: return not JSON but custom type
      */
     public class func summaryDataBy(identifier:String, selection: [QuoteSummarySelection], queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void){
@@ -388,7 +392,9 @@ public class SwiftYFinance {
      Fetches the most recent data about identifier collecting basic information.
      - Warning: Identifier must exist or data will be nil and error will be setten
      - Parameters:
-     - identifier: Name of identifier
+        - identifier: Name of identifier
+        - queue: queue to use for request asyncgtonous processing
+        - callback: callback, two parameters will be passed
      */
     public class func recentDataBy(identifier:String, queue:DispatchQueue = .main, callback: @escaping (RecentStockData?, Error?)->Void){
         
@@ -481,10 +487,12 @@ public class SwiftYFinance {
      * Identifier must exist or data will be nil and error will be setten
      * When you select minute – day interval, you can't get historicaly old points. Select oneday interval if you want to fetch maximum available number of points.
      - Parameters:
-     - identifier: Name of identifier
-     - start: `Date` type start of points retrieve
-     - end: `Date` type end of points retrieve
-     - interval: interval between points
+        - identifier: Name of identifier
+        - start: `Date` type start of points retrieve
+        - end: `Date` type end of points retrieve
+        - interval: interval between points
+        - queue: queue to use for request asyncgtonous processing
+        - callback: callback, two parameters will be passed
      */
     public class func chartDataBy(identifier:String, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday, queue:DispatchQueue = .main, callback: @escaping ([StockChartData]?, Error?)->Void){
         
@@ -577,18 +585,23 @@ public class SwiftYFinance {
      Fetches chart data at moment or the closest one from the past.
      - Warning: Identifier must exist or data will be nil and error will be setten
      - Parameters:
-     - identifier: Name of identifier
-     - moment: `Date` type moment
+        - identifier: Name of identifier
+        - moment: moment at witch data will be fetched
+        - futureMargin: seconds to margin into the future
+        - queue: queue to use for request asyncgtonous processing
+        - queue: queue to use for request asyncgtonous processing
+        - callback: callback, two parameters will be passed
      */
     public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), futureMargin:TimeInterval = 0, queue:DispatchQueue = .main, callback: @escaping (StockChartData?, Error?)->Void){
-        self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: moment, interval: .oneminute, queue: queue){
+        let momentWithMargin = Date(timeIntervalSince1970: moment.timeIntervalSince1970 + futureMargin);
+        self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: momentWithMargin.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: momentWithMargin, interval: .oneminute, queue: queue){
             dataLet, errorLet in
             
             var data = dataLet
             var error = errorLet 
             
             if data == nil{
-                (data, error) = self.syncChartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: moment.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: moment, interval: .oneday)
+                (data, error) = self.syncChartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: momentWithMargin.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: momentWithMargin, interval: .oneday)
             }
             
             if data == nil{
