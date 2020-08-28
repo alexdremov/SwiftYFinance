@@ -593,7 +593,7 @@ public class SwiftYFinance {
         - callback: callback, two parameters will be passed
      */
     public class func recentChartDataAtMoment(identifier:String, moment:Date=Date(), futureMargin:TimeInterval = 0, queue:DispatchQueue = .main, callback: @escaping (StockChartData?, Error?)->Void){
-        let momentWithMargin = Date(timeIntervalSince1970: moment.timeIntervalSince1970 + futureMargin);
+        let momentWithMargin = Date(timeIntervalSince1970: moment.timeIntervalSince1970 + futureMargin)
         self.chartDataBy(identifier: identifier, start: Date(timeIntervalSince1970: momentWithMargin.timeIntervalSince1970 - 7 * 24 * 60 * 60 + futureMargin), end: momentWithMargin, interval: .oneminute, queue: queue){
             dataLet, errorLet in
             
