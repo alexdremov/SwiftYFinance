@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftYFinance'
-  s.version          = '1.2.3'
+  s.version          = '1.3.0'
   s.summary          = 'Yahoo Finance library with the power of Swift'
 
   s.swift_version   = '5.0'
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-  Provides methods for major Yahoo Finance APIs. Perfect if you need fast asynchronous stock data fetch library
+  Provides methods for major Yahoo Finance APIs. Perfect if you need fast asynchronous stock data fetching library
                        DESC
 
   s.homepage         = 'https://github.com/AlexRoar/SwiftYFinance'
