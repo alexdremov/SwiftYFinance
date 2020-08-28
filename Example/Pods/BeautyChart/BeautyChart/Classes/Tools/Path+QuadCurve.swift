@@ -10,14 +10,14 @@ import SwiftUI
 extension Path {
     func trimmedPath(for percent: CGFloat) -> Path {
         // percent difference between points
-        let boundsDistance: CGFloat = 0.001
-        let completion: CGFloat = 1 - boundsDistance
+        let diff: CGFloat = 0.0001
+        let comp: CGFloat = 1 - diff
         
         let pct = percent > 1 ? 0 : (percent < 0 ? 1 : percent)
         
-        let start = pct > completion ? completion : pct - boundsDistance
-        let end = pct > completion ? 1 : pct + boundsDistance
-        return trimmedPath(from: start, to: end)
+        let f = pct > comp ? comp : pct
+        let t = pct > comp ? 1 : pct + diff
+        return trimmedPath(from: f, to: t)
     }
     
     func point(for percent: CGFloat) -> CGPoint {
@@ -34,6 +34,7 @@ extension Path {
     
     var length: CGFloat {
         var ret: CGFloat = 0.0
+        
         var start: CGPoint?
         var point = CGPoint.zero
         
@@ -106,6 +107,7 @@ extension Path {
                     ret += point.curve(to: to, control1: control1, control2: control2, x: maxX)
                     return
                 }
+                print(to.x)
                 ret += point.curve(to: to, control1: control1, control2: control2)
                 point = to
             case .closeSubpath:

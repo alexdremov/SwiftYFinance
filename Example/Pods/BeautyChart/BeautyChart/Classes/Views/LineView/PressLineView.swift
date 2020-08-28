@@ -8,26 +8,29 @@
 import SwiftUI
 
 struct PressLineView: View {
-    @ObservedObject var position:PressPositionWrapper
-    var style:LineViewStyleAdaptive
+    var pressPosition:Binding<CGPoint>
+    var indicatorPoint:Binding<CGPoint>
+    var text:Binding<String>
     
-    var rectOutlay = 5
+    var style:LineViewStyleAdaptive
     
     var body: some View {
         ZStack{
-            IndicatorPoint(style:style).position(position.pointPosition)
+            IndicatorPoint(style:style).position(indicatorPoint.wrappedValue)
             Group{
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(style.movingRectColor, lineWidth: 2)
-                    .shadow(color: Colors.LegendText, radius: 12, x: 0, y: 6 )
-                    .opacity(0.5)
-                    .frame(width: 60, height: position.coordinates!.size.height + CGFloat(rectOutlay * 2))
-                    .position(x: position.pointPosition.x, y: (position.coordinates!.size.height)/2 - CGFloat(rectOutlay / 2))
+                GeometryReader { proxy in
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(self.style.movingRectColor, lineWidth: 2)
+                        .shadow(color: Colors.LegendText, radius: 12, x: 0, y: 6 )
+                        .opacity(0.5)
+                        .frame(width: 60, height: proxy.size.height)
+                        .position(x: self.pressPosition.wrappedValue.x, y: proxy.size.height / 2)
+                }
             }
             
-            Text(position.text)
+            Text(text.wrappedValue)
                 .fontWeight(.semibold)
-            .position(x: position.pointPosition.x, y: position.coordinates!.size.height*0.2)
+                .position(x: pressPosition.wrappedValue.x, y: 20)
         }.drawingGroup()
         
     }

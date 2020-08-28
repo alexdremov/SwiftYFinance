@@ -62,12 +62,15 @@ public struct LineViewStyleAdaptive{
     
     public var bezierStepMode = true
     public var bezierStepSmoothen = 0.06
+    public var noInterpolation = false
     
     public var globalBackground:Color = Color.white
+    
     public var dropShadow:Bool = true
+    public var shadowColor:Color = .gray
+    public var shadowRadius:Float = 3
     
     public var displayHLines:Bool = false
-    
     public var displayPoints:Bool = false
     
     public var displayHTicks:Bool = true
@@ -84,6 +87,11 @@ public struct LineViewStyleAdaptive{
     public var movingRectColor:Color = Colors.GradientPurple
     
     public var movingFrameCloserPointMethod:[Axis] = [.horizontal]
+    
+    public var showInterpolationValue = false
+    public var showedValueRounding:Int = 2
+    
+    public var magnifyOnLongPress:Bool = false
     
     
     public init(){}

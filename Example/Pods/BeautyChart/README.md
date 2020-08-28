@@ -5,11 +5,13 @@
 [![License](https://img.shields.io/cocoapods/l/BeautyChart.svg?style=flat)](https://cocoapods.org/pods/BeautyChart)
 [![Platform](https://img.shields.io/cocoapods/p/BeautyChart.svg?style=flat)](https://cocoapods.org/pods/BeautyChart)
 
-## Example
+<section style="text-align:center">
+    <img src="Assets/RPReplay_Final1598345909.gif" width="200px" style="margin: auto">
+</section>
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
+Why making charts if they are not beautiful?
+***Design and ideas partly copied from [AppPear/ChartView](https://github.com/AppPear/ChartView)***
 
 ## Installation
 
@@ -19,6 +21,9 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'BeautyChart'
 ```
+
+## Why?
+I needed to include charts into my project, but existing solutions were ugly. I found [AppPear/ChartView](https://github.com/AppPear/ChartView) but didn't like its' architecture, little to no configuration capabilities. Therefore, I implemented what I needed by myself.
 
 ## Author
 

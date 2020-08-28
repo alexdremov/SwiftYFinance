@@ -23,7 +23,7 @@ public struct CGPointsSet{
             miny = min(point.y, miny ?? point.y)
             maxy = max(point.y, maxy ?? point.y)
         }
-        return ((minx!, maxx!), (miny!, maxy!))
+        return ((minx ?? 0, maxx ?? 0), (miny ?? 0, maxy ?? 0))
     }
     
     var ranges:(CGFloat, CGFloat){
@@ -47,6 +47,10 @@ public struct CGPointsSet{
         let point = points[i]
         let limitsCache = self.limits
         let rangeCache = self.rangeForLimits(lims: limitsCache)
+        
+        if (points.count<=1){
+            return CGPoint(x: 0, y: 0)
+        }
         
         let newX = (point.x - limitsCache.0.0) / rangeCache.0 * CGFloat(width)
         
@@ -78,6 +82,9 @@ public struct CGPointsSet{
     }
     
     func closestPoint(_ refPoint:CGPoint, axes:[Axis] = [.horizontal, .vertical])->CGPoint{
+        if (self.points.count == 0){
+            return CGPoint(x: 0, y:0)
+        }
         var point = points[0]
         for i in 1..<points.count{
             switch axes {
