@@ -3,31 +3,33 @@
 //  SwiftYFinance
 //
 //  Created by Александр Дремов on 11.08.2020.
-//
-// 64EV2U9O94O2A758
 
 import Foundation
 import SwiftyJSON
 import Alamofire
 
-/** Main class of SwiftYFinance. Asynchronous methods' callback always will have format: `Some Data?, Error?`. If error is non-nil, then data is going to be nil. Review Error description to find out what's wrong.
+/** Main class of SwiftYFinance. Asynchronous methods' callback always will have format: `Some Data?, Error?`.
+ * If error is non-nil, then data is going to be nil. Review Error description to find out what's wrong.
  * Synchronous API is also provided. The only difference is that it blocks the thread and returns data rather than passing it to the callback.
  */
 public class SwiftYFinance {
+    
     /**
-     Searches quote in Yahoo finances and returns found results
-     - Parameters:
-     - searchTerm: String to search
-     - quotesCount: Maximum found elements to load
-     - callback: Callback, two parameters will be passed
+     For some services,Yahoo requires crumb parameter and cookies.
+     The framework fetches it during the first use.
      */
-    
     static var crumb:String = ""
-    
     static var cookies:String = ""
     
+    /**
+     The counter of requests. This parameter is added to the urls to change them as, sometimes, caching of content does a bad thing.
+     By changing url with this parameter, the app expects uncached response.
+     */
     static var cacheCounter:Int = 0
     
+    /**
+     The headers to use in all requests
+     */
     static var headers: HTTPHeaders = [
         "Accept": "*/*",
         "Pragma": "no-cache",
@@ -38,65 +40,86 @@ public class SwiftYFinance {
         "Accept-Encoding": "gzip, deflate, br"
     ]
     
+    /**
+     Session to use in all requests.
+     @note it is crucial as without httpShouldSetCookies parameter, sometemes, Yahoo sends invalid cookies that are saved.
+     Then, all consequent requests corrupt.
+     */
     static var session:Session = {
         let configuration = Session.default.sessionConfiguration
-//        configuration.waitsForConnectivity = false
+        //        configuration.waitsForConnectivity = false
         configuration.httpShouldSetCookies = false
         configuration.requestCachePolicy = .reloadIgnoringCacheData
-
+        
         return Session(configuration: configuration)
     }()
     
-    
-    private class func fetchCredentials(){
+    /**
+     Fetches crumb and cookies
+     @note blocks the thread.
+     */
+    private class func fetchCredentials() {
         let semaphore = DispatchSemaphore(value: 0)
-        session.request("https://finance.yahoo.com/quote/AAPL/history")
-                .response(queue:DispatchQueue.global(qos: .utility)) {
-                    response in
-                    SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
-                    let splitted = SwiftYFinance.cookies.split(separator: ";")
-                    if splitted.isEmpty{
-                        return
-                    }
-                    SwiftYFinance.cookies = String(splitted[0])
-                    if response.data == nil{
-                        return
-                    }
+        
+        session
+            .request("https://finance.yahoo.com/quote/AAPL/history")
+            .response(queue:DispatchQueue.global(qos: .utility)) {
+                response in
+                SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
+                let splitted = SwiftYFinance.cookies.split(separator: ";")
+                if splitted.isEmpty{
+                    return
+                }
+                SwiftYFinance.cookies = String(splitted[0])
+                if response.data == nil{
+                    return
+                }
                 
-                    let data = String(data: response.data!, encoding: .utf8)
-                    if data == nil{
-                        return
-                    }
-                    
-                    let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
-                    let regex = try? NSRegularExpression(pattern: pattern, options: [])
-                    
-                    let range = NSRange(location: 0, length: data!.utf16.count)
-
-                    let match = regex!.firstMatch(in: data!, options: [], range: range)
-                    let crumbStr = String(data![Range(match!.range, in: data!)!])
-                    
-                    let wI = NSMutableString( string: crumbStr )
-                    CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
-                    let decodedStr = wI as String
-                    SwiftYFinance.crumb = String(decodedStr.suffix(13).prefix(11))
-                    
-                    semaphore.signal()
+                let data = String(data: response.data!, encoding: .utf8)
+                if data == nil{
+                    return
+                }
+                
+                let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
+                let regex = try? NSRegularExpression(pattern: pattern, options: [])
+                
+                let range = NSRange(location: 0, length: data!.utf16.count)
+                
+                let match = regex!.firstMatch(in: data!, options: [], range: range)
+                let crumbStr = String(data![Range(match!.range, in: data!)!])
+                
+                let wI = NSMutableString( string: crumbStr )
+                CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
+                let decodedStr = wI as String
+                SwiftYFinance.crumb = String(decodedStr.suffix(13).prefix(11))
+                
+                semaphore.signal()
         }
+        
         semaphore.wait()
     }
     
+    /**
+     Fetches credentials if they were not set.
+     */
     private class func prepareCredentials(){
         if SwiftYFinance.crumb == ""{
             SwiftYFinance.fetchCredentials()
         }
     }
     
+    /**
+     Searches quote in Yahoo finances and returns found results
+     - Parameters:
+     - searchTerm: String to search
+     - quotesCount: Maximum found elements to load
+     - callback: Callback, two parameters will be passed
+     */
     public class func fetchSearchDataBy(searchTerm:String, quotesCount:Int = 20, queue:DispatchQueue = .main, callback: @escaping ([YFQuoteSearchResult]?, Error?)->Void) {
         /*
          https://query1.finance.yahoo.com/v1/finance/search
          */
-        if searchTerm.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+        if searchTerm.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             callback([], nil)
             return
         }
@@ -113,52 +136,51 @@ public class SwiftYFinance {
             URLQueryItem(name: "quotesCount", value: String(quotesCount)),
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
-
+        
         let config = URLSessionConfiguration.default
         config.requestCachePolicy = .reloadIgnoringLocalCacheData
         config.urlCache = nil
-         
+        
         session.request(urlComponents, headers: SwiftYFinance.headers)
-                .responseData(queue:queue) {
-                    response  in
-                    
-                    if response.error != nil {
-                        callback(nil, response.error)
-                        return
-                    }
-                    
-                    var result: [YFQuoteSearchResult] = []
-                    let json = try! JSON(data: response.value!)
-                    
-                    if nil != json["chart"]["error"]["description"].string {
-                        callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
-                        return
-                    }
-                    if nil != json["finance"]["error"]["description"].string {
-                        callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
-                        return
-                    }
-                    
-                    if json["search"]["error"]["description"].string != nil{
-                        callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
-                        return
-                    }
-                    
-                    if json["quotes"].array == nil{
-                        callback(nil, YFinanceResponseError(message: "Empty response"))
-                        return
-                    }
-                    
-                    for found in json["quotes"].array!{
-                        result.append(YFQuoteSearchResult(
-                            symbol: found["symbol"].string,
-                            shortname: found["shortname"].string,
-                            longname: found["longname"].string,
-                            exchange: found["exchange"].string,
-                            assetType: found["typeDisp"].string
-                        ))
-                    }
-                    callback(result, nil)
+            .responseData(queue:queue) { response  in
+                
+                if response.error != nil {
+                    callback(nil, response.error)
+                    return
+                }
+                
+                var result: [YFQuoteSearchResult] = []
+                let json = try! JSON(data: response.value!)
+                
+                if nil != json["chart"]["error"]["description"].string {
+                    callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
+                    return
+                }
+                if nil != json["finance"]["error"]["description"].string {
+                    callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
+                    return
+                }
+                
+                if json["search"]["error"]["description"].string != nil{
+                    callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
+                    return
+                }
+                
+                if json["quotes"].array == nil{
+                    callback(nil, YFinanceResponseError(message: "Empty response"))
+                    return
+                }
+                
+                for found in json["quotes"].array!{
+                    result.append(YFQuoteSearchResult(
+                        symbol: found["symbol"].string,
+                        shortname: found["shortname"].string,
+                        longname: found["longname"].string,
+                        exchange: found["exchange"].string,
+                        assetType: found["typeDisp"].string
+                    ))
+                }
+                callback(result, nil)
         }
     }
     
@@ -189,7 +211,7 @@ public class SwiftYFinance {
          https://query1.finance.yahoo.com/v1/finance/search
          */
         
-        if searchNews.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+        if searchNews.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             callback([], nil)
             return
         }
@@ -209,8 +231,6 @@ public class SwiftYFinance {
         ]
         
         
-        
-         
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response  in
             if (response.error != nil){
                 callback(nil, response.error)
@@ -261,7 +281,6 @@ public class SwiftYFinance {
             retData = data
             retError = error
             
-            
         }
         semaphore.wait()
         return (retData, retError)
@@ -295,7 +314,7 @@ public class SwiftYFinance {
      */
     public class func summaryDataBy(identifier:String, selection: [QuoteSummarySelection], queue:DispatchQueue = .main, callback: @escaping (IdentifierSummary?, Error?)->Void){
         
-        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             callback(nil, YFinanceResponseError(message: "Empty identifier"))
             return
         }
@@ -320,7 +339,7 @@ public class SwiftYFinance {
             URLQueryItem(name: "symbols",value: identifier),
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
-         
+        
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
@@ -399,7 +418,7 @@ public class SwiftYFinance {
             URLQueryItem(name: "period2", value: String(Int(Date().timeIntervalSince1970)+10)),
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
-         
+        
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
@@ -469,7 +488,7 @@ public class SwiftYFinance {
      */
     public class func chartDataBy(identifier:String, start:Date=Date(), end:Date=Date(), interval:ChartTimeInterval = .oneday, queue:DispatchQueue = .main, callback: @escaping ([StockChartData]?, Error?)->Void){
         
-        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+        if identifier.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             callback(nil, YFinanceResponseError(message: "Empty identifier"))
             return
         }
@@ -491,7 +510,7 @@ public class SwiftYFinance {
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
         
-         
+        
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
                 callback(nil, response.error)
