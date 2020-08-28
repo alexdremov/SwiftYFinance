@@ -622,6 +622,7 @@ public class SwiftYFinance {
         }
     }
     
+    
     /**
      The same as `SwiftYFinance.recentChartDataAtMoment(...)` except that it executes synchronously and returns data rather than giving it to the callback.
      */
