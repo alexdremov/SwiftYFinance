@@ -16,6 +16,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
     <img src="SwiftYFinance/Assets/preview.gif" width="600px" style="margin: auto">
 </section>
 
+*You asked about this beautiful chart in the preview gif: [AlexRoar/BeautyChart](https://github.com/AlexRoar/BeautyChart)*
+
 ## Requirements
 
 I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
