@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (5.2.2)
-  - BeautyChart (0.1.0)
+  - BeautyChart (0.2.0)
   - SwiftYFinance (1.2.2):
     - Alamofire (~> 5.2)
     - SwiftyJSON (~> 4.0)
@@ -22,7 +22,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
-  BeautyChart: 494000311c280939141fb9b8e79377660c3b26bf
+  BeautyChart: 243e47efbf1cafd1550892fe22ed468764aa1131
   SwiftYFinance: 3faf08b49db5f8a35a665539584914f1b9d59dae
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 

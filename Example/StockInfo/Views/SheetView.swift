@@ -8,15 +8,23 @@
 
 import SwiftUI
 import SwiftYFinance
+import BeautyChart
 
 struct SheetView: View {
     @State var chartPoints:[Double] = []
+    var points: [CGPoint] {
+        var i = -1;
+        return chartPoints.map
+        {el -> CGPoint in i+=1; return CGPoint(x: CGFloat(i), y: CGFloat(el))}
+    }
     @State var interval:ChartTimeInterval = .oneday
     var selection: SelectedSymbolWrapper?
     @State var identifierSummary:IdentifierSummary?
     var body: some View {
-        VStack{
-        
+        var style = LineViewStyle().mode2();
+        style.lightTheme.bezierStepMode = false
+        style.darkTheme.bezierStepMode = false
+        return VStack{
             HStack(alignment: .center){
                 Spacer()
                 VStack(spacing: 0){
@@ -26,10 +34,10 @@ struct SheetView: View {
                 }
                 Spacer()
             }.padding(.bottom, 5)
-                
-        
+
             ScrollView(.vertical) {
                 VStack{
+                    ChartSmoothView(points: points, style: style).padding()
                     Group{
                         Group{
                         HStack{
