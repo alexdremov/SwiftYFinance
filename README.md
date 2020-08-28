@@ -79,6 +79,8 @@ print(data!.longname ?? "No long name")
 
 **Even though executing commands in the main thread synchronously is not the best practice, I added this feature to the project. It's on your account to write fast, non-freezing apps, so use synchronous methods wisely.**
 
+Search for news is also awailable through `fetchSearchDataBy(searchNews:String, ...)`
+
 ### Basic recent data
 
 Fetches the most recent data about identifier collecting basic information.
@@ -120,6 +122,37 @@ SwiftYFinance.chartDataBy(
         start: Date(...),
         end: Date(...),
         interval = .oneday){
+    data, error in
+    /*
+    data ~>[
+        struct StockChartData{
+            var date: Date?
+            var volume: Int?
+            var open: Float?
+            var close: Float?
+            var adjclose: Float?
+            var low: Float?
+            var high: Float?
+        }
+    ]
+    */
+    if error == nil{
+        return 
+    }
+    print(data![0]?.open ?? "Open price is unavailable")
+}
+```
+
+### Chart data at moment
+
+Sometimes, you need to fetch data at some moment in the past. Use `recentChartDataAtMoment()` for that.
+
+```swift
+SwiftYFinance.chartDataBy(
+        identifier:"AAPL",
+        moment: Date(...),
+        futureMargin: TimeInterval(...)
+        ){
     data, error in
     /*
     data ~>[
