@@ -147,7 +147,7 @@ SwiftYFinance.chartDataBy(
 
 ### Chart data at moment
 
-Sometimes, you need to fetch data at some moment in the past. Use `recentChartDataAtMoment()` for that.
+Sometimes, you need to fetch data at some moment in the past. Use `chartDataBy(..., moment: Date, ...)` for that.
 
 ```swift
 SwiftYFinance.chartDataBy(
