@@ -1,6 +1,0 @@
-framework module BeautyChart {
-  umbrella header "BeautyChart-umbrella.h"
-
-  export *
-  module * { export * }
-}

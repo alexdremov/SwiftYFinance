@@ -1,6 +1,0 @@
-framework module SwiftYFinance {
-  umbrella header "SwiftYFinance-umbrella.h"
-
-  export *
-  module * { export * }
-}
