@@ -35,5 +35,11 @@ Carthage/Build
 # Note: if you ignore the Pods directory, make sure to uncomment
 # `pod install` in .travis.yml
 #
-# Pods/
+Pods/
 .vscode/settings.json
+
+Example/Pods/
+Example/build/
+Example/*.xcworkspace
+Package.resolved
+
