@@ -41,7 +41,7 @@ Add dependency to your Package file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AlexRoar/SwiftYFinance", .upToNextMajor(from: "1.3.0")),
+    .package(url: "https://github.com/AlexRoar/SwiftYFinance", .upToNextMajor(from: "1.4.0")),
 ]
 ```
 
