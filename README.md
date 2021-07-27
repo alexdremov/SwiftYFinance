@@ -24,13 +24,34 @@ I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
 
 ## Installation
 
-SwiftYFinance is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile and run `pod install`:
+SwiftYFinance is available through [CocoaPods](https://cocoapods.org) or [Swift Package Manager](https://swift.org/package-manager/).
 
+### CocoaPods
+
+To install
+it, simply add the following line to your Podfile and run `pod install`:
 
 ```ruby
 pod 'SwiftYFinance'
 ```
+
+### Swift Package Manager
+
+Add dependency to your Package file:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/AlexRoar/SwiftYFinance", .upToNextMajor(from: "1.3.0")),
+]
+```
+
+Or add dependency to your XCode project: `File` > `Swift Packages` > `Add Package Dependency`
+
+```
+https://github.com/AlexRoar/SwiftYFinance
+```
+
+### Try it
 
 You can try Example project on your device by running:
 ```bash
