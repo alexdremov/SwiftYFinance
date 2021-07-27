@@ -23,3 +23,6 @@ jobs:
           xcodebuild clean test -workspace StockInfo.xcworkspace -scheme StockInfo -destination 'platform=iOS Simulator,name=iPhone 11 Pro Max,OS=14.4'
       - name: Code coverage
         run: bash <(curl -s https://codecov.io/bash)
+      - name: Package Test
+        run: |
+          swift test
