@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SwiftYFinance'
-  s.version          = '1.3.0'
+  s.version          = '1.4.0'
   s.summary          = 'Yahoo Finance library with the power of Swift'
 
   s.swift_version   = '5.0'
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '13.0'
 
-  s.source_files = 'SwiftYFinance/Classes/**/*'
+  s.source_files = 'Sources/SwiftYFinance/Classes/**/*'
   
   s.dependency 'Alamofire', '~> 5.2'
   s.dependency 'SwiftyJSON', '~> 4.0'

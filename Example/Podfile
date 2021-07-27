@@ -4,9 +4,9 @@ use_frameworks!
 project 'StockInfo.xcodeproj'
 
 target 'StockInfo' do
-  pod 'SwiftYFinance'
+  pod 'SwiftYFinance', :path => '../'
   pod 'BeautyChart'
   target 'StockInfoTests' do
-    pod 'SwiftYFinance'
+    pod 'SwiftYFinance', :path => '../'
   end
 end
