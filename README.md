@@ -13,7 +13,7 @@
 To run the example project, clone the repo, and run `pod install` from the Example directory first. Example project includes basic features demonstration.
 
 <section style="text-align:center">
-    <img src="SwiftYFinance/Assets/preview.gif" width="600px" style="margin: auto">
+    <img src="Sources/SwiftYFinance/Assets/preview.gif" width="600px" style="margin: auto">
 </section>
 
 *You asked about this beautiful chart in the preview gif: [AlexRoar/BeautyChart](https://github.com/AlexRoar/BeautyChart)*
