@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct RecentStockData{
+public struct RecentStockData {
     public var currency: String?
     public var symbol: String?
     public var exchangeName: String?

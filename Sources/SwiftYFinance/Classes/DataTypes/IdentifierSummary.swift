@@ -10,21 +10,21 @@ import Foundation
 import SwiftyJSON
 
 public struct IdentifierSummary {
-    public var recommendationTrend:RecommendationTrend?
-    public var summaryProfile:SummaryProfile?
-    public var quoteType:QuoteType?
-    public var price:Price?
-    public var indexTrend:IndexTrend?
-    public var calendarEvents:CalendarEvents?
-    public var summaryDetail:SummaryDetail?
-    
-    public var dataStorage:JSON?
-    
-    init(information:JSON) {
+    public var recommendationTrend: RecommendationTrend?
+    public var summaryProfile: SummaryProfile?
+    public var quoteType: QuoteType?
+    public var price: Price?
+    public var indexTrend: IndexTrend?
+    public var calendarEvents: CalendarEvents?
+    public var summaryDetail: SummaryDetail?
+
+    public var dataStorage: JSON?
+
+    init(information: JSON) {
         self.dataStorage = information
         let recomendationData = information["recommendationTrend"]["trend"][0]
-        
-        if recomendationData.dictionary != nil{
+
+        if recomendationData.dictionary != nil {
             self.recommendationTrend = RecommendationTrend(
                 buy: recomendationData["buy"].int,
                 sell: recomendationData["sell"].int,
@@ -33,8 +33,8 @@ public struct IdentifierSummary {
                 strongBuy: recomendationData["strongBuy"].int
             )
         }
-        
-        if information["summaryProfile"].dictionary != nil{
+
+        if information["summaryProfile"].dictionary != nil {
             self.summaryProfile = SummaryProfile(
                 country: information["summaryProfile"]["country"].string,
                 city: information["summaryProfile"]["city"].string,
@@ -43,14 +43,14 @@ public struct IdentifierSummary {
                 maxAge: information["summaryProfile"]["maxAge"].int,
                 zip: information["summaryProfile"]["zip"].string,
                 fullTimeEmployees: information["summaryProfile"]["fullTimeEmployees"].int,
-                website:  information["summaryProfile"]["website"].string,
+                website: information["summaryProfile"]["website"].string,
                 phone: information["summaryProfile"]["phone"].string,
                 longBusinessSummary: information["summaryProfile"]["longBusinessSummary"].string,
                 sector: information["summaryProfile"]["sector"].string
             )
         }
-        
-        if information["quoteType"].dictionary != nil{
+
+        if information["quoteType"].dictionary != nil {
             self.quoteType = QuoteType(
                 exchange: information["quoteType"]["exchange"].string,
                 quoteType: information["quoteType"]["quoteType"].string,
@@ -62,18 +62,17 @@ public struct IdentifierSummary {
                 timeZoneFullName: information["quoteType"]["timeZoneFullName"].string,
                 timeZoneShortName: information["quoteType"]["timeZoneShortName"].string,
                 uuid: information["quoteType"]["uuid"].string
-                )
-            
+            )
         }
-        
-        if information["price"].dictionary != nil{
+
+        if information["price"].dictionary != nil {
             self.price = Price(
                 preMarketTime: information["price"]["preMarketTime"].int,
                 exchangeName: information["price"]["exchangeName"].string,
                 preMarketChangePercent: information["price"]["preMarketChangePercent"]["raw"].float,
                 exchange: information["price"]["exchange"].string,
-                currencySymbol:  information["price"]["currencySymbol"].string,
-                regularMarketSource:information["price"]["regularMarketSource"].string,
+                currencySymbol: information["price"]["currencySymbol"].string,
+                regularMarketSource: information["price"]["regularMarketSource"].string,
                 toCurrency: information["price"]["toCurrency"].string,
                 regularMarketChange: information["price"]["regularMarketChange"]["raw"].float,
                 exchangeDataDelayedBy: information["price"]["exchangeDataDelayedBy"].int,
@@ -96,14 +95,14 @@ public struct IdentifierSummary {
                 regularMarketTime: information["price"]["regularMarketTime"].int
             )
         }
-        
-        if information["indexTrend"].dictionary != nil{
-            var estimates:[IndexTrendEstimates] = []
-            
-            for est in information["indexTrend"]["estimates"].array!{
+
+        if information["indexTrend"].dictionary != nil {
+            var estimates: [IndexTrendEstimates] = []
+
+            for est in information["indexTrend"]["estimates"].array! {
                 estimates.append(IndexTrendEstimates(period: est["period"].string, growth: est["growth"]["raw"].float))
             }
-            
+
             self.indexTrend = IndexTrend(
                 maxAge: information["indexTrend"]["maxAge"].int,
                 symbol: information["indexTrend"]["symbol"].string,
@@ -112,8 +111,8 @@ public struct IdentifierSummary {
                 estimates: estimates
             )
         }
-        
-        if information["summaryDetail"].dictionary != nil{
+
+        if information["summaryDetail"].dictionary != nil {
             let summaryDetail = information["summaryDetail"].dictionary
             self.summaryDetail = SummaryDetail(
                 maxAge: summaryDetail?["maxAge"]?.int,
@@ -164,10 +163,10 @@ public struct IdentifierSummary {
                 currency: summaryDetail?["currency"]?.string,
                 fromCurrency: summaryDetail?["fromCurrency"]?.string,
                 toCurrency: summaryDetail?["toCurrency"]?.string,
-                tradable:summaryDetail?["tradable"]?.bool
+                tradable: summaryDetail?["tradable"]?.bool
             )
         }
-        if information["calendarEvents"].dictionary != nil{
+        if information["calendarEvents"].dictionary != nil {
             self.calendarEvents = CalendarEvents(exDividendDate: information["calendarEvents"]["exDividendDate"]["raw"].int, dividendDate: information["calendarEvents"]["dividendDate"]["raw"].int)
         }
     }

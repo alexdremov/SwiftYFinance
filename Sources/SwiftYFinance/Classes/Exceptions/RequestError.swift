@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum RequestError:Error{
+enum RequestError: Error {
     case error
 }

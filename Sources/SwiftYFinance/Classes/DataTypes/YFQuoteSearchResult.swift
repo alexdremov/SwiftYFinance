@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct YFQuoteSearchResult{
+public struct YFQuoteSearchResult {
     public var symbol: String?
     public var shortname: String?
     public var longname: String?

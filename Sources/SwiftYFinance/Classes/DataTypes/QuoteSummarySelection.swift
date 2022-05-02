@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-public enum QuoteSummarySelection:String{
+public enum QuoteSummarySelection: String {
     case assetProfile
     case incomeStatementHistory
     case incomeStatementHistoryQuarterly

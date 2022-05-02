@@ -9,15 +9,15 @@ let package = Package(
         .macOS(.v10_12),
         .iOS(.v12),
         .watchOS(.v2),
-        .tvOS(.v9),
+        .tvOS(.v9)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "SwiftYFinance",
-            targets: ["SwiftYFinance"]),
+            targets: ["SwiftYFinance"])
     ],
-    
+
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", from: "4.0.0"),
@@ -31,6 +31,6 @@ let package = Package(
             dependencies: ["SwiftyJSON", "Alamofire"]),
         .testTarget(
             name: "SwiftYFinanceTests",
-            dependencies: ["SwiftYFinance", "SwiftyJSON", "Alamofire"]),
+            dependencies: ["SwiftYFinance", "SwiftyJSON", "Alamofire"])
     ]
 )

@@ -11,9 +11,9 @@ import SwiftYFinance
 
 struct ListUnoView: View {
     var result: YFQuoteSearchResult?
-    
+
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading) {
             Text(result?.symbol ?? "Not symbol")
                 .font(.title)
                 .fontWeight(.semibold)

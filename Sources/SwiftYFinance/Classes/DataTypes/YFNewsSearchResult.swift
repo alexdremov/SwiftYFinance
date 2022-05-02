@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct YFNewsSearchResult{
+public struct YFNewsSearchResult {
     public var type: String?
     public var uuid: String?
     public var link: String?

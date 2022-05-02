@@ -7,6 +7,6 @@
 
 import Foundation
 
-public struct YFinanceResponseError: Error{
+public struct YFinanceResponseError: Error {
     public var message: String?
 }

@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-public struct CalendarEvents{
-    public var exDividendDate : Int?
-    public var dividendDate : Int?
+public struct CalendarEvents {
+    public var exDividendDate: Int?
+    public var dividendDate: Int?
 }

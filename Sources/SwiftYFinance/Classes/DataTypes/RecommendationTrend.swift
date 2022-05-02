@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct RecommendationTrend{
+public struct RecommendationTrend {
     public var buy: Int?
     public var sell: Int?
     public var hold: Int?
-    public var strongSell:Int?
+    public var strongSell: Int?
     public var strongBuy: Int?
 }

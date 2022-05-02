@@ -10,15 +10,14 @@ import SwiftUI
 import SwiftYFinance
 
 struct ContentView: View {
-    
-    @State var searchString:String = "AAPL"
-    @State var foundContainer:[YFQuoteSearchResult] = []
-    
+    @State var searchString: String = "AAPL"
+    @State var foundContainer: [YFQuoteSearchResult] = []
+
     @State var sheetVisible = false
     @ObservedObject var selection = SelectedSymbolWrapper()
     var body: some View {
-        return VStack{
-            HStack{
+        VStack {
+            HStack {
                 Text("Stock Info")
                     .font(.largeTitle)
                     .fontWeight(.heavy)
@@ -28,15 +27,15 @@ struct ContentView: View {
             TextField("Search", text: $searchString, onCommit: self.searchObjects)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .cornerRadius(5).padding(.horizontal)
-            
-            Group{
-                List{
-                    ForEach(self.foundContainer, id: \.symbol){result in
+
+            Group {
+                List {
+                    ForEach(self.foundContainer, id: \.symbol) {result in
                         Button(action: {
                             self.selection.symbol = result.symbol
                             self.sheetVisible = true
-                        }){
-                            ListUnoView(result:result).listRowInsets(EdgeInsets())
+                        }) {
+                            ListUnoView(result: result).listRowInsets(EdgeInsets())
                         }
                     }.listRowInsets(EdgeInsets())
                 }.padding(0.0)
@@ -46,11 +45,10 @@ struct ContentView: View {
             SheetView(selection: self.selection)
         }).onAppear(perform: self.searchObjects)
     }
-    
-    func searchObjects(){
-        SwiftYFinance.fetchSearchDataBy(searchTerm: self.searchString)
-        {data, error in
-            if error != nil{
+
+    func searchObjects() {
+        SwiftYFinance.fetchSearchDataBy(searchTerm: self.searchString) {data, error in
+            if error != nil {
                 return
             }
             self.foundContainer = data!
@@ -64,12 +62,11 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-class SelectedSymbolWrapper: ObservableObject{
-    @Published var symbol:String?
-    init(symbol:String){
+class SelectedSymbolWrapper: ObservableObject {
+    @Published var symbol: String?
+    init(symbol: String) {
         self.symbol = symbol
     }
-    init(){
-        
+    init() {
     }
 }

@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct NumberDescView: View {
-    var number:Any?
-    var desc:Any?
+    var number: Any?
+    var desc: Any?
     var body: some View {
-        VStack(alignment: .center){
+        VStack(alignment: .center) {
             Text("\(number as? String ?? "")" )
                 .font(.title)
                 .fontWeight(.bold)

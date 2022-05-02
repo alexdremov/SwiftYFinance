@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ChartTimeInterval:String{
+public enum ChartTimeInterval: String {
     case oneminute = "1m"
     case twominutes = "2m"
     case fiveminutes = "5m"

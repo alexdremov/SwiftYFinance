@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct StockChartData{
+public struct StockChartData {
     public var date: Date?
     public var volume: Int?
     public var open: Float?
