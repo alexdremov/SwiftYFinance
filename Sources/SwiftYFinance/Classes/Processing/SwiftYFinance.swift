@@ -50,6 +50,8 @@ public class SwiftYFinance {
         configuration.httpShouldSetCookies = false
         configuration.requestCachePolicy = .reloadIgnoringCacheData
         
+        configuration.httpCookieStorage?.cookieAcceptPolicy = .always
+        
         return Session(configuration: configuration)
     }()
     
@@ -61,21 +63,26 @@ public class SwiftYFinance {
         let semaphore = DispatchSemaphore(value: 0)
         
         session
+            .request("https://guce.yahoo.com/copyConsent")
+            .response(queue: .global(qos: .userInteractive)) { response in
+                semaphore.signal()
+            }
+        
+        semaphore.wait()
+        
+        session
             .request("https://finance.yahoo.com/quote/AAPL/history")
-            .response(queue:DispatchQueue.global(qos: .utility)) {
+            .response(queue: .global(qos: .userInteractive)) {
                 response in
                 SwiftYFinance.cookies = response.response?.headers["Set-Cookie"] ?? ""
-                let splitted = SwiftYFinance.cookies.split(separator: ";")
-                if splitted.isEmpty{
-                    return
-                }
-                SwiftYFinance.cookies = String(splitted[0])
                 if response.data == nil{
+                    semaphore.signal()
                     return
                 }
                 
                 let data = String(data: response.data!, encoding: .utf8)
                 if data == nil{
+                    semaphore.signal()
                     return
                 }
                 
@@ -518,6 +525,7 @@ public class SwiftYFinance {
             URLQueryItem(name: "cachecounter", value: String(SwiftYFinance.cacheCounter))
         ]
         
+        print(try! urlComponents.asURL())
         
         session.request(urlComponents, headers: SwiftYFinance.headers).responseData(queue:queue){ response in
             if (response.error != nil){
