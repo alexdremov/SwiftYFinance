@@ -91,7 +91,7 @@ public class SwiftYFinance {
                 let range = NSRange(location: 0, length: data!.utf16.count)
 
                 let match = regex!.firstMatch(in: data!, options: [], range: range)
-                let crumbStr = String(data![Range(match!.range, in: data!)!])
+                let crumbStr = match == nil ? "" : String(data![Range(match!.range, in: data!)!])
 
                 let wI = NSMutableString( string: crumbStr )
                 CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
