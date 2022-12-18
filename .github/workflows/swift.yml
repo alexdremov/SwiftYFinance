@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        destination: ['iOS Simulator,name=iPhone 13,OS=16.1']
+        destination: ['iOS Simulator,name=iPhone 13,OS=16.0']
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -20,7 +20,7 @@ jobs:
           cd Example
           pod install
           xcrun simctl list
-          xcodebuild clean test -workspace StockInfo.xcworkspace -scheme StockInfo -destination 'platform=iOS Simulator,name=iPhone 13,OS=16.1'
+          xcodebuild clean test -workspace StockInfo.xcworkspace -scheme StockInfo -destination 'platform=iOS Simulator,name=iPhone 13,OS=16.0'
       - name: Code coverage
         run: bash <(curl -s https://codecov.io/bash)
       - name: Package Test
