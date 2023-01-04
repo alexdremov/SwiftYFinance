@@ -16,13 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Set Up & Testing
-        run: |
-          cd Example
-          pod install
-          xcrun simctl list
-          xcodebuild clean test -workspace StockInfo.xcworkspace -scheme StockInfo -destination 'platform=iOS Simulator,name=iPhone 13,OS=16.0'
+        run: swift test
       - name: Code coverage
         run: bash <(curl -s https://codecov.io/bash)
-      - name: Package Test
-        run: |
-          swift test
