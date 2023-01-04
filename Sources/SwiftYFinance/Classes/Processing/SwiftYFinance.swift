@@ -73,32 +73,33 @@ public class SwiftYFinance {
             .request("https://finance.yahoo.com/quote/AAPL/history")
             .response(queue: .global(qos: .userInteractive)) {
                 response in
+                defer {
+                    semaphore.signal()
+                }
+                
                 Self.cookies = response.response?.headers["Set-Cookie"] ?? ""
                 if response.data == nil {
-                    semaphore.signal()
                     return
                 }
 
                 let data = String(data: response.data!, encoding: .utf8)
-                if data == nil {
-                    semaphore.signal()
+                guard let data = data else {
                     return
                 }
 
                 let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
-                let regex = try? NSRegularExpression(pattern: pattern, options: [])
-
-                let range = NSRange(location: 0, length: data!.utf16.count)
-
-                let match = regex!.firstMatch(in: data!, options: [], range: range)
-                let crumbStr = match == nil ? "" : String(data![Range(match!.range, in: data!)!])
+                let range = NSRange(location: 0, length: data.utf16.count)
+                guard let regex = try? NSRegularExpression(pattern: pattern, options: []),
+                      let match = regex.firstMatch(in: data, options: [], range: range),
+                      let rangeData = Range(match.range, in: data) else {
+                    return
+                }
+                let crumbStr = String(data[rangeData])
 
                 let wI = NSMutableString( string: crumbStr )
                 CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
                 let decodedStr = wI as String
                 Self.crumb = String(decodedStr.suffix(13).prefix(11))
-
-                semaphore.signal()
             }
 
         semaphore.wait()
