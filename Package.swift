@@ -15,7 +15,8 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "SwiftYFinance",
-            targets: ["SwiftYFinance"])
+            targets: ["SwiftYFinance"]
+        )
     ],
 
     dependencies: [
@@ -28,9 +29,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "SwiftYFinance",
-            dependencies: ["SwiftyJSON", "Alamofire"]),
+            dependencies: ["SwiftyJSON", "Alamofire"], path: "Sources"),
         .testTarget(
             name: "SwiftYFinanceTests",
-            dependencies: ["SwiftYFinance", "SwiftyJSON", "Alamofire"])
+            dependencies: ["SwiftYFinance", "SwiftyJSON", "Alamofire"], path: "Tests/SwiftYFinanceTests")
     ]
 )
