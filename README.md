@@ -4,35 +4,13 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/alexroar/swiftyfinance/badge)](https://www.codefactor.io/repository/github/alexroar/swiftyfinance)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/AlexRoar/SwiftYFinance/swift.yml)
 
-
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first. Example project includes basic features demonstration.
-
-<section style="text-align:center">
-    <img src="Sources/SwiftYFinance/Assets/preview.gif" width="600px" style="margin: auto">
-</section>
-
-*You asked about this beautiful chart in the preview gif: [AlexRoar/BeautyChart](https://github.com/AlexRoar/BeautyChart)*
-
 ## Requirements
 
 I used Swift 5.0 and backward compatibility is not guranteed. IOS 13+
 
 ## Installation
 
-SwiftYFinance is available through [CocoaPods](https://cocoapods.org) or [Swift Package Manager](https://swift.org/package-manager/).
-
-### CocoaPods
-
-To install
-it, simply add the following line to your Podfile and run `pod install`:
-
-```ruby
-pod 'SwiftYFinance'
-```
-
-### Swift Package Manager
+SwiftYFinance is available through [Swift Package Manager](https://swift.org/package-manager/).
 
 Add dependency to your Package file:
 
@@ -47,14 +25,6 @@ Or add dependency to your XCode project: `File` > `Swift Packages` > `Add Packag
 ```
 https://github.com/AlexRoar/SwiftYFinance
 ```
-
-### Try it
-
-You can try Example project on your device by running:
-```bash
-pod try SwiftYFinance
-```
-
 ## Basic Usage
 
 ### Search
