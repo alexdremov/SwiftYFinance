@@ -16,6 +16,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Set Up & Testing
-        run: swift test
+        run: |
+          swift test --enable-code-coverage
+          xcrun llvm-cov export -format="lcov" .build/debug/SwiftYFinancePackageTests.xctest/Contents/MacOS/SwiftYFinancePackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov
       - name: Code coverage
         run: bash <(curl -s https://codecov.io/bash)
