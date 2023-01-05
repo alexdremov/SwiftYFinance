@@ -1,4 +1,7 @@
 # SwiftYFinance
+<hr></hr>
+Refactored <b>v3.0.0</b> with Swift concurrency support is coming!
+<hr></hr>
 
 [![codecov](https://img.shields.io/codecov/c/github/AlexRoar/SwiftYFinance)](https://codecov.io/gh/AlexRoar/SwiftYFinance)
 [![CodeFactor](https://www.codefactor.io/repository/github/alexroar/swiftyfinance/badge)](https://www.codefactor.io/repository/github/alexroar/swiftyfinance)
