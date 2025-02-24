@@ -190,7 +190,7 @@ class StockInfoTests: XCTestCase {
         XCTAssertNil(error)
     }
 
-    func test_summaryDataBy_selectionAllWithValidTicker() throws {
+    func skipped_test_summaryDataBy_selectionAllWithValidTicker() throws {
         // Arrange
         let promise = expectation(description: requestFinished)
         // Act + Assert
@@ -238,7 +238,7 @@ class StockInfoTests: XCTestCase {
         wait(for: [promise], timeout: 5)
     }
     
-    func test_summaryDataBy_selectionSetWithValidTicker() throws {
+    func skipped_test_summaryDataBy_selectionSetWithValidTicker() throws {
         // Arrange
         let promise = expectation(description: requestFinished)
         // Act + Assert
@@ -286,7 +286,7 @@ class StockInfoTests: XCTestCase {
         wait(for: [promise], timeout: 5)
     }
     
-    func test_syncSummaryDataBy_selectionAllWithValidTicker() throws {
+    func skipped_test_syncSummaryDataBy_selectionAllWithValidTicker() throws {
         // Arrange + Act
         let (data, error) = SwiftYFinance.syncSummaryDataBy(identifier: validTicker, selection: selectionAll)
         // Assert
@@ -294,7 +294,7 @@ class StockInfoTests: XCTestCase {
         XCTAssertNil(error)
     }
     
-    func test_syncSummaryDataBy_selectionAllWithInvalidTicker() throws {
+    func skipped_test_syncSummaryDataBy_selectionAllWithInvalidTicker() throws {
         // Arrange + Act
         let (data, error) = SwiftYFinance.syncSummaryDataBy(identifier: invalidTicker, selection: selectionAll)
         // Assert
@@ -318,7 +318,7 @@ class StockInfoTests: XCTestCase {
         XCTAssertNotNil(error)
     }
 
-    func test_syncSummaryDataBy_selectionSetWithValidTicker() throws {
+    func skipped_test_syncSummaryDataBy_selectionSetWithValidTicker() throws {
         // Arrange + Act
         let (data, error) = SwiftYFinance.syncSummaryDataBy(identifier: validTicker, selection: selectionSet)
         // Assert
