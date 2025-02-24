@@ -38,7 +38,7 @@ https://github.com/AlexRoar/SwiftYFinance
 import SwiftYFinance
 
 // Searches quote in Yahoo finances and returns found results
-SwiftYFinance.fetchSearchDataBy(searchTerm:"AAPL", quotesCount=20) {
+SwiftYFinance.fetchSearchDataBy(searchTerm: "AAPL", quotesCount: 20) {
     data, error in
     /*
     callback: ([YFQuoteSearchResult]?, Error?) -> Void
@@ -50,7 +50,8 @@ SwiftYFinance.fetchSearchDataBy(searchTerm:"AAPL", quotesCount=20) {
         var assetType: String?
     }
     */
-    if error == nil{
+    if error != nil{
+        print(error!.localizedDescription)
         return 
     }
     print(data!.longname ?? "No long name")
@@ -60,8 +61,9 @@ SwiftYFinance.fetchSearchDataBy(searchTerm:"AAPL", quotesCount=20) {
 The same thing but synchronously:
 
 ```swift
-let (data, error) = SwiftYFinance.syncFetchSearchDataBy(searchTerm:"AAPL", quotesCount=20)
-if error == nil{
+let (data, error) = SwiftYFinance.syncFetchSearchDataBy(searchTerm: "AAPL", quotesCount: 20)
+if error != nil{
+    print(error!.localizedDescription)
     return 
 }
 print(data!.longname ?? "No long name")
@@ -75,7 +77,7 @@ Search for news is also awailable through `fetchSearchDataBy(searchNews:String, 
 
 Fetches the most recent data about identifier collecting basic information.
 ```swift
-SwiftYFinance.recentDataBy(identifier:"AAPL"){
+SwiftYFinance.recentDataBy(identifier: "AAPL") {
     data, error in
     /*
     data ~>
@@ -96,7 +98,8 @@ SwiftYFinance.recentDataBy(identifier:"AAPL"){
         var priceHint: Int?
     }
     */
-    if error == nil{
+    if error != nil{
+        print(error!.localizedDescription)
         return 
     }
     print(data!.regularMarketPrice ?? "No regularMarketPrice")
@@ -108,10 +111,10 @@ SwiftYFinance.recentDataBy(identifier:"AAPL"){
 Fetches chart data points
 ```swift
 SwiftYFinance.chartDataBy(
-        identifier:"AAPL",
+        identifier: "AAPL",
         start: Date(...),
         end: Date(...),
-        interval = .oneday){
+        interval: .oneday) {
     data, error in
     /*
     data ~>[
@@ -126,7 +129,8 @@ SwiftYFinance.chartDataBy(
         }
     ]
     */
-    if error == nil{
+    if error != nil{
+        print(error!.localizedDescription)
         return 
     }
     print(data![0]?.open ?? "Open price is unavailable")
@@ -139,10 +143,10 @@ Sometimes, you need to fetch data at some moment in the past. Use `chartDataBy(.
 
 ```swift
 SwiftYFinance.chartDataBy(
-        identifier:"AAPL",
+        identifier: "AAPL",
         moment: Date(...),
         futureMargin: TimeInterval(...)
-        ){
+        ) {
     data, error in
     /*
     data ~>[
@@ -157,7 +161,8 @@ SwiftYFinance.chartDataBy(
         }
     ]
     */
-    if error == nil{
+    if error != nil{
+        print(error!.localizedDescription)
         return 
     }
     print(data![0]?.open ?? "Open price is unavailable")
@@ -194,9 +199,10 @@ I will add new modules with every version. Currently, only essential modules are
 You can fetch modules by calling `summaryDataBy(...)`
 
 ```swift
-SwiftYFinance.summaryDataBy(identifier: "AAPL", selection = .all){
+SwiftYFinance.summaryDataBy(identifier: "AAPL", selection: .all){
 data, error in
     if error != nil{
+        print(error!.localizedDescription)
         return
     }
     print(data)
