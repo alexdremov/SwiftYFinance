@@ -4,7 +4,6 @@
 //
 //  Created by Александр Дремов on 11.08.2020.
 
-import Alamofire
 import Foundation
 import SwiftyJSON
 
@@ -29,7 +28,7 @@ public class SwiftYFinance {
     /**
      The headers to use in all requests
      */
-    static var headers: HTTPHeaders = [
+    static var headers: [String: String] = [
         "Accept": "*/*",
         "Pragma": "no-cache",
         "Origin": "https://finance.yahoo.com",
@@ -41,17 +40,16 @@ public class SwiftYFinance {
 
     /**
      Session to use in all requests.
-     - Note: it is crucial as without httpShouldSetCookies parameter, sometemes, Yahoo sends invalid cookies that are saved. Then, all consequent requests corrupt.
+     - Note: it is crucial as without httpShouldSetCookies parameter, sometimes, Yahoo sends invalid cookies that are saved. Then, all consequent requests corrupt.
      */
-    static var session: Session = {
-        let configuration = Session.default.sessionConfiguration
-        //        configuration.waitsForConnectivity = false
+    static var session: URLSession = {
+        let configuration = URLSessionConfiguration.default
         configuration.httpShouldSetCookies = false
         configuration.requestCachePolicy = .reloadIgnoringCacheData
-
+        
         configuration.httpCookieStorage?.cookieAcceptPolicy = .always
-
-        return Session(configuration: configuration)
+        
+        return URLSession(configuration: configuration)
     }()
 
     /**
@@ -70,37 +68,39 @@ public class SwiftYFinance {
         //        semaphore.wait()
 
         session
-            .request("https://finance.yahoo.com/quote/AAPL/history")
-            .response(queue: .global(qos: .userInteractive)) {
-                response in
+            .dataTask(with: URL(string: "https://finance.yahoo.com/quote/AAPL/history")!) { data, response, error in
                 defer {
                     semaphore.signal()
                 }
                 
-                Self.cookies = response.response?.headers["Set-Cookie"] ?? ""
-                if response.data == nil {
-                    return
+                if let httpResponse = response as? HTTPURLResponse {
+                    Self.cookies = httpResponse.allHeaderFields["Set-Cookie"] as? String ?? ""
                 }
-
-                let data = String(data: response.data!, encoding: .utf8)
+                
                 guard let data = data else {
                     return
                 }
 
-                let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
-                let range = NSRange(location: 0, length: data.utf16.count)
-                guard let regex = try? NSRegularExpression(pattern: pattern, options: []),
-                      let match = regex.firstMatch(in: data, options: [], range: range),
-                      let rangeData = Range(match.range, in: data) else {
+                let dataString = String(data: data, encoding: .utf8)
+                guard let dataString = dataString else {
                     return
                 }
-                let crumbStr = String(data[rangeData])
 
-                let wI = NSMutableString( string: crumbStr )
-                CFStringTransform( wI, nil, "Any-Hex/Java" as NSString, true )
+                let pattern = #""CrumbStore":\{"crumb":"(?<crumb>[^"]+)"\}"#
+                let range = NSRange(location: 0, length: dataString.utf16.count)
+                guard let regex = try? NSRegularExpression(pattern: pattern, options: []),
+                      let match = regex.firstMatch(in: dataString, options: [], range: range),
+                      let rangeData = Range(match.range, in: dataString) else {
+                    return
+                }
+                let crumbStr = String(dataString[rangeData])
+
+                let wI = NSMutableString(string: crumbStr)
+                CFStringTransform(wI, nil, "Any-Hex/Java" as NSString, true)
                 let decodedStr = wI as String
                 Self.crumb = String(decodedStr.suffix(13).prefix(11))
             }
+            .resume()
 
         semaphore.wait()
     }
@@ -144,50 +144,61 @@ public class SwiftYFinance {
             URLQueryItem(name: "cachecounter", value: String(Self.cacheCounter))
         ]
 
-        let config = URLSessionConfiguration.default
-        config.requestCachePolicy = .reloadIgnoringLocalCacheData
-        config.urlCache = nil
+        var request = URLRequest(url: urlComponents.url!)
+        for (key, value) in Self.headers {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        request.cachePolicy = .reloadIgnoringLocalCacheData
 
-        session.request(urlComponents, headers: Self.headers)
-            .responseData(queue: queue) { response  in
-                if response.error != nil {
-                    callback(nil, response.error)
+        session.dataTask(with: request) { data, response, error in
+            // Switch to the requested queue for callback handling
+            queue.async {
+                if let error = error {
+                    callback(nil, error)
                     return
                 }
 
-                var result: [YFQuoteSearchResult] = []
-                let json = try! JSON(data: response.value!)
-
-                if nil != json["chart"]["error"]["description"].string {
-                    callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
-                    return
-                }
-                if nil != json["finance"]["error"]["description"].string {
-                    callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
+                guard let data = data else {
+                    callback(nil, YFinanceResponseError(message: "No data received"))
                     return
                 }
 
-                if json["search"]["error"]["description"].string != nil {
-                    callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
-                    return
-                }
+                do {
+                    let json = try JSON(data: data)
 
-                if json["quotes"].array == nil {
-                    callback(nil, YFinanceResponseError(message: "Empty response"))
-                    return
-                }
+                    if let errorDesc = json["chart"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = json["finance"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = json["search"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
 
-                for found in json["quotes"].array! {
-                    result.append(YFQuoteSearchResult(
-                        symbol: found["symbol"].string,
-                        shortname: found["shortname"].string,
-                        longname: found["longname"].string,
-                        exchange: found["exchange"].string,
-                        assetType: found["typeDisp"].string
-                    ))
+                    guard let quotesArray = json["quotes"].array else {
+                        callback(nil, YFinanceResponseError(message: "Empty response"))
+                        return
+                    }
+
+                    let result = quotesArray.map { found in
+                        YFQuoteSearchResult(
+                            symbol: found["symbol"].string,
+                            shortname: found["shortname"].string,
+                            longname: found["longname"].string,
+                            exchange: found["exchange"].string,
+                            assetType: found["typeDisp"].string
+                        )
+                    }
+                    callback(result, nil)
+                } catch {
+                    callback(nil, error)
                 }
-                callback(result, nil)
             }
+        }.resume()
     }
 
     /**
@@ -236,40 +247,60 @@ public class SwiftYFinance {
             URLQueryItem(name: "cachecounter", value: String(Self.cacheCounter))
         ]
 
-        session.request(urlComponents, headers: Self.headers).responseData(queue: queue) { response  in
-            if response.error != nil {
-                callback(nil, response.error)
-                return
-            }
-
-            var result: [YFNewsSearchResult] = []
-            let json = try! JSON(data: response.value!)
-
-            if json["chart"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
-                return
-            }
-            if json["finance"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: json["finance"]["error"]["description"].string))
-                return
-            }
-            if json["search"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: json["search"]["error"]["description"].string))
-                return
-            }
-
-            for found in json["quotes"].array! {
-                result.append(YFNewsSearchResult(
-                                type: found["type"].string,
-                                uuid: found["uuid"].string,
-                                link: found["link"].string,
-                                title: found["title"].string,
-                                publisher: found["publisher"].string,
-                                providerPublishTime: found["providerPublishTime"].string)
-                )
-            }
-            callback(result, nil)
+        var request = URLRequest(url: urlComponents.url!)
+        for (key, value) in Self.headers {
+            request.setValue(value, forHTTPHeaderField: key)
         }
+
+        session.dataTask(with: request) { data, response, error in
+            queue.async {
+                if let error = error {
+                    callback(nil, error)
+                    return
+                }
+
+                guard let data = data else {
+                    callback(nil, YFinanceResponseError(message: "No data received"))
+                    return
+                }
+
+                do {
+                    let json = try JSON(data: data)
+
+                    if let errorDesc = json["chart"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = json["finance"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = json["search"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+
+                    guard let quotesArray = json["quotes"].array else {
+                        callback(nil, YFinanceResponseError(message: "Empty response"))
+                        return
+                    }
+
+                    let result = quotesArray.map { found in
+                        YFNewsSearchResult(
+                            type: found["type"].string,
+                            uuid: found["uuid"].string,
+                            link: found["link"].string,
+                            title: found["title"].string,
+                            publisher: found["publisher"].string,
+                            providerPublishTime: found["providerPublishTime"].string
+                        )
+                    }
+                    callback(result, nil)
+                } catch {
+                    callback(nil, error)
+                }
+            }
+        }.resume()
     }
 
     /**
@@ -347,29 +378,45 @@ public class SwiftYFinance {
             URLQueryItem(name: "cachecounter", value: String(Self.cacheCounter))
         ]
 
-        session.request(urlComponents, headers: Self.headers).responseData(queue: queue) { response in
-            if response.error != nil {
-                callback(nil, response.error)
-                return
-            }
-            let jsonRaw = try! JSON(data: response.value!)
-
-            if jsonRaw["chart"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: jsonRaw["chart"]["error"]["description"].string))
-                return
-            }
-            if jsonRaw["finance"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: jsonRaw["finance"]["error"]["description"].string))
-                return
-            }
-
-            if jsonRaw["quoteSummary"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: jsonRaw["quoteSummary"]["error"]["description"].string))
-                return
-            }
-
-            callback(IdentifierSummary(information: jsonRaw["quoteSummary"]["result"][0]), nil)
+        var request = URLRequest(url: urlComponents.url!)
+        for (key, value) in Self.headers {
+            request.setValue(value, forHTTPHeaderField: key)
         }
+
+        session.dataTask(with: request) { data, response, error in
+            queue.async {
+                if let error = error {
+                    callback(nil, error)
+                    return
+                }
+
+                guard let data = data else {
+                    callback(nil, YFinanceResponseError(message: "No data received"))
+                    return
+                }
+
+                do {
+                    let jsonRaw = try JSON(data: data)
+
+                    if let errorDesc = jsonRaw["chart"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = jsonRaw["finance"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = jsonRaw["quoteSummary"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+
+                    callback(IdentifierSummary(information: jsonRaw["quoteSummary"]["result"][0]), nil)
+                } catch {
+                    callback(nil, error)
+                }
+            }
+        }.resume()
     }
 
     /**
@@ -427,41 +474,61 @@ public class SwiftYFinance {
             URLQueryItem(name: "cachecounter", value: String(Self.cacheCounter))
         ]
 
-        session.request(urlComponents, headers: Self.headers).responseData(queue: queue) { response in
-            if response.error != nil {
-                callback(nil, response.error)
-                return
-            }
-            let json = try! JSON(data: response.value!)
-
-            if json["chart"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
-                return
-            }
-            if json["finance"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: json["error"].string))
-                return
-            }
-
-            let metadata = json["chart"]["result"][0]["meta"].dictionary
-
-            callback(RecentStockData(
-                currency: metadata?["currency"]?.string,
-                symbol: metadata?["symbol"]?.string,
-                exchangeName: metadata?["exchangeName"]?.string,
-                instrumentType: metadata?["instrumentType"]?.string,
-                firstTradeDate: metadata?["firstTradeDate"]?.int,
-                regularMarketTime: metadata?["regularMarketTime"]?.int,
-                gmtoffset: metadata?["gmtoffset"]?.int,
-                timezone: metadata?["timezone"]?.string,
-                exchangeTimezoneName: metadata?["exchangeTimezoneName"]?.string,
-                regularMarketPrice: metadata?["regularMarketPrice"]?.float,
-                chartPreviousClose: metadata?["chartPreviousClose"]?.float,
-                previousClose: metadata?["previousClose"]?.float,
-                scale: metadata?["scale"]?.int,
-                priceHint: metadata?["priceHint"]?.int
-            ), nil)
+        var request = URLRequest(url: urlComponents.url!)
+        for (key, value) in Self.headers {
+            request.setValue(value, forHTTPHeaderField: key)
         }
+
+        session.dataTask(with: request) { data, response, error in
+            queue.async {
+                if let error = error {
+                    callback(nil, error)
+                    return
+                }
+
+                guard let data = data else {
+                    callback(nil, YFinanceResponseError(message: "No data received"))
+                    return
+                }
+
+                do {
+                    let json = try JSON(data: data)
+
+                    if let errorDesc = json["chart"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = json["finance"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+
+                    guard let metadata = json["chart"]["result"][0]["meta"].dictionary else {
+                        callback(nil, YFinanceResponseError(message: "Invalid response format"))
+                        return
+                    }
+
+                    callback(RecentStockData(
+                        currency: metadata["currency"]?.string,
+                        symbol: metadata["symbol"]?.string,
+                        exchangeName: metadata["exchangeName"]?.string,
+                        instrumentType: metadata["instrumentType"]?.string,
+                        firstTradeDate: metadata["firstTradeDate"]?.int,
+                        regularMarketTime: metadata["regularMarketTime"]?.int,
+                        gmtoffset: metadata["gmtoffset"]?.int,
+                        timezone: metadata["timezone"]?.string,
+                        exchangeTimezoneName: metadata["exchangeTimezoneName"]?.string,
+                        regularMarketPrice: metadata["regularMarketPrice"]?.float,
+                        chartPreviousClose: metadata["chartPreviousClose"]?.float,
+                        previousClose: metadata["previousClose"]?.float,
+                        scale: metadata["scale"]?.int,
+                        priceHint: metadata["priceHint"]?.int
+                    ), nil)
+                } catch {
+                    callback(nil, error)
+                }
+            }
+        }.resume()
     }
 
     /**
@@ -517,49 +584,67 @@ public class SwiftYFinance {
             URLQueryItem(name: "includePrePost", value: "true"),
             URLQueryItem(name: "cachecounter", value: String(Self.cacheCounter))
         ]
+        print(urlComponents.url?.absoluteString ?? "No URL provided")
 
-        print(try! urlComponents.asURL())
-
-        session.request(urlComponents, headers: Self.headers).responseData(queue: queue) { response in
-            if response.error != nil {
-                callback(nil, response.error)
-                return
-            }
-            let json = try! JSON(data: response.value!)
-
-            if json["chart"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: json["chart"]["error"]["description"].string))
-                return
-            }
-            if json["finance"]["error"]["description"].string != nil {
-                callback(nil, YFinanceResponseError(message: json["error"].string))
-                return
-            }
-
-            let fullData = json["chart"]["result"][0].dictionary
-            let quote = fullData?["indicators"]?["quote"][0].dictionary
-            let adjClose = fullData?["indicators"]?["adjclose"][0]["adjclose"].array
-            let timestamps = fullData?["timestamp"]?.array
-
-            var result: [StockChartData] = []
-
-            if timestamps == nil {
-                callback([], YFinanceResponseError(message: "Empty chart data"))
-                return
-            }
-            for reading in 0..<timestamps!.count {
-                result.append(StockChartData(
-                                date: Date(timeIntervalSince1970: Double(timestamps![reading].float!)),
-                                volume: quote?["volume"]?[reading].int,
-                                open: quote?["open"]?[reading].float,
-                                close: quote?["close"]?[reading].float,
-                                adjclose: adjClose?[reading].float,
-                                low: quote?["low"]?[reading].float,
-                                high: quote?["high"]?[reading].float)
-                )
-            }
-            callback(result, nil)
+        var request = URLRequest(url: urlComponents.url!)
+        for (key, value) in Self.headers {
+            request.setValue(value, forHTTPHeaderField: key)
         }
+
+        session.dataTask(with: request) { data, response, error in
+            queue.async {
+                if let error = error {
+                    callback(nil, error)
+                    return
+                }
+
+                guard let data = data else {
+                    callback(nil, YFinanceResponseError(message: "No data received"))
+                    return
+                }
+
+                do {
+                    let json = try JSON(data: data)
+
+                    if let errorDesc = json["chart"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+                    if let errorDesc = json["finance"]["error"]["description"].string {
+                        callback(nil, YFinanceResponseError(message: errorDesc))
+                        return
+                    }
+
+                    guard let fullData = json["chart"]["result"][0].dictionary,
+                          let quote = fullData["indicators"]?["quote"][0].dictionary,
+                          let timestamps = fullData["timestamp"]?.array else {
+                        callback(nil, YFinanceResponseError(message: "Invalid response format"))
+                        return
+                    }
+
+                    let adjClose = fullData["indicators"]?["adjclose"][0]["adjclose"].array
+
+                    var result: [StockChartData] = []
+
+                    for reading in 0..<timestamps.count {
+                        guard let timestamp = timestamps[reading].float else { continue }
+                        
+                        result.append(StockChartData(
+                            date: Date(timeIntervalSince1970: Double(timestamp)),
+                            volume: quote["volume"]?[reading].int,
+                            open: quote["open"]?[reading].float,
+                            close: quote["close"]?[reading].float,
+                            adjclose: adjClose?[reading].float,
+                            low: quote["low"]?[reading].float,
+                            high: quote["high"]?[reading].float)
+                        )
+                    }
+                    callback(result, nil)
+                } catch {
+                    callback(nil, error)
+                }
+            }
+        }.resume()
     }
 
     /**
